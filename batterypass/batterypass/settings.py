@@ -62,10 +62,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'batterypass.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR/'templates',
+            os.path.join(BASE_DIR, 'components')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
