@@ -1,2 +1,3 @@
 batterypass/.env
 batterypass/db.sqlite3
+batterypass/batterypass/media
