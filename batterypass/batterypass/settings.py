@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'generalproductinfo',
     'circularity',
     'bootstrap5',
+    'django_bootstrap_icons'
 ]
 
 MIDDLEWARE = [

@@ -83,7 +83,7 @@ class DismantlingAndRemovalDocumentation(models.Model):
 
 
 class Circularity(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.BigAutoField(primary_key=True)
     dismantling_and_removal_information = models.ManyToManyField(
         DismantlingAndRemovalDocumentation, related_name="circularities"
     )

@@ -181,7 +181,7 @@ class BatteryConditionEntity(models.Model):
 
 
 class PerformanceAndDurability(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.BigAutoField(primary_key=True)
     battery_technical_properties = models.ForeignKey(BatteryTechnicalPropertiesEntity, on_delete=models.CASCADE)
     battery_condition = models.ForeignKey(BatteryConditionEntity, on_delete=models.CASCADE)
 

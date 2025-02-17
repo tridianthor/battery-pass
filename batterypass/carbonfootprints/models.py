@@ -21,7 +21,7 @@ class CarbonFootprintPerLifecycleStageEntity(models.Model):
 
 
 class CarbonFootprintForBatteries(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.BigAutoField(primary_key=True)
     battery_carbon_footprint = models.FloatField()
     carbon_footprint_per_lifecycle_stage = models.ManyToManyField(
         CarbonFootprintPerLifecycleStageEntity, related_name="batteries"

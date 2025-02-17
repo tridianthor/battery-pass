@@ -8,10 +8,36 @@
 
 {% include "nav/nav.html" %}
 
-<div class="d-flex flex-column justify-content-start">
-    <div class="ms-5 mt-5 align-items-center">
-      <h1>Due Diligence</h1>
-      <p>Due diligence list</p>
-      <a class="btn btn-primary" href="form/">Create New</a>
+<div class="d-flex justify-content-center mt-5">
+  <div class="card w-50">
+    <div class="card-body">
+      <div class="ms-5 align-items-center">
+        <h1>Due Diligence</h1>
+        <p>Due diligence list</p>
+        <a class="btn btn-primary" href="form/">Create New</a>
+        <div>
+          {% if data.has_previous %}
+            <a href="?page={{ data.previous_page_number }}">Previous</a>
+          {% endif %}
+          <span class="current">
+            Page {{ data.number }} of {{ data.num_pages }}.
+          </span>
+          {% if data.has_next %}
+              <a href="?page={{ data.next_page_number }}">Next</a>
+          {% endif %}
+        </div>
+        <ul class="mt-5 list-unstyled">
+          {% for item in data.object_list %}
+              <div class="d-flex justify-content-between mt-3">
+                <li>{{ item.supply_chain_due_diligence_report }}</li>  {# Or any other attributes of your object #}
+                <div>
+                  <span><a href="delete/{{item.id}}">Delete</a>
+                    <a href="form/{{item.id}}">Edit</a></span>
+                </div>
+              </div>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
+  </div>
 </div>

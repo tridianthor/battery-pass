@@ -29,8 +29,8 @@ class LabelingSubject(models.TextChoices):
     EXTINGUISHING_AGENT = "ExtinguishingAgent", "Extinguishing Agent"
     
 class LabelingEntity(models.Model):
-    labeling_symbol = models.URLField()
-    labeling_meaning = models.TextField()  # Converted from LangString (assumed to be a string field)
+    labeling_symbol = models.TextField() # File
+    labeling_meaning = models.JSONField()  # original : langString
     labeling_subject = models.CharField(
         max_length=50, choices=LabelingSubject.choices
     )
@@ -39,9 +39,9 @@ class LabelingEntity(models.Model):
         return f"{self.labeling_subject} - {self.labeling_symbol}"
 
 class Labeling(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    declaration_of_conformity = models.URLField()
-    result_of_test_report = models.URLField()
+    id = models.BigAutoField(primary_key=True)
+    declaration_of_conformity = models.TextField() # File
+    result_of_test_report = models.TextField() # File
     labels = models.ManyToManyField(LabelingEntity, related_name="labelings")
 
     def __str__(self):

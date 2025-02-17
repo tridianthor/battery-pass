@@ -72,7 +72,7 @@ class BatteryChemistryEntity(models.Model):
         return f"{self.clear_name} ({self.short_name})"
 
 class MaterialComposition(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.BigAutoField(primary_key=True)
     battery_chemistry = models.ForeignKey(BatteryChemistryEntity, on_delete=models.CASCADE)
     battery_materials = models.ManyToManyField(BatteryMaterialEntity, related_name="materials")
     hazardous_substances = models.ManyToManyField(HazardousSubstanceEntity, related_name="hazardous_substances")
