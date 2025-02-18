@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from utils.resp import Resp
 from utils.upload_util import Upload
+from utils.validators import validate_pdf_file
 
 from .forms import DueDiligenceForm
 from .models import SupplyChainDueDiligence
@@ -24,15 +25,15 @@ def duediligence(request):
         duediligence.supply_chain_due_diligence_report = os.path.basename(duediligence.supply_chain_due_diligence_report)
         duediligence.third_party_assurances = os.path.basename(duediligence.third_party_assurances)
     
-    per_page = 10
+    per_page = 3
     paginator = Paginator(duediligences, per_page)
     page_number = request.GET.get('page')
     try:
-        data = paginator.get_page(page_number)
+        data = paginator.page(page_number)
     except PageNotAnInteger:
         data = paginator.page(1)
     except EmptyPage:
-        data = paginator.page(paginator.num_pages)
+        data = paginator.page(1)
     except Exception as exception:
         tb = traceback.format_exc()
         print(f"errors : {exception}\ntrace : {tb}")
@@ -49,12 +50,24 @@ def duediligence_form(request, pk=None):
     #create
     if(request.method == 'POST'):
         form = DueDiligenceForm(request.POST or None, request.FILES or None)
-        if(form.is_valid):
+        valid = True
+        print(f'form is valid : {form.is_valid}')
+        if form.is_valid:
             try:
-                diligence_report = request.FILES['supply_chain_due_diligence_report']
+                diligence_report_file = request.FILES['supply_chain_due_diligence_report']
                 third_party_assurances_file = request.FILES['third_party_assurances']
+                
+                if not validate_pdf_file(diligence_report_file) :
+                    valid = False
                     
-                diligence_report_filename = Upload.handle_single_upload(diligence_report_path, diligence_report, f"diligence_report_{datetime.now().timestamp()}")
+                
+                if not validate_pdf_file(third_party_assurances_file):
+                    valid = False
+                    
+                if not valid:
+                    return render(request, 'duediligence_form.html', {'form': form, "message":"Upload failed"})
+                    
+                diligence_report_filename = Upload.handle_single_upload(diligence_report_path, diligence_report_file, f"diligence_report_{datetime.now().timestamp()}")
                 third_party_assurances_filename = Upload.handle_single_upload(third_party_assurances_path, third_party_assurances_file, f"third_party_{datetime.now().timestamp()}")
                 
                 if(pk):
@@ -73,12 +86,14 @@ def duediligence_form(request, pk=None):
                 supply_chain_due_diligence.save()
                 
                 form = DueDiligenceForm()
-                return render(request, 'duediligence_form.html', {'form': form, 'message':"Upload success"})
-            except Exception as e:
+                return redirect('/duediligence')
+            except Exception as exception:
                 tb = traceback.format_exc()
-                print(f"errors : {e}\ntrace : {tb}")
+                print(f"errors : {exception}\ntrace : {tb}")
                 form = DueDiligenceForm()
                 return render(request, 'duediligence_form.html', {'form': form, "message":"Upload failed"})
+        else:
+            return render(request, 'duediligence_form.html', {'form': form, "message":"Upload failed"})
     else:
         #edit
         if(pk is not None):
