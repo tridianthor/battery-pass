@@ -1,26 +1,6 @@
 from django.db import models
-from .types import LabelTypeField
-from django.contrib.postgres.fields import ArrayField
-
-import uuid
 
 # Create your models here.
-
-""" class Labeling(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    declaration_of_conformity = models.TextField()
-    result_of_test_report = models.TextField()
-    labels = ArrayField(LabelTypeField(), null=True, blank=True)
-    
-    def __str__(self):
-        return f"{self.id}, {self.declaration_of_conformity}, {self.result_of_test_report}, {self.labels}" """
-        
-""" class LabelingTypes(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    labeling_id = models.ForeignKey('labeling.Labeling', on_delete=models.CASCADE, related_name="labeling_types")
-    labeling_symbol = models.TextField()
-    labeling_meaning = models.TextField()
-    labeling_subject = models.TextField() """
 
 class LabelingSubject(models.TextChoices):
     SEPARATE_COLLECTION = "SeparateCollection", "Separate Collection"
@@ -36,7 +16,7 @@ class LabelingEntity(models.Model):
     )
 
     def __str__(self):
-        return f"{self.labeling_subject} - {self.labeling_symbol}"
+        return f"{self.labeling_subject}"
 
 class Labeling(models.Model):
     id = models.BigAutoField(primary_key=True)

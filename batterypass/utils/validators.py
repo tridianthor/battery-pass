@@ -1,3 +1,4 @@
+import json
 from django.forms import ValidationError
 
 
@@ -10,3 +11,11 @@ def validate_pdf_file(value):
         return False
     else:
         return True
+
+def validate_json(value):
+    print(value)
+    try:
+        json.loads(f'{value}')
+    except ValueError as e:
+        return False
+    return True

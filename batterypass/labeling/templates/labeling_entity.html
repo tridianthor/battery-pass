@@ -1,0 +1,46 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+
+{% include "nav/nav.html" %}
+
+<div class="d-flex justify-content-center mt-5">
+    <div class="card w-50">
+      <div class="card-body">
+        <div class="ms-5 align-items-center">
+          <h1>Labeling Entity</h1>
+          <p>Labeling entity list</p>
+          <a class="btn btn-primary" href="form/">Create New</a>
+          <div>
+            {% if data.has_previous %}
+              <a href="?page={{ data.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span class="current">
+              Page {{ data.number }} of {{ data.paginator.num_pages }}
+            </span>
+            {% if data.has_next %}
+                <a href="?page={{ data.next_page_number }}">Next</a>
+            {% endif %}
+          </div>
+          <ul class="mt-5 list-unstyled">
+            {% for item in data.object_list %}
+                <div class="d-flex justify-content-between mt-3">
+                    <div class="d-flex">
+                        <p class="me-2">{{ item.id }}.</p>
+                        <li>{{ item.labeling_subject }}</li>
+                    </div> 
+                    <div>
+                    <span><a href="delete/{{item.id}}">Delete</a>
+                        <a href="form/{{item.id}}">Edit</a></span>
+                    </div>
+                </div>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

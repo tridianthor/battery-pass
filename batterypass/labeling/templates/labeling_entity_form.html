@@ -1,0 +1,54 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load bootstrap_icons %}
+</head>
+
+{% include "nav/nav.html" %}
+
+<div class="d-flex align-items-center gap-2 ms-5 mt-5">
+    <span><a href="/labeling/entity" style="color: black;">{% bs_icon 'arrow-left' size='2.5em' %}</a></span>
+    <h1>Create new Labeling Entity</h1>
+</div>
+
+<div class="d-flex justify-content-center mt-5">  
+    <div class="card w-50">  
+        <div class="card-body">  
+            <form method='post' enctype="multipart/form-data">
+                {% csrf_token %}
+                {%if message is not None %}
+                    <h1>{{ message }}</h1>
+                {% endif %}
+                <div class="mb-3">  
+                    <label for="labeling_symbol" class="form-label">
+                        Labeling Symbol 
+                        {% if form_type == 'edit' %}
+                            <span><a href="{% url 'duediligence_pdf' folder=paths.diligence_report_path filename=form.supply_chain_due_diligence_report.value %}">View</a></span>
+                        {% endif %}
+                    </label>
+                    {{ form.labeling_symbol }}
+                    {{ form.labeling_symbol.errors }}
+                </div>
+                <div class="mb-3">
+                    <label for="labeling_meaning" class="form-label">
+                        Labeling Meaning
+                        {% if form_type == 'edit' %}
+                            <span><a href="{% url 'duediligence_pdf' folder=paths.third_party_assurances_path filename=form.third_party_assurances.value %}">View</a></span>
+                        {% endif %}
+                    </label>
+                    {{ form.labeling_meaning }}
+                    {{ form.labeling_meaning.errors }}
+                </div>
+                <div class="mb-3">
+                    <label for="labeling_subject" class="form-label">Labeling Subject</label>
+                    {{ form.labeling_subject }}
+                    {{ form.labeling_subject.errors }}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

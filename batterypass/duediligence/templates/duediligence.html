@@ -29,7 +29,10 @@
         <ul class="mt-5 list-unstyled">
           {% for item in data.object_list %}
               <div class="d-flex justify-content-between mt-3">
-                <li>{{ item.supply_chain_due_diligence_report }}</li>  {# Or any other attributes of your object #}
+                <div class="d-flex">
+                  <p class="me-2">{{ item.id }}.</p>
+                  <li>{{ item.supply_chain_due_diligence_report }}</li>
+                </div> 
                 <div>
                   <span><a href="delete/{{item.id}}">Delete</a>
                     <a href="form/{{item.id}}">Edit</a></span>
