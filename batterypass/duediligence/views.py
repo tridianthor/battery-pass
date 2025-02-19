@@ -21,11 +21,12 @@ import os
 def duediligence(request):
     duediligences = SupplyChainDueDiligence.objects.filter().order_by('-id')
     
-    """ for duediligence in duediligences:
-        duediligence.supply_chain_due_diligence_report = os.path.basename(duediligence.supply_chain_due_diligence_report)
-        duediligence.third_party_assurances = os.path.basename(duediligence.third_party_assurances) """
+    paths = {
+        "diligence_report_path": diligence_report_path,
+        "third_party_assurances_path": third_party_assurances_path
+    }
     
-    per_page = 10
+    per_page = 5
     paginator = Paginator(duediligences, per_page)
     page_number = request.GET.get('page')
     
@@ -39,7 +40,7 @@ def duediligence(request):
         tb = traceback.format_exc()
         print(f"errors : {exception}\ntrace : {tb}")
         return render(request, 'duediligence.html', {"exception" : exception})
-    return render(request, 'duediligence.html', {"data" : data, "paginator" : paginator})
+    return render(request, 'duediligence.html', {"data" : data, "paginator" : paginator, "paths" : paths})
 
 def delete(request, pk=None):
     if(pk):

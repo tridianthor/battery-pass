@@ -14,6 +14,8 @@ class LabelingEntity(models.Model):
     labeling_subject = models.CharField(
         max_length=50, choices=LabelingSubject.choices
     )
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"{self.labeling_subject}"
@@ -23,6 +25,8 @@ class Labeling(models.Model):
     declaration_of_conformity = models.TextField() # File
     result_of_test_report = models.TextField() # File
     labels = models.ManyToManyField(LabelingEntity, related_name="labelings")
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"Labeling - Conformity: {self.declaration_of_conformity}"
