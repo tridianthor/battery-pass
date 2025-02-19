@@ -52,9 +52,6 @@ def delete_labeling(request, pk):
     if(pk):
         labeling = get_object_or_404(Labeling, pk=pk)
         
-        for label in labeling.labels.all():
-            label.delete()
-        
         labeling.delete()
         return redirect('/labeling')
     
