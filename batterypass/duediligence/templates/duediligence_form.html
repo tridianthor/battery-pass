@@ -11,7 +11,11 @@
 
 <div class="d-flex align-items-center gap-2 ms-5 mt-5">
     <span><a href="/duediligence" style="color: black;">{% bs_icon 'arrow-left' size='2.5em' %}</a></span>
-    <h1>Create new Due Diligence</h1>
+    {% if form_type == 'update' %}
+        <h1>Update Due Diligence</h1>
+    {% else %}
+        <h1>Create Due Diligence</h1>
+    {% endif %}
 </div>
 
 <div class="d-flex justify-content-center mt-5">  
@@ -25,7 +29,7 @@
                 <div class="mb-3">  
                     <label for="supply_chain_due_diligence_report" class="form-label">
                         Due Diligence Report 
-                        {% if form_type == 'edit' %}
+                        {% if form_type == 'update' %}
                             <span><a href="{% url 'duediligence_pdf' folder=paths.diligence_report_path filename=form.supply_chain_due_diligence_report.value %}">View</a></span>
                         {% endif %}
                     </label>
@@ -35,7 +39,7 @@
                 <div class="mb-3">
                     <label for="third_party_assurances" class="form-label">
                         Third Party Assurances
-                        {% if form_type == 'edit' %}
+                        {% if form_type == 'update' %}
                             <span><a href="{% url 'duediligence_pdf' folder=paths.third_party_assurances_path filename=form.third_party_assurances.value %}">View</a></span>
                         {% endif %}
                     </label>
