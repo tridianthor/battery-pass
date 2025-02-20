@@ -29,7 +29,7 @@ class Upload:
         return fs.exists(filepath)
     
     @classmethod
-    def remove_to_replace(self, filepaths):
+    def remove_files(self, filepaths):
         try:
             for filepath in filepaths:
                 print(f'file to remove : {filepath}')

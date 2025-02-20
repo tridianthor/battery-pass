@@ -30,11 +30,11 @@
             </a>
             <a href="{% url 'duediligence_pdf' folder=paths.third_party_assurances_path filename=item.third_party_assurances %}" class="btn btn-info d-flex align-items-center">
               <i class="me-2">{% bs_icon 'file-earmark-text-fill' size='1em' %}</i>
-              Third Party Assurances
+              View Third Party Assurances
             </a>
             <a class="btn btn-warning d-flex align-items-center" href="form/{{item.id}}">
               <i class="me-2">{% bs_icon 'pencil-square' size='1em' %}</i>
-              Edit</a>
+              Update</a>
             <a class="btn btn-danger d-flex align-items-center" href="delete/{{item.id}}">
               <i class="me-2">{% bs_icon 'trash-fill' size='1em' %}</i>
               Delete</a>

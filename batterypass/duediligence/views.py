@@ -42,10 +42,10 @@ def duediligence(request):
         return render(request, 'duediligence.html', {"exception" : exception})
     return render(request, 'duediligence.html', {"data" : data, "paginator" : paginator, "paths" : paths})
 
-def delete(request, pk=None):
-    if(pk):
+def delete(request, pk):
+    if pk:
         supply_chain_due_diligence = get_object_or_404(SupplyChainDueDiligence, pk=pk)
-        Upload.remove_to_replace([f"{diligence_report_path}/{supply_chain_due_diligence.supply_chain_due_diligence_report}", f'{third_party_assurances_path}/{supply_chain_due_diligence.third_party_assurances}'])    
+        Upload.remove_files([f"{diligence_report_path}/{supply_chain_due_diligence.supply_chain_due_diligence_report}", f'{third_party_assurances_path}/{supply_chain_due_diligence.third_party_assurances}'])    
         supply_chain_due_diligence.delete()
         return redirect('/duediligence')
     
@@ -74,7 +74,7 @@ def insert_duediligence(request):
             return render(request, 'duediligence_form.html', {'form': form, "message":"Upload failed"})
     else:
         form = DueDiligenceInsertForm()
-        form_type = 'create'
+        form_type = 'insert'
         return render(request, 'duediligence_form.html', {'form': form, 'form_type': form_type})
 
 def update_duediligence(request, pk):
@@ -85,18 +85,20 @@ def update_duediligence(request, pk):
                 if request.FILES.keys() >= {"supply_chain_due_diligence_report"}:
                     diligence_report_file = request.FILES['supply_chain_due_diligence_report']
                     diligence_report_filename = Upload.handle_single_upload(diligence_report_path, diligence_report_file, f"diligence_report_{datetime.now().timestamp()}")
+                    Upload.remove_files([f"{diligence_report_path}/{supply_chain_due_diligence.supply_chain_due_diligence_report}"])    
                 else:
                     diligence_report_filename = None
                 
                 if request.FILES.keys() >= {"third_party_assurances"}:
                     third_party_assurances_file = request.FILES['third_party_assurances']
                     third_party_assurances_filename = Upload.handle_single_upload(third_party_assurances_path, third_party_assurances_file, f"third_party_{datetime.now().timestamp()}")
+                    Upload.remove_files([f"{third_party_assurances_path}/{supply_chain_due_diligence.third_party_assurances}"])    
                 else:
                     third_party_assurances_filename = None
                     
                 supply_chain_due_diligence = get_object_or_404(SupplyChainDueDiligence, pk=pk)
                 #delete previous files when upload new files
-                Upload.remove_to_replace([supply_chain_due_diligence.supply_chain_due_diligence_report, supply_chain_due_diligence.third_party_assurances])    
+                
                 
                 if diligence_report_filename is not None:
                     supply_chain_due_diligence.supply_chain_due_diligence_report=diligence_report_filename
@@ -121,10 +123,3 @@ def update_duediligence(request, pk):
         form = DueDiligenceUpdateForm(request.POST or None, request.FILES or None, instance=duediligence)
         form_type = 'update'
         return render(request, 'duediligence_form.html', {'form': form, 'form_type': form_type, 'paths': paths})
-
-def view_pdf(request, folder, filename):
-    with open(f'{folder}/{filename}', 'rb') as pdf:
-        response = HttpResponse(pdf.read(), content_type='application/pdf')
-        response['Content-Disposition'] = 'inline;filename=some_file.pdf'
-        return response
-    pdf.closed  
