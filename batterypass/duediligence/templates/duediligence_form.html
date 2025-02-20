@@ -1,65 +1,53 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    {% load bootstrap_icons %}
-</head>
+{% extends 'form_base.html' %}
 
-{% include "nav/nav.html" %}
+{% load bootstrap_icons %}
 
-<div class="container mt-5">
-    <div class="d-flex align-items-center gap-2 ms-2 my-2">
-        <span><a href="/duediligence" style="color: black;">{% bs_icon 'arrow-left' size='2.5em' %}</a></span>
-        {% if form_type == 'update' %}
-            <h1>Update Due Diligence</h1>
-        {% else %}
-            <h1>Create Due Diligence</h1>
-        {% endif %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{% block back_url %}{{'/duediligence'}}{% endblock %}
+
+{% block app_name %}
+{% include 'nav/form_app_name.html' with form_type=form_type app_name="Due Diligence"%}
+{% endblock app_name %}
+
+{% block form_content %}
+<form method='post' enctype="multipart/form-data">
+    {% csrf_token %}
+    {%if message is not None %}
+        <h1>{{ message }}</h1>
+    {% endif %}
+    <div class="mb-3">  
+        <label for="supply_chain_due_diligence_report" class="form-label d-flex gap-2">
+            Due Diligence Report 
+            {% if form_type == 'update' %}
+            <span><a href="{% url 'duediligence_pdf' folder=paths.diligence_report_path filename=form.supply_chain_due_diligence_report.value %}"
+                class="btn btn-info btn-sm d-flex align-items-center">
+                <i class="me-2">{% bs_icon 'file-earmark-text-fill' %}</i>View</a>
+           </span>
+            {% endif %}
+        </label>
+        {{ form.supply_chain_due_diligence_report }}
+        {{ form.supply_chain_due_diligence_report.errors }}
     </div>
-    <div class="d-flex justify-content-center mt-5">  
-        <div class="card w-50">  
-            <div class="card-body">  
-                <form method='post' enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {%if message is not None %}
-                        <h1>{{ message }}</h1>
-                    {% endif %}
-                    <div class="mb-3">  
-                        <label for="supply_chain_due_diligence_report" class="form-label d-flex gap-2">
-                            Due Diligence Report 
-                            {% if form_type == 'update' %}
-                            <span><a href="{% url 'duediligence_pdf' folder=paths.diligence_report_path filename=form.supply_chain_due_diligence_report.value %}"
-                                class="btn btn-info btn-sm d-flex align-items-center">
-                                <i class="me-2">{% bs_icon 'file-earmark-text-fill' %}</i>View</a>
-                           </span>
-                            {% endif %}
-                        </label>
-                        {{ form.supply_chain_due_diligence_report }}
-                        {{ form.supply_chain_due_diligence_report.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label for="third_party_assurances" class="form-label d-flex gap-2">
-                            Third Party Assurances
-                            {% if form_type == 'update' %}
-                                <span><a href="{% url 'duediligence_pdf' folder=paths.third_party_assurances_path filename=form.third_party_assurances.value %}"
-                                     class="btn btn-info btn-sm d-flex align-items-center">
-                                     <i class="me-2">{% bs_icon 'file-earmark-text-fill' %}</i>View</a>
-                                </span>
-                            {% endif %}
-                        </label>
-                        {{ form.third_party_assurances }}
-                        {{ form.third_party_assurances.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label for="supply_chain_indices" class="form-label">Supply Chain Indices</label>
-                        {{ form.supply_chain_indices }}
-                        {{ form.supply_chain_indices.errors }}
-                    </div>
-                    <button type="submit" class="btn btn-primary d-flex align-items-center"><i class="me-2">{% bs_icon 'floppy-fill' size='1em' %}</i>Submit</button>
-                </form>
-            </div>
-        </div>
+    <div class="mb-3">
+        <label for="third_party_assurances" class="form-label d-flex gap-2">
+            Third Party Assurances
+            {% if form_type == 'update' %}
+                <span><a href="{% url 'duediligence_pdf' folder=paths.third_party_assurances_path filename=form.third_party_assurances.value %}"
+                     class="btn btn-info btn-sm d-flex align-items-center">
+                     <i class="me-2">{% bs_icon 'file-earmark-text-fill' %}</i>View</a>
+                </span>
+            {% endif %}
+        </label>
+        {{ form.third_party_assurances }}
+        {{ form.third_party_assurances.errors }}
     </div>
-</div>
+    <div class="mb-3">
+        <label for="supply_chain_indices" class="form-label">Supply Chain Indices</label>
+        {{ form.supply_chain_indices }}
+        {{ form.supply_chain_indices.errors }}
+    </div>
+    <button type="submit" class="btn btn-primary d-flex align-items-center"><i class="me-2">{% bs_icon 'floppy-fill' size='1em' %}</i>Submit</button>
+</form>    
+{% endblock form_content %}
+    
