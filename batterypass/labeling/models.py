@@ -18,7 +18,7 @@ class LabelingEntity(models.Model):
     update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
-        return f"{self.labeling_subject} - {self.update_date.strftime("%d-%m-%Y %H:%M:%S")}"
+        return f"{self.labeling_subject} - {self.labeling_meaning} - {self.update_date.strftime("%d-%m-%Y %H:%M:%S")}"
 
 class Labeling(models.Model):
     id = models.BigAutoField(primary_key=True)

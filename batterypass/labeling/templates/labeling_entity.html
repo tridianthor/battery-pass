@@ -23,6 +23,7 @@
         {% for item in data.object_list %}
           <h5 class="card-title">Labeling Entity {{item.insert_date}}</h5>
           <p class="card-text">{{item.labeling_subject}}</p>
+          <p class="card-text">{{item.labeling_meaning|truncatechars:100}}</p>
           <small class="text-muted">Last updated {{item.update_date}}</small>
           <div class="d-flex justify-content-start mb-5 mt-3 gap-2">
             <a href="{% url 'duediligence_pdf' folder=paths.labeling_symbol_path filename=item.labeling_symbol %}" class="btn btn-info d-flex align-items-center">
