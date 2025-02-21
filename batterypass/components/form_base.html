@@ -3,14 +3,13 @@
 {% load bootstrap_icons %}
 
 {% block content %}
-    <div class="d-flex align-items-center gap-2 ms-2 my-2">
-        <span><a href="{% block back_url %}{% endblock %}" style="color: black;">{% bs_icon 'arrow-left' size='2.5em' %}</a></span>
-        {% block app_name %}{% endblock app_name %}
-    </div>
-
-    <div class="d-flex justify-content-center mt-5">  
-        <div class="card w-50">  
+    <div class="d-flex justify-content-center">  
+        <div class="card w-sm-100 w-75 my-3">  
             <div class="card-body">  
+                <div class="d-flex align-items-center gap-2 my-2">
+                    <span><a href="{% block back_url %}{% endblock %}" style="color: black;">{% bs_icon 'arrow-left' size='2.5em' %}</a></span>
+                    {% block app_name %}{% endblock app_name %}
+                </div>
                 {% block form_content%}
                 {% endblock %}
             </div>

@@ -90,6 +90,7 @@ def update_labeling(request, pk):
     labeling = get_object_or_404(Labeling, pk=pk)
     form = LabelingUpdateForm(request.POST or None, request.FILES or None, instance=labeling)
     form_type = 'update'
+    print(paths)
     if request.method == 'POST':
         if form.is_valid():
             try:

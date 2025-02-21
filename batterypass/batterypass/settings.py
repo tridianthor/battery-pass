@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'bootstrap5',
     'django_bootstrap_icons',
     'dal',
-    'dal_select2'
+    'dal_select2',
+    'bootstrap_datepicker_plus'
 ]
 
 MIDDLEWARE = [
@@ -86,7 +87,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'batterypass.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

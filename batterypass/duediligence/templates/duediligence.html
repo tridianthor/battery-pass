@@ -7,10 +7,13 @@
 {% block list_app_name %}{% include 'nav/list_app_name.html' with list_app_name='Due Diligence' %}{% endblock list_app_name %}
 
 {% block list_content %}
+
+  {% include 'nav/list_filter.html' with date_filter_form=date_filter_form %}
+
   {% for item in data.object_list %}
     <h5 class="card-title">Due Diligence {{item.insert_date}}</h5>
     <small class="text-muted">Last updated {{item.update_date}}</small>
-    <div class="d-flex justify-content-start mb-5 mt-3 gap-2">
+    <div class="d-flex flex-column flex-sm-row justify-content-start mb-5 mt-3 gap-2">
       <a href="{% url 'duediligence_pdf' folder=paths.diligence_report_path filename=item.supply_chain_due_diligence_report %}" class="btn btn-info d-flex align-items-center">
         <i class="me-2">{% bs_icon 'file-earmark-text-fill' size='1em' %}</i>
         View Report

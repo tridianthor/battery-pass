@@ -12,7 +12,7 @@
     <p class="card-text">{{label.labeling_meaning}}</p>
   {% endfor %}
   <small class="text-muted">Last updated {{item.update_date}}</small>
-  <div class="d-flex justify-content-start mb-5 mt-3 gap-2">
+  <div class="d-flex flex-column flex-sm-row justify-content-start mb-5 mt-3 gap-2">
     <a href="{% url 'duediligence_pdf' folder=paths.declaration_path filename=item.declaration_of_conformity %}" class="btn btn-info d-flex align-items-center">
       <i class="me-2">{% bs_icon 'file-earmark-text-fill' size='1em' %}</i>
       View Declaration Of Conformity

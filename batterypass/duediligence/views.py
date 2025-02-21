@@ -6,11 +6,12 @@ from utils.resp import Resp
 from utils.upload_util import Upload
 from utils.validators import validate_pdf_file
 
-from .forms import DueDiligenceInsertForm, DueDiligenceUpdateForm
+from .forms import DueDiligenceInsertForm, DueDiligenceUpdateForm, DateFilterForm
 from .models import SupplyChainDueDiligence
 from .const import diligence_report_path, third_party_assurances_path
 
 from datetime import datetime
+from django.utils import timezone
 
 import traceback
 import os
@@ -19,7 +20,14 @@ import os
 # Create your views here.
 
 def duediligence(request):
-    duediligences = SupplyChainDueDiligence.objects.filter().order_by('-id')
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+    
+    if start_date and end_date:
+        duediligences = SupplyChainDueDiligence.objects.filter(insert_date__range=[start_date, end_date]).order_by('-id')
+    else:
+        duediligences = SupplyChainDueDiligence.objects.filter().order_by('-id')
+    date_filter_form = DateFilterForm(request.GET or None)
     
     paths = {
         "diligence_report_path": diligence_report_path,
@@ -40,7 +48,10 @@ def duediligence(request):
         tb = traceback.format_exc()
         print(f"errors : {exception}\ntrace : {tb}")
         return render(request, 'duediligence.html', {"exception" : exception})
-    return render(request, 'duediligence.html', {"data" : data, "paginator" : paginator, "paths" : paths})
+    return render(request, 'duediligence.html', {"data" : data, 
+                                                 "paginator" : paginator, 
+                                                 "date_filter_form" : date_filter_form, 
+                                                 "paths" : paths})
 
 def delete(request, pk):
     if pk:

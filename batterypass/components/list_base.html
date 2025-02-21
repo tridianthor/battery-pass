@@ -3,14 +3,14 @@
 {% load bootstrap_icons %}
 
 {% block content %}
-{% block list_app_name %}{% endblock list_app_name %}
-    <div class="d-flex">
-        <a class="btn btn-primary d-flex align-items-center" href="{% block form_url %}{% endblock %}">
-            <i class="me-2">{% bs_icon 'plus-lg' size='1em' %}</i>
-            Create New</a>
-    </div>
     <div class="card my-3">
         <div class="card-body">
+            {% block list_app_name %}{% endblock list_app_name %}
+            <div class="d-flex">
+                <a class="btn btn-primary d-flex align-items-center" href="{% block form_url %}{% endblock %}">
+                    <i class="me-2">{% bs_icon 'plus-lg' size='1em' %}</i>
+                    Create New</a>
+            </div>
         <ul class="mt-5 list-unstyled">
             {% block list_content %}
             {% endblock %}
