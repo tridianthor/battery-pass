@@ -7,8 +7,8 @@
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
-    
     {% load static %}
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -16,6 +16,9 @@
     <div class="my-2 mx-2">
         {% block content %}{% endblock %}
     </div>
-
-    
 </body>
+   
+{% block page_scripts %}
+
+{% endblock page_scripts %}
+    

@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count
 
+from components.form.FilterForm import DateFilterForm
 from utils.resp import Resp
 from utils.upload_util import Upload
 from utils.validators import validate_json
@@ -12,7 +14,7 @@ from .const import declaration_path, result_of_test_path, labeling_symbol_path
 
 from dal import autocomplete
 
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
 import traceback
 import json
@@ -214,3 +216,27 @@ def update_labeling_entity(request, pk):
         else:
             return render(request, 'labeling_entity_form.html', {'form': form, "message":"Upload failed"})
     return render(request, 'labeling_entity_form.html', {'form': form, 'form_type': form_type, 'paths': paths})
+
+def report(request):
+    date_filter_form = DateFilterForm(request.GET or None)
+    
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+    
+    if start_date and end_date:
+        data = LabelingEntity.objects.filter(insert_date__range=[start_date, end_date]).values('labeling_subject').annotate(total=Count('labeling_subject'))
+    else:
+        data = LabelingEntity.objects.values('labeling_subject').annotate(total=Count('labeling_subject'))
+        
+    labeling_subjects = list(item['labeling_subject'] for item in data)
+    
+    totals = list(item['total'] for item in data)
+    
+    context = {
+        'labels':labeling_subjects,
+        'data':totals,
+        'date_filter_form':date_filter_form
+    }
+    
+    #return HttpResponse(context)
+    return render(request, 'labeling_entity_report.html', context)

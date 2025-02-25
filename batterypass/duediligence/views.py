@@ -6,7 +6,9 @@ from utils.resp import Resp
 from utils.upload_util import Upload
 from utils.validators import validate_pdf_file
 
-from .forms import DueDiligenceInsertForm, DueDiligenceUpdateForm, DateFilterForm
+from components.form.FilterForm import DateFilterForm
+
+from .forms import DueDiligenceInsertForm, DueDiligenceUpdateForm
 from .models import SupplyChainDueDiligence
 from .const import diligence_report_path, third_party_assurances_path
 

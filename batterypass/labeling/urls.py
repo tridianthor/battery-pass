@@ -16,4 +16,5 @@ urlpatterns = [
     path('labeling/entity/form/<int:pk>', views.update_labeling_entity, name='update_labeling_entity'),
     path('labels-autocomplete/', LabelingEntityAutoComplete.as_view(), name='labels-autocomplete'), 
     path('labeling/pdf/<path:folder>/<str:filename>', view_pdf, name='labeling_pdf'),
-]
+    path('labeling/entity/report/', views.report, name='labeling_entity_report'),
+]   
