@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 from components.form.FilterForm import DateFilterForm
 from utils.resp import Resp
@@ -12,10 +12,7 @@ from .models import Labeling, LabelingEntity
 from .forms import LabelingInsertForm, LabelingUpdateForm, LabelingEntityInsertForm, LabelingEntityUpdateForm
 from .const import declaration_path, result_of_test_path, labeling_symbol_path
 
-import pandas as pd
-import numpy as np
 import plotly.express as px
-import panel as pn
 
 from dal import autocomplete
 
@@ -41,6 +38,7 @@ class LabelingEntityAutoComplete(autocomplete.Select2QuerySetView):
         return qs
 
 @login_required(login_url="/accounts/login/")
+@permission_required('labeling.view_labeling')
 def labeling(request):
     labeling = Labeling.objects.filter().order_by('-id')
 
@@ -136,6 +134,7 @@ def update_labeling(request, pk):
     return render(request, 'labeling_form.html', {'form': form, 'form_type': form_type, "paths":paths})    
 
 @login_required(login_url="/accounts/login/")
+@permission_required('labeling_entity.view_labelingentity', raise_exception=True)
 def labeling_entity(request):
     labeling_entity = LabelingEntity.objects.filter().order_by('-id')
     

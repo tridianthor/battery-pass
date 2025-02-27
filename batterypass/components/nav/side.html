@@ -60,44 +60,60 @@
                     </ul>
                 </li>
             {% endif %}
+            
+            
+            {% if perms.duediligence.view_supplychainduediligence %}
+                <li class="nav-item">
+                    <a href="/duediligence" class="nav-link d-flex align-items-center">
+                        <div class="d-flex justify-content-center me-1"> 
+                            {% bs_icon 'folder-check' size='1.25em' %}
+                        </div>
+                        <p>Due Diligence</p>
+                    </a>
+                </li>
+            {% endif %}
+            
+            {% if perms.labeling.view_labeling or perms.labeling_entity.view_labelingentity %}
+                <li class="nav-item">
+                    <a href="#" class="nav-link d-flex align-items-center">
+                        <div class="d-flex justify-content-center me-1"> 
+                            {% bs_icon 'bookmark-check-fill' size='1.25em' %}
+                        </div>
+                        <p>
+                            Labeling
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        
+                        {% if perms.labeling.view_labeling %}
+                            <li class="nav-item">
+                                <a href="/labeling" class="nav-link d-flex align-items-center">
+                                    <div class="d-flex justify-content-center me-1">
+                                        {% bs_icon 'circle' size='1.25em' %}
+                                    </div>
+                                    <p>Labeling</p>
+                                </a>
+                            </li>
+                        {% endif %}
+                            
+                        
+                        {% if perms.labeling_entity.view_labelingentity %}
+                            <li class="nav-item">
+                                <a href="/labeling/entity" class="nav-link d-flex align-items-center">
+                                    <div class="d-flex justify-content-center me-1">
+                                        {% bs_icon 'circle' size='1.25em' %}
+                                    </div>
+                                    <p>Labeling Entity</p>
+                                </a>
+                            </li>
+                        {% endif %}
+                            
+                    </ul>
+                </li>
+            {% endif %}
                 
-            <li class="nav-item">
-                <a href="/duediligence" class="nav-link d-flex align-items-center">
-                    <div class="d-flex justify-content-center me-1"> 
-                        {% bs_icon 'folder-check' size='1.25em' %}
-                    </div>
-                    <p>Due Diligence</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link d-flex align-items-center">
-                    <div class="d-flex justify-content-center me-1"> 
-                        {% bs_icon 'bookmark-check-fill' size='1.25em' %}
-                    </div>
-                    <p>
-                        Labeling
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                    <a href="/labeling" class="nav-link d-flex align-items-center">
-                        <div class="d-flex justify-content-center me-1">
-                            {% bs_icon 'circle' size='1.25em' %}
-                        </div>
-                        <p>Labeling</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="/labeling/entity" class="nav-link d-flex align-items-center">
-                        <div class="d-flex justify-content-center me-1">
-                            {% bs_icon 'circle' size='1.25em' %}
-                        </div>
-                        <p>Labeling Entity</p>
-                    </a>
-                    </li>
-                </ul>
-            </li>
+            
         </ul>
         <!--end::Sidebar Menu-->
         </nav>

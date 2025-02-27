@@ -16,6 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import render
+
+def access_denied(request):
+    return render(request, 'access_denied.html')
+    
 
 urlpatterns = [
     path('', include('accounts.urls')),
