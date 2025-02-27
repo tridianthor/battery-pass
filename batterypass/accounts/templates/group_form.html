@@ -2,14 +2,14 @@
 
 {% load bootstrap_icons %}
 
-{% block back_url %}{{'/accounts'}}{% endblock %}
+{% block back_url %}{{'/accounts/groups'}}{% endblock %}
 
 {% block app_name %}
-{% include 'nav/form_app_name.html' with form_type=form_type app_name="Account"%}
+{% include 'nav/form_app_name.html' with form_type=form_type app_name="Groups"%}
 {% endblock app_name %}
 
 {% block form_content %}
-    <form method='POST'>
+    <form method='post'>
         {% csrf_token %}
         {%if message is not None %}
             <h1>{{ message }}</h1>
@@ -22,8 +22,7 @@
                 {{field.errors}}
             </div>
         {% endfor %}
-        {% comment %} {{form.as_p}} {% endcomment %}
         <button type="submit" class="btn btn-primary d-flex align-items-center"><i class="me-2">{% bs_icon 'floppy-fill' size='1em' %}</i>Submit</button>
     </form>
+    {{ form.media }}
 {% endblock form_content %}
-    

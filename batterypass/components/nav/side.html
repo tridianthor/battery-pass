@@ -28,14 +28,39 @@
                 </a>
             </li>
             <li class="nav-header">Data</li>
-            <li class="nav-item">
-                <a href="/accounts" class="nav-link d-flex align-items-center">
-                    <div class="d-flex justify-content-center me-1"> 
-                        {% bs_icon 'person-fill' size='1.25em' %}
-                    </div>
-                    <p>Accounts</p>
-                </a>
-            </li>
+            
+            {% if perms.accounts.view_account %}
+                <li class="nav-item">
+                    <a href="#" class="nav-link d-flex align-items-center">
+                        <div class="d-flex justify-content-center me-1"> 
+                            {% bs_icon 'person-fill' size='1.25em' %}
+                        </div>
+                        <p>
+                            Accounts
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                        <a href="/accounts" class="nav-link d-flex align-items-center">
+                            <div class="d-flex justify-content-center me-1">
+                                {% bs_icon 'circle' size='1.25em' %}
+                            </div>
+                            <p>Accounts</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="/accounts/groups" class="nav-link d-flex align-items-center">
+                            <div class="d-flex justify-content-center me-1">
+                                {% bs_icon 'circle' size='1.25em' %}
+                            </div>
+                            <p>Groups</p>
+                        </a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+                
             <li class="nav-item">
                 <a href="/duediligence" class="nav-link d-flex align-items-center">
                     <div class="d-flex justify-content-center me-1"> 
