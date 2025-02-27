@@ -73,7 +73,7 @@
                 </li>
             {% endif %}
             
-            {% if perms.labeling.view_labeling or perms.labeling_entity.view_labelingentity %}
+            {% if perms.labeling.view_labeling or perms.labeling.view_labelingentity %}
                 <li class="nav-item">
                     <a href="#" class="nav-link d-flex align-items-center">
                         <div class="d-flex justify-content-center me-1"> 
@@ -98,7 +98,7 @@
                         {% endif %}
                             
                         
-                        {% if perms.labeling_entity.view_labelingentity %}
+                        {% if perms.labeling.view_labelingentity %}
                             <li class="nav-item">
                                 <a href="/labeling/entity" class="nav-link d-flex align-items-center">
                                     <div class="d-flex justify-content-center me-1">

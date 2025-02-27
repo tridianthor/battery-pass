@@ -134,7 +134,7 @@ def update_labeling(request, pk):
     return render(request, 'labeling_form.html', {'form': form, 'form_type': form_type, "paths":paths})    
 
 @login_required(login_url="/accounts/login/")
-@permission_required('labeling_entity.view_labelingentity', raise_exception=True)
+@permission_required('labeling.view_labelingentity', raise_exception=True)
 def labeling_entity(request):
     labeling_entity = LabelingEntity.objects.filter().order_by('-id')
     
