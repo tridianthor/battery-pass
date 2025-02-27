@@ -92,6 +92,9 @@ def deauth(request):
 
 def auth(request):
     form = LoginForm(request, data=request.POST or None)
+    context = {
+        'form':form
+    }
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('username')
@@ -100,13 +103,11 @@ def auth(request):
             if user:
                 login(request, user)
                 # check role and redirect here
-                return HttpResponse(json.dumps({'success':True}), content_type='application/json')
+                return redirect('/dashboard')
             else:
-                return HttpResponse(json.dumps({'success':False, 'message':'Invalid credentials'}), content_type='application/json')
+                context.update({'message':'Invalid username or password'})
+                return render(request, 'login.html',context)
         else:
-            return HttpResponse(json.dumps({'success':False, 'message':'Form not valid'}), content_type='application/json')
-    
-    context = {
-        'form':form
-    }
+            context.update({'message':'Invalid username or password'})
+            return render(request, 'login.html',context)
     return render(request, 'login.html',context)
