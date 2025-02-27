@@ -6,18 +6,42 @@
 
 {% block content %}
     <div class='container'>
+        <div class='mt-5 mb-2'>
+            <h1>Labeling Entity Report</h1>
+        </div>
+        
+        <form method='get'>
+            <div class='d-flex flex-column flex-sm-row justify-content-start gap-2 mb-3 align-items-end'>
+                <div style='width:19%;'>
+                    <label for='chart_type'>Chart Type</label>
+                    <select class='form-control' name='chart_type' id='chart_type'>
+                        <option value='' selected>Select chart type</option>
+                        <option value="bar">Bar</option>
+                        <option value="line">Line</option>
+                        <option value="pie">Pie</option>
+                        <option value="doughnut">Doughnut</option>
+                    </select>
+                </div>
+                <div>
+                    <button type='submit' class='btn btn-primary align-self-end d-sm-grid w-sm-100'>Change Chart</button>
+                </div>
+            </div>
+        </form>
+
         {% include 'nav/list_filter.html' with date_filter_form=date_filter_form %}
-        <div class='d-flex justify-content-center align-items-center'>
-            <canvas class='w-sm-50' id="labeling_entity_chart"></canvas>
+
+        <div class="d-flex justify-content-center">
+            <canvas class="w-50 h-50" id="labeling_entity_chart"></canvas>
         </div>
     </div>
 {% endblock content %}
 
 {% block page_scripts %}
+
     <script>
         const ctx = document.getElementById('labeling_entity_chart').getContext('2d');
         const labeling_entity_chart = new Chart(ctx,{
-            type: 'bar',
+            type: '{{chart_type}}',
             data: {
                 labels: {{labels|safe}},
                 datasets: [{

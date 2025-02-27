@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 import uuid
@@ -22,6 +23,8 @@ class PostalAddressEntity(models.Model):
     address_country = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=20)
     street_address = models.CharField(max_length=255)
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"{self.street_address}, {self.postal_code}, {self.address_country}"
@@ -31,6 +34,8 @@ class ContactInformationEntity(models.Model):
     contact_name = models.CharField(max_length=255)
     postal_address = models.ForeignKey(PostalAddressEntity, on_delete=models.CASCADE)
     identifier = models.CharField(max_length=255, unique=True)
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return self.contact_name
@@ -58,6 +63,8 @@ class GeneralProductInformation(models.Model):
     )
     putting_into_service = models.DateField()
     warranty_period = models.DateField()
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return self.product_identifier

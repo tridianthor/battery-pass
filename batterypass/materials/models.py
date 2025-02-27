@@ -37,6 +37,8 @@ class HazardousSubstanceClassCharacteristic(models.TextChoices):
 class BatteryLocationEntity(models.Model):
     component_name = models.CharField(max_length=255)
     component_id = models.CharField(max_length=255, null=True, blank=True)
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"{self.component_name} ({self.component_id})" if self.component_id else self.component_name
@@ -47,6 +49,8 @@ class BatteryMaterialEntity(models.Model):
     battery_material_name = models.CharField(max_length=255)
     battery_material_mass = models.FloatField()
     is_critical_raw_material = models.BooleanField()
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"{self.battery_material_name} ({self.battery_material_identifier})"
@@ -60,6 +64,8 @@ class HazardousSubstanceEntity(models.Model):
     hazardous_substance_impact = models.JSONField()  # List of impacts stored as JSON
     hazardous_substance_location = models.ForeignKey(BatteryLocationEntity, on_delete=models.CASCADE)
     hazardous_substance_identifier = models.CharField(max_length=20, unique=True)
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"{self.hazardous_substance_name} ({self.hazardous_substance_identifier})"
@@ -67,6 +73,8 @@ class HazardousSubstanceEntity(models.Model):
 class BatteryChemistryEntity(models.Model):
     short_name = models.CharField(max_length=100, unique=True)
     clear_name = models.CharField(max_length=255)
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"{self.clear_name} ({self.short_name})"
@@ -76,6 +84,8 @@ class MaterialComposition(models.Model):
     battery_chemistry = models.ForeignKey(BatteryChemistryEntity, on_delete=models.CASCADE)
     battery_materials = models.ManyToManyField(BatteryMaterialEntity, related_name="materials")
     hazardous_substances = models.ManyToManyField(HazardousSubstanceEntity, related_name="hazardous_substances")
+    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
+    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"Material Composition for {self.battery_chemistry}"

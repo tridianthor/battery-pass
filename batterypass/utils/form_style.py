@@ -1,7 +1,7 @@
 from django import forms
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 
-input_style = {"class": "form-control mt-2"}
+input_style = {"class": "form-control"}
 date_input_style = {"class": "form-control"}
 
 file_input = forms.FileInput(attrs=input_style) 

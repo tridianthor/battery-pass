@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Labeling Test Report{% endblock title %}
+
+
+{% block content %}
+    <div class='container'>
+        <div class='mt-5 mb-2'>
+            <h1>Labeling Entity Report</h1>
+        </div>
+        
+        {% include 'nav/list_filter.html' with date_filter_form=date_filter_form %}
+
+        {% if message %}
+            <h3>{{message}}</h3>
+        {% endif %}            
+        
+        {% if plot_html is not None %}
+            {{ plot_html|safe }}
+        {% endif %}
+            
+    </div>
+{% endblock content %}
+    

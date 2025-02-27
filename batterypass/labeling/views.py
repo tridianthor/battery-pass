@@ -2,31 +2,37 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 
 from components.form.FilterForm import DateFilterForm
 from utils.resp import Resp
 from utils.upload_util import Upload
-from utils.validators import validate_json
 
-from .models import Labeling, LabelingEntity, LabelingSubject
+from .models import Labeling, LabelingEntity
 from .forms import LabelingInsertForm, LabelingUpdateForm, LabelingEntityInsertForm, LabelingEntityUpdateForm
 from .const import declaration_path, result_of_test_path, labeling_symbol_path
 
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import panel as pn
+
 from dal import autocomplete
 
-from datetime import date, datetime, timedelta
+from datetime import datetime
 
 import traceback
 import json
-import traceback
 
 paths = {
     "declaration_path": declaration_path,
     "result_of_test_path": result_of_test_path
 }
-
 class LabelingEntityAutoComplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return LabelingEntity.objects.none()
+        
         qs = LabelingEntity.objects.all()
         
         if self.q:
@@ -34,7 +40,7 @@ class LabelingEntityAutoComplete(autocomplete.Select2QuerySetView):
             print(qs)
         return qs
 
-# Create your views here.
+@login_required(login_url="/accounts/login/")
 def labeling(request):
     labeling = Labeling.objects.filter().order_by('-id')
 
@@ -54,13 +60,15 @@ def labeling(request):
         return render(request, 'labeling.html', {'exception': exception})
     return render(request, 'labeling.html', {'data': data, 'paginator': paginator, 'paths' : paths})
 
+@login_required(login_url="/accounts/login/")
 def delete_labeling(request, pk):
     if(pk):
         labeling = get_object_or_404(Labeling, pk=pk)
         Upload.remove_files([f'{declaration_path}/{labeling.declaration_of_conformity}',f'{result_of_test_path}/{labeling.result_of_test_report}'])
         labeling.delete()
         return redirect('/labeling')
-    
+
+@login_required(login_url="/accounts/login/")
 def insert_labeling(request):
     form = LabelingInsertForm(request.POST or None, request.FILES or None)
     form_type = 'insert'
@@ -88,6 +96,7 @@ def insert_labeling(request):
                 return render(request, 'labeling_form.html', {'form': form, 'form_type':form_type, "message":"Upload failed"})
     return render(request, 'labeling_form.html', {'form': form, 'form_type':form_type})    
 
+@login_required(login_url="/accounts/login/")
 def update_labeling(request, pk):
     labeling = get_object_or_404(Labeling, pk=pk)
     form = LabelingUpdateForm(request.POST or None, request.FILES or None, instance=labeling)
@@ -126,6 +135,7 @@ def update_labeling(request, pk):
                 return render(request, 'labeling_form.html', {'form': form, 'form_type': form_type, "paths":paths, "message":"Upload failed"})
     return render(request, 'labeling_form.html', {'form': form, 'form_type': form_type, "paths":paths})    
 
+@login_required(login_url="/accounts/login/")
 def labeling_entity(request):
     labeling_entity = LabelingEntity.objects.filter().order_by('-id')
     
@@ -149,6 +159,7 @@ def labeling_entity(request):
         return render(request, 'labeling_entity.html', {'exception': exception})
     return render(request, 'labeling_entity.html', {'data': data, 'paginator': paginator, 'paths': paths})
 
+@login_required(login_url="/accounts/login/")
 def delete_labeling_entity(request, pk):
     if(pk):
         labeling_entity = get_object_or_404(LabelingEntity, pk=pk)
@@ -157,6 +168,7 @@ def delete_labeling_entity(request, pk):
         labeling_entity.delete()
         return redirect('/labeling/entity')
 
+@login_required(login_url="/accounts/login/")
 def insert_labeling_entity(request):
     form = LabelingEntityInsertForm(request.POST or None, request.FILES or None)
     form_type = 'insert'
@@ -182,6 +194,7 @@ def insert_labeling_entity(request):
             return render(request, 'labeling_entity_form.html', {'form': form, "message":"Upload failed"})
     return render(request, 'labeling_entity_form.html', {'form': form, 'form_type': form_type})
 
+@login_required(login_url="/accounts/login/")
 def update_labeling_entity(request, pk):
     labeling_entity = get_object_or_404(LabelingEntity, pk=pk)
     form = LabelingEntityUpdateForm(request.POST or None, request.FILES or None, instance = labeling_entity)
@@ -217,7 +230,14 @@ def update_labeling_entity(request, pk):
             return render(request, 'labeling_entity_form.html', {'form': form, "message":"Upload failed"})
     return render(request, 'labeling_entity_form.html', {'form': form, 'form_type': form_type, 'paths': paths})
 
+@login_required(login_url="/accounts/login/")
 def report(request):
+    chart_types = ['bar', 'line', 'pie', 'doughnut', 'radar', 'polarArea', 'scatter', 'bubble']
+    chart_type = request.GET.get("chart_type", chart_types[0])
+    
+    if chart_type not in chart_types:
+        chart_type = chart_types[0]
+    
     date_filter_form = DateFilterForm(request.GET or None)
     
     start_date = request.GET.get("start_date")
@@ -235,8 +255,44 @@ def report(request):
     context = {
         'labels':labeling_subjects,
         'data':totals,
-        'date_filter_form':date_filter_form
+        'date_filter_form':date_filter_form,
+        'chart_type':chart_type
     }
     
-    #return HttpResponse(context)
     return render(request, 'labeling_entity_report.html', context)
+
+@login_required(login_url="/accounts/login/")
+def report_panel(request):
+    date_filter_form = DateFilterForm(request.GET or None)
+    
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+    
+    if start_date and end_date:
+        data = LabelingEntity.objects.filter(insert_date__range=[start_date, end_date]).values('labeling_subject').annotate(total=Count('labeling_subject'))
+    else:
+        data = LabelingEntity.objects.values('labeling_subject').annotate(total=Count('labeling_subject'))
+    
+    labeling_subjects = list(item['labeling_subject'] for item in data)
+    
+    totals = list(item['total'] for item in data)
+    
+    try:
+        fig = px.bar(x=labeling_subjects, y=totals, title="Labeling Entities")
+        context = {
+            'plot_html':fig.to_html(),
+            'date_filter_form':date_filter_form,
+        }
+        return render(request, 'labeling_test.html', context)
+    except ValueError as value_error:
+        context = {
+            'message':"No data",
+            'date_filter_form':date_filter_form,
+        }
+        return render(request, 'labeling_test.html', context)
+    except Exception as exception:
+        context = {
+            'message':"Unable to show data",
+            'date_filter_form':date_filter_form,
+        }
+        return render(request, 'labeling_test.html', context)

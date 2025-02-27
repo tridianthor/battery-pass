@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 
 from utils.resp import Resp
 from utils.upload_util import Upload
@@ -20,7 +21,7 @@ import os
 
 
 # Create your views here.
-
+@login_required(login_url="/accounts/login/")
 def duediligence(request):
     start_date = request.GET.get("start_date")
     end_date = request.GET.get("end_date")
@@ -54,14 +55,16 @@ def duediligence(request):
                                                  "paginator" : paginator, 
                                                  "date_filter_form" : date_filter_form, 
                                                  "paths" : paths})
-
+    
+@login_required(login_url="/accounts/login/")
 def delete(request, pk):
     if pk:
         supply_chain_due_diligence = get_object_or_404(SupplyChainDueDiligence, pk=pk)
         Upload.remove_files([f"{diligence_report_path}/{supply_chain_due_diligence.supply_chain_due_diligence_report}", f'{third_party_assurances_path}/{supply_chain_due_diligence.third_party_assurances}'])    
         supply_chain_due_diligence.delete()
         return redirect('/duediligence')
-    
+
+@login_required(login_url="/accounts/login/")
 def insert_duediligence(request):
     #create
     if(request.method == 'POST'):
@@ -90,6 +93,7 @@ def insert_duediligence(request):
         form_type = 'insert'
         return render(request, 'duediligence_form.html', {'form': form, 'form_type': form_type})
 
+@login_required(login_url="/accounts/login/")
 def update_duediligence(request, pk):
     if(request.method == 'POST'):
         form = DueDiligenceUpdateForm(request.POST or None, request.FILES or None)

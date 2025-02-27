@@ -1,0 +1,38 @@
+{% extends "base_navless.html" %}
+
+{% load bootstrap_icons %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+    <div class="login-page bg-body-secondary">
+        <div class="login-box">
+            <div class="card-body login-card-body rounded-3">
+                <p class="login-box-msg">Sign in to start your session</p>
+                <form method="post">
+                    {% csrf_token %}
+                    {{form.username.label}}
+                    <div class="input-group mb-3">
+                        {{form.username}}
+                        <div class="input-group-text">{% bs_icon 'envelope' size='1em' %}</span></div>
+                        {{form.username.errors}}
+                    </div>
+                    {{form.password.label}}
+                    <div class="input-group mb-3">
+                        {{form.password}}
+                        <div class="input-group-text">{% bs_icon 'lock-fill' size='1em' %}</div>
+                        {{form.password.errors}}
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary mb-1">Sign In</button>
+                    </div>
+                </form>
+                <p class="mb-1"><a href="forgot-password.html">I forgot my password</a></p>
+                <p class="mb-0">
+                    <a href="register.html" class="text-center"> Register a new membership </a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    
