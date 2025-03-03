@@ -52,6 +52,11 @@ class AccountInsertForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs.update(form_style.input_style)
         
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        validators.validate_password_complexity(password)
+        return password
+        
     def save(self, commit=True):
         user = super().save(commit=False)
         user.password = make_password(self.cleaned_data['password'])

@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 
 from utils.resp import Resp
 from utils.upload_util import Upload
-from utils.validators import validate_pdf_file
 
 from components.form.FilterForm import DateFilterForm
 
