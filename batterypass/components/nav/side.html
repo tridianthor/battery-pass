@@ -72,6 +72,46 @@
                     </a>
                 </li>
             {% endif %}
+
+            {% if perms.carbonfootprints.view_carbonfootprintforbatteries or perms.carbonfootprints.view_carbonfootprintperlifecyclestageentity %}
+                <li class="nav-item">
+                    <a href="#" class="nav-link d-flex align-items-center">
+                        <div class="d-flex justify-content-center me-1"> 
+                            {% bs_icon 'fire' size='1.25em' %}
+                        </div>
+                        <p>
+                            Carbon Footprint
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        
+                        {% if perms.carbonfootprints.view_carbonfootprintforbatteries %}
+                            <li class="nav-item">
+                                <a href="/carbonfootprints" class="nav-link d-flex align-items-center">
+                                    <div class="d-flex justify-content-center me-1">
+                                        {% bs_icon 'circle' size='1.25em' %}
+                                    </div>
+                                    <p>Carbon Footprint</p>
+                                </a>
+                            </li>
+                        {% endif %}
+                            
+                        
+                        {% if perms.carbonfootprints.view_carbonfootprintperlifecyclestageentity %}
+                            <li class="nav-item">
+                                <a href="/carbonfootprints/lifecycles" class="nav-link d-flex align-items-center">
+                                    <div class="d-flex justify-content-center me-1">
+                                        {% bs_icon 'circle' size='1.25em' %}
+                                    </div>
+                                    <p>Carbon Footprint Lifecycles</p>
+                                </a>
+                            </li>
+                        {% endif %}
+                            
+                    </ul>
+                </li>
+            {% endif %}
             
             {% if perms.labeling.view_labeling or perms.labeling.view_labelingentity %}
                 <li class="nav-item">

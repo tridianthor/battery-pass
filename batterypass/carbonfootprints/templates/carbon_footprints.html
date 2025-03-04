@@ -1,0 +1,34 @@
+{% extends "list_base.html" %}
+{% load bootstrap_icons %}
+
+{% block form_url %}{{'form/'}}{% endblock %}
+
+{% block list_app_name %}{% include 'nav/list_app_name.html' with list_app_name='Carbon Footprint' %}{% endblock list_app_name %}
+
+{% block list_content %}
+  {% for item in data.object_list %}
+    <div class="row">
+      <h5 class="card-title">Carbon Footprint {{item.id}}</h5>
+    </div>
+    <div class="row">
+      <p class="card-text">{{item.carbon_footprint_performance_class}}</p>
+    </div>
+    {% comment %} <p class="card-text">Carbon footprint : {{item.carbon_footprint}}</p> {% endcomment %}
+    <small class="text-muted">Last updated {{item.update_date}}</small>
+    <div class="d-flex flex-column flex-sm-row justify-content-start mb-5 mt-3 gap-2">
+      <a class="btn btn-warning d-flex align-items-center" href="form/{{item.id}}">
+        <i class="me-2">{% bs_icon 'pencil-square' size='1em' %}</i>
+        Update</a>
+      <a class="btn btn-danger d-flex align-items-center" href="delete/{{item.id}}">
+        <i class="me-2">{% bs_icon 'trash-fill' size='1em' %}</i>
+        Delete</a>
+    </div>
+  {% endfor %}
+{% endblock list_content %}
+
+
+{% block list_footer %}
+{% include 'nav/list_footer.html' with data=data %}
+{% endblock list_footer %}
+  
+  

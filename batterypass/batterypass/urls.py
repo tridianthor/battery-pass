@@ -25,7 +25,7 @@ def access_denied(request):
 urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('dashboard.urls')),
-    #path('', include('carbonfootprints.urls')),
+    path('', include('carbonfootprints.urls')),
     #path('', include('circularity.urls')),
     path('', include('duediligence.urls')),
     #path('', include('generalproductinfo.urls')),
