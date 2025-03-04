@@ -34,7 +34,6 @@ class LabelingEntityAutoComplete(autocomplete.Select2QuerySetView):
         
         if self.q:
             qs = qs.filter(labeling_subject__istartswith=self.q)
-            print(qs)
         return qs
 
 @login_required(login_url="/accounts/login/")
