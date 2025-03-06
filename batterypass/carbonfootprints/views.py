@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required, permission_required
 
+from utils.form_style import split_form
 from utils.upload_util import Upload
 from utils.resp import Resp
 
@@ -58,6 +59,7 @@ def delete_carbon_footprints(request, pk):
 @login_required(login_url="/accounts/login/")
 def insert_carbon_footprints(request):
     form_type = 'insert'
+    form = CFForBatteriesInsertForm()
     if request.method == 'POST':
         form = CFForBatteriesInsertForm(request.POST, request.FILES)
         if form.is_valid():
@@ -65,11 +67,13 @@ def insert_carbon_footprints(request):
             return redirect('/carbonfootprints')
         else:
             print(form.errors)
-    return render(request, 'carbon_footprints_form.html', {'form': CFForBatteriesInsertForm, 'form_type': form_type})
+    field_rows = split_form(form)
+    return render(request, 'carbon_footprints_form.html', {'form': form, 'form_type': form_type, 'field_rows': field_rows})
 
 @login_required(login_url="/accounts/login/")
 def update_carbon_footprints(request, pk):
     carbon_footprints = get_object_or_404(CarbonFootprintForBatteries, pk=pk)
+    form = CFForBatteriesInsertForm(instance=carbon_footprints)
     form_type = 'update'
     if request.method == 'POST':
         form = CFForBatteriesUpdateForm(request.POST, instance=carbon_footprints)
@@ -78,7 +82,8 @@ def update_carbon_footprints(request, pk):
             return redirect('/carbonfootprints')
         else:
             print(form.errors)
-    return render(request, 'carbon_footprints_form.html', {'form': CFForBatteriesUpdateForm(instance=carbon_footprints), 'form_type': form_type})
+    field_rows = split_form(form)
+    return render(request, 'carbon_footprints_form.html', {'form': form, 'form_type': form_type, 'field_rows': field_rows})
 
 @login_required(login_url="/accounts/login/")
 @permission_required('carbonfootprints.view_carbonfootprintperlifecyclestageentity')
@@ -111,6 +116,7 @@ def delete_carbon_footprints_lifecycle(request, pk):
 @login_required(login_url="/accounts/login/")
 def insert_carbon_footprints_lifecycle(request):
     form_type = 'insert'
+    form = CarbonFootprintsLifecycleForm()
     if request.method == 'POST':
         form = CarbonFootprintsLifecycleForm(request.POST)
         if form.is_valid():
@@ -120,12 +126,13 @@ def insert_carbon_footprints_lifecycle(request):
             except Exception as exception:
                 tb = traceback.format_exc()
                 print(f"errors : {exception}\ntrace : {tb}")
-                return render(request, 'carbon_footprints_lifecycles_form.html', {'form': form, "message":"Upload failed"})
-    return render(request, 'carbon_footprints_lifecycles_form.html', {'form': CarbonFootprintsLifecycleForm, 'form_type': form_type})
+    field_rows = split_form(form)
+    return render(request, 'carbon_footprints_lifecycles_form.html', {'form': form, 'form_type': form_type, 'field_rows': field_rows})
 
 @login_required(login_url="/accounts/login/")
 def update_carbon_footprints_lifecycle(request, pk):
     carbon_footprints_lifecycles = get_object_or_404(CarbonFootprintPerLifecycleStageEntity, pk=pk)
+    form = CarbonFootprintsLifecycleForm(instance=carbon_footprints_lifecycles)
     form_type = 'update'
     if request.method == 'POST':
         form = CarbonFootprintsLifecycleForm(request.POST, instance=carbon_footprints_lifecycles)
@@ -137,5 +144,6 @@ def update_carbon_footprints_lifecycle(request, pk):
                 tb = traceback.format_exc()
                 print(f"errors : {exception}\ntrace : {tb}")
                 return render(request, 'carbon_footprints_lifecycles_form.html', {'form': form, "message":"Upload failed"})
-    return render(request, 'carbon_footprints_lifecycles_form.html', {'form': CarbonFootprintsLifecycleForm(instance=carbon_footprints_lifecycles), 'form_type': form_type})
+    field_rows = split_form(form)
+    return render(request, 'carbon_footprints_lifecycles_form.html', {'form': form, 'form_type': form_type, 'field_rows': field_rows})
 

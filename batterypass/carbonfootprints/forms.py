@@ -76,6 +76,9 @@ class CFForBatteriesUpdateForm(forms.ModelForm):
         try:
             print(self.cleaned_data['carbon_footprint_study'])
             if self.files.keys() >= {'carbon_footprint_study'}:
+                #remove old file
+                Upload.remove_files([f'{carbon_footprint_study_path}/{instance.carbon_footprint_study}'])
+                #upload new file
                 instance.carbon_footprint_study = Upload.handle_single_upload(
                     carbon_footprint_study_path, 
                     self.cleaned_data['carbon_footprint_study'], 
