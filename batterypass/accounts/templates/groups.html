@@ -9,7 +9,7 @@
 {% block list_app_name %}{% include 'nav/list_app_name.html' with list_app_name='Groups' %}{% endblock list_app_name %}
 
 {% block list_content %}
-    {% for item in data.object_list %}
+    {% comment %} {% for item in data.object_list %}
         <div class='row'>
             <h3 class="card-title">{{item.name}}</h3>
         </div>
@@ -22,7 +22,38 @@
                 <i class="me-2">{% bs_icon 'trash-fill' size='1em' %}</i>
                 Delete</a>
         </div>
-    {% endfor %}
+    {% endfor %} {% endcomment %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Account Group</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data.object_list %}
+            <tr>
+              <th scope="row">{{ item.name }}</th>
+              <td>Account group</td>
+              <td>
+                <div class="d-flex flex-wrap gap-2">
+                  <a class="btn btn-warning btn-sm d-flex align-items-center" href="form/{{ item.id }}">
+                    <i class="me-1">{% bs_icon 'pencil-square' size='1em' %}</i>
+                    Update
+                  </a>
+                  <a class="btn btn-danger btn-sm d-flex align-items-center" href="delete/{{ item.id }}">
+                    <i class="me-1">{% bs_icon 'trash-fill' size='1em' %}</i>
+                    Delete
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 {% endblock list_content %}
     
 {% block list_footer %}

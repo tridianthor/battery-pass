@@ -6,14 +6,14 @@
 {% block list_app_name %}{% include 'nav/list_app_name.html' with list_app_name='Carbon Footprint' %}{% endblock list_app_name %}
 
 {% block list_content %}
-  {% for item in data.object_list %}
+  {% comment %} mobile view {% endcomment %}
+  {% comment %} {% for item in data.object_list %}
     <div class="row">
       <h5 class="card-title">Carbon Footprint {{item.id}}</h5>
     </div>
     <div class="row">
       <p class="card-text">{{item.carbon_footprint_performance_class}}</p>
     </div>
-    {% comment %} <p class="card-text">Carbon footprint : {{item.carbon_footprint}}</p> {% endcomment %}
     <small class="text-muted">Last updated {{item.update_date}}</small>
     <div class="d-flex flex-column flex-sm-row justify-content-start mb-5 mt-3 gap-2">
       <a class="btn btn-warning d-flex align-items-center" href="form/{{item.id}}">
@@ -23,7 +23,40 @@
         <i class="me-2">{% bs_icon 'trash-fill' size='1em' %}</i>
         Delete</a>
     </div>
-  {% endfor %}
+  {% endfor %} {% endcomment %}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Performance Class</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data.object_list %}
+        <tr>
+          <th scope="row">{{ item.id }}</th>
+          <td>{{ item.carbon_footprint_performance_class }}</td>
+          <td>{{ item.update_date }}</td>
+          <td>
+            <div class="d-flex flex-wrap gap-2">
+              <a class="btn btn-warning btn-sm d-flex align-items-center" href="form/{{ item.id }}">
+                <i class="me-1">{% bs_icon 'pencil-square' size='1em' %}</i>
+                Update
+              </a>
+              <a class="btn btn-danger btn-sm d-flex align-items-center" href="delete/{{ item.id }}">
+                <i class="me-1">{% bs_icon 'trash-fill' size='1em' %}</i>
+                Delete
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock list_content %}
 
 

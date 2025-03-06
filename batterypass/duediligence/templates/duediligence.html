@@ -10,7 +10,7 @@
 
   {% include 'nav/list_filter.html' with date_filter_form=date_filter_form %}
 
-  {% for item in data.object_list %}
+  {% comment %} {% for item in data.object_list %}
     <h5 class="card-title">Due Diligence {{item.insert_date}}</h5>
     <small class="text-muted">Last updated {{item.update_date}}</small>
     <div class="d-flex flex-column flex-sm-row justify-content-start mb-5 mt-3 gap-2">
@@ -29,7 +29,46 @@
         <i class="me-2">{% bs_icon 'trash-fill' size='1em' %}</i>
         Delete</a>
     </div>
-  {% endfor %}
+  {% endfor %} {% endcomment %}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Due Diligence Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data.object_list %}
+        <tr>
+          <th scope="row">{{ item.insert_date }}</th>
+          <td>{{ item.update_date }}</td>
+          <td>
+            <div class="d-flex flex-wrap gap-2">
+              <a href="{% url 'duediligence_pdf' folder=paths.diligence_report_path filename=item.supply_chain_due_diligence_report %}" class="btn btn-info btn-sm d-flex align-items-center">
+                <i class="me-1">{% bs_icon 'file-earmark-text-fill' size='1em' %}</i>
+                Report
+              </a>
+              <a href="{% url 'duediligence_pdf' folder=paths.third_party_assurances_path filename=item.third_party_assurances %}" class="btn btn-info btn-sm d-flex align-items-center">
+                <i class="me-1">{% bs_icon 'file-earmark-text-fill' size='1em' %}</i>
+                Assurances
+              </a>
+              <a class="btn btn-warning btn-sm d-flex align-items-center" href="form/{{ item.id }}">
+                <i class="me-1">{% bs_icon 'pencil-square' size='1em' %}</i>
+                Update
+              </a>
+              <a class="btn btn-danger btn-sm d-flex align-items-center" href="delete/{{ item.id }}">
+                <i class="me-1">{% bs_icon 'trash-fill' size='1em' %}</i>
+                Delete
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
 
 {% block list_footer %}

@@ -6,7 +6,7 @@
 {% block list_app_name %}{% include 'nav/list_app_name.html' with list_app_name='Carbon Footprint Lifecycles' %}{% endblock list_app_name %}
 
 {% block list_content %}
-  {% for item in data.object_list %}
+  {% comment %} {% for item in data.object_list %}
     <div class="row">
       <h5 class="card-title">Carbon Footprint Lifecycle {{item.insert_date}}</h5>
     </div>
@@ -23,7 +23,42 @@
         <i class="me-2">{% bs_icon 'trash-fill' size='1em' %}</i>
         Delete</a>
     </div>
-  {% endfor %}
+  {% endfor %} {% endcomment %}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Insert Date</th>
+          <th scope="col">Lifecycle Stage</th>
+          <th scope="col">Carbon Footprint</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data.object_list %}
+        <tr>
+          <th scope="row">{{ item.insert_date }}</th>
+          <td>{{ item.lifecycle_stage }}</td>
+          <td>{{ item.carbon_footprint }}</td>
+          <td>{{ item.update_date }}</td>
+          <td>
+            <div class="d-flex gap-2">
+              <a class="btn btn-warning btn-sm d-flex align-items-center" href="form/{{ item.id }}">
+                <i class="me-1">{% bs_icon 'pencil-square' size='1em' %}</i>
+                Update
+              </a>
+              <a class="btn btn-danger btn-sm d-flex align-items-center" href="delete/{{ item.id }}">
+                <i class="me-1">{% bs_icon 'trash-fill' size='1em' %}</i>
+                Delete
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock list_content %}
 
 

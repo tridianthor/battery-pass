@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, Permission
 
+from utils.form_style import split_form
+
 from .models import Account
 from .forms import AccountInsertForm, AccountUpdateForm, LoginForm, ChangePasswordForm, GroupForm
 
@@ -53,10 +55,11 @@ def insert_group(request):
                 form.cleaned_data['permissions'] = Permission.objects.all()
             form.save()
             return redirect('/accounts/groups')
-    
+    field_rows = split_form(form)
     context = {
         'form':form,
-        'form_type':form_type
+        'form_type':form_type,
+        'field_rows':field_rows
     }
     return render(request, 'group_form.html', context)
 
@@ -70,10 +73,11 @@ def update_group(request, pk):
         if form.is_valid():
             form.save()
             return redirect('/accounts/groups')
-    
+    field_rows = split_form(form)
     context = {
         'form':form,
-        'form_type':form_type
+        'form_type':form_type,
+        'field_rows':field_rows
     }
     return render(request, 'group_form.html', context)
 
@@ -113,10 +117,11 @@ def insert_account(request):
             else:
                 form.save()
                 return redirect('/accounts')
-    
+    field_rows = split_form(form)
     context = {
         'form':form,
-        'form_type':form_type
+        'form_type':form_type,
+        'field_rows':field_rows
     }
     return render(request, 'account_form.html', context)
 
@@ -140,9 +145,11 @@ def update_account(request, pk):
             tb = traceback.format_exc()
             print(f"errors : {exc}\ntrace : {tb}")
     form = AccountUpdateForm(instance=account)
+    field_rows = split_form(form)
     context = {
         'form':form,
-        'form_type':form_type
+        'form_type':form_type,
+        'field_rows':field_rows
     }
     return render(request, 'account_form.html', context)
 

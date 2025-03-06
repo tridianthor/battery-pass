@@ -15,11 +15,26 @@
             <h1>{{ message }}</h1>
         {% endif %}
         
-        {% for field in form %}
-            <div class="mb-3">
-                {{field.label}}
-                {{field}}
-                {{field.errors}}
+        {% for row in field_rows %}
+            <div class="row">
+                <div class="col-md-6 col-sm-12 mb-2">
+                    {% for field in row.left_fields %}
+                        <div class="form-group">
+                            {{ field.label }}
+                            {{ field }}
+                            {{ field.errors }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 col-sm-12 mb-2">
+                    {% for field in row.right_fields %}
+                        <div class="form-group">
+                            {{ field.label }}
+                            {{ field }}
+                            {{ field.errors }}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         {% endfor %}
         <button type="submit" class="btn btn-primary d-flex align-items-center"><i class="me-2">{% bs_icon 'floppy-fill' size='1em' %}</i>Submit</button>
