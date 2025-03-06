@@ -24,44 +24,69 @@
         Delete</a>
     </div>
   {% endfor %} {% endcomment %}
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Labeling Date</th>
-          <th scope="col">Labeling Subject</th>
-          <th scope="col">Labeling Meaning</th>
-          <th scope="col">Last Updated</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in data.object_list %}
-        <tr>
-          <th scope="row">{{ item.insert_date }}</th>
-          <td>{{ item.labeling_subject }}</td>
-          <td>{{ item.labeling_meaning|truncatechars:100 }}</td>
-          <td>{{ item.update_date }}</td>
-          <td>
+  <div class="container">
+    <div class="d-none d-md-block">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Labeling Date</th>
+              <th scope="col">Labeling Subject</th>
+              <th scope="col">Labeling Meaning</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data.object_list %}
+            <tr>
+              <th scope="row">{{ item.insert_date }}</th>
+              <td>{{ item.labeling_subject }}</td>
+              <td>{{ item.labeling_meaning|truncatechars:100 }}</td>
+              <td>{{ item.update_date }}</td>
+              <td>
+                <div class="d-flex flex-wrap gap-2">
+                  <a href="{% url 'duediligence_pdf' folder=paths.labeling_symbol_path filename=item.labeling_symbol %}" class="btn btn-info btn-sm d-flex align-items-center">
+                    <i class="me-1">{% bs_icon 'file-earmark-text-fill' size='1em' %}</i> Symbol
+                  </a>
+                  <a class="btn btn-warning btn-sm d-flex align-items-center" href="form/{{ item.id }}">
+                    <i class="me-1">{% bs_icon 'pencil-square' size='1em' %}</i> Update
+                  </a>
+                  <a class="btn btn-danger btn-sm d-flex align-items-center" href="delete/{{ item.id }}">
+                    <i class="me-1">{% bs_icon 'trash-fill' size='1em' %}</i> Delete
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    <div class="d-md-none">
+      {% for item in data.object_list %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Labeling Date: {{ item.insert_date }}</h5>
+            <p class="card-text">Labeling Subject: {{ item.labeling_subject }}</p>
+            <p class="card-text">Labeling Meaning: {{ item.labeling_meaning|truncatechars:100 }}</p>
+            <p class="card-text">Last Updated: {{ item.update_date }}</p>
             <div class="d-flex flex-wrap gap-2">
               <a href="{% url 'duediligence_pdf' folder=paths.labeling_symbol_path filename=item.labeling_symbol %}" class="btn btn-info btn-sm d-flex align-items-center">
-                <i class="me-1">{% bs_icon 'file-earmark-text-fill' size='1em' %}</i>
-                Symbol
+                <i class="me-1">{% bs_icon 'file-earmark-text-fill' size='1em' %}</i> Symbol
               </a>
               <a class="btn btn-warning btn-sm d-flex align-items-center" href="form/{{ item.id }}">
-                <i class="me-1">{% bs_icon 'pencil-square' size='1em' %}</i>
-                Update
+                <i class="me-1">{% bs_icon 'pencil-square' size='1em' %}</i> Update
               </a>
               <a class="btn btn-danger btn-sm d-flex align-items-center" href="delete/{{ item.id }}">
-                <i class="me-1">{% bs_icon 'trash-fill' size='1em' %}</i>
-                Delete
+                <i class="me-1">{% bs_icon 'trash-fill' size='1em' %}</i> Delete
               </a>
             </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
   </div>
 {% endblock list_content %}
 
