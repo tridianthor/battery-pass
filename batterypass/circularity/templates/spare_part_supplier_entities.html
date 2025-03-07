@@ -1,0 +1,88 @@
+{% extends "list_base.html" %}
+{% load bootstrap_icons %}
+
+{% block form_url %}{{'form/'}}{% endblock %}
+
+{% block list_app_name %}{% include 'nav/list_app_name.html' with list_app_name='Spare Part Supplier Entity' %}{% endblock list_app_name %}
+
+{% block list_content %}
+<div class="container">
+    <div class="d-none d-md-block">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">Email</th>
+              <th scope="col">Website</th>
+              <th scope="col">Components</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data.object_list %}
+            <tr>
+              <th scope="row">{{ item.name_of_supplier }}</th>
+              <td>{{ item.address_of_supplier }}</td>
+              <td>{{ item.email_address_of_supplier }}</td>
+              <td>{{ item.supplier_web_address }}</td>
+              <td>
+                {% for component in item.components.all %}
+                  {{ component.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </td>
+              <td>{{ item.update_date }}</td>
+              <td>
+                <div class="d-flex gap-2">
+                  <a class="btn btn-warning btn-sm d-flex align-items-center" href="form/{{ item.id }}">
+                    <i class="me-1">{% bs_icon 'pencil-square' size='1em' %}</i> Update
+                  </a>
+                  <a class="btn btn-danger btn-sm d-flex align-items-center" href="delete/{{ item.id }}">
+                    <i class="me-1">{% bs_icon 'trash-fill' size='1em' %}</i> Delete
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    <div class="d-md-none">
+      {% for item in data.object_list %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Name: {{ item.name_of_supplier }}</h5>
+            <p class="card-text">Address: {{ item.address_of_supplier }}</p>
+            <p class="card-text">Email: {{ item.email_address_of_supplier }}</p>
+            <p class="card-text">Website: {{ item.supplier_web_address }}</p>
+            <p class="card-text">Components:
+              {% for component in item.components.all %}
+                {{ component.name }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </p>
+            <p class="card-text">Last Updated: {{ item.update_date }}</p>
+            <div class="d-flex gap-2">
+              <a class="btn btn-warning btn-sm" href="form/{{ item.id }}">
+                <i class="me-1">{% bs_icon 'pencil-square' size='1em' %}</i> Update
+              </a>
+              <a class="btn btn-danger btn-sm" href="delete/{{ item.id }}">
+                <i class="me-1">{% bs_icon 'trash-fill' size='1em' %}</i> Delete
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock list_content %}
+
+
+{% block list_footer %}
+{% include 'nav/list_footer.html' with data=data %}
+{% endblock list_footer %}
+  
+  

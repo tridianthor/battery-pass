@@ -26,11 +26,11 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('dashboard.urls')),
     path('', include('carbonfootprints.urls')),
-    #path('', include('circularity.urls')),
+    path('', include('circularity.urls')),
     path('', include('duediligence.urls')),
     #path('', include('generalproductinfo.urls')),
     path('', include('labeling.urls')),
     #path('', include('materials.urls')),
     #path('', include('performance.urls')),
-    #path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
 ]
