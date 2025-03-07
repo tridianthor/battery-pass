@@ -1,7 +1,5 @@
 from django.db import models
 
-import uuid
-# Create your models here.
 
 class BatteryComponent(models.TextChoices):
     PACK = "pack", "Pack"
@@ -14,8 +12,6 @@ class InternalResistanceEntity(models.Model):
     battery_component = models.CharField(
         max_length=20, choices=BatteryComponent.choices
     )
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"Internal Resistance: {self.ohmic_resistance} Ω - {self.battery_component}"
@@ -23,8 +19,6 @@ class InternalResistanceEntity(models.Model):
 
 class EvolutionOfSelfDischargeEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"Self-Discharge Evolution: {self.value}%"
@@ -32,8 +26,7 @@ class EvolutionOfSelfDischargeEntity(models.Model):
 
 class CapacityFadeEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Capacity Fade: {self.value}% (Last Updated: {self.last_update})"
@@ -41,8 +34,7 @@ class CapacityFadeEntity(models.Model):
 
 class CapacityThroughputEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Capacity Throughput: {self.value} Ah (Last Updated: {self.last_update})"
@@ -50,11 +42,10 @@ class CapacityThroughputEntity(models.Model):
 
 class InternalResistanceIncreaseEntity(models.Model):
     value = models.FloatField()
+    last_update = models.DateTimeField()
     battery_component = models.CharField(
         max_length=20, choices=BatteryComponent.choices
     )
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"Resistance Increase: {self.value} Ω ({self.battery_component})"
@@ -62,8 +53,7 @@ class InternalResistanceIncreaseEntity(models.Model):
 
 class NumberOfFullCyclesEntity(models.Model):
     value = models.BigIntegerField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Full Cycles: {self.value} (Last Updated: {self.last_update})"
@@ -71,8 +61,7 @@ class NumberOfFullCyclesEntity(models.Model):
 
 class RemainingCapacityEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Remaining Capacity: {self.value}% (Last Updated: {self.last_update})"
@@ -80,8 +69,7 @@ class RemainingCapacityEntity(models.Model):
 
 class RemainingEnergyEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Remaining Energy: {self.value} kWh (Last Updated: {self.last_update})"
@@ -89,8 +77,7 @@ class RemainingEnergyEntity(models.Model):
 
 class RemainingRoundTripEnergyEfficiencyEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Round Trip Efficiency: {self.value}% (Last Updated: {self.last_update})"
@@ -98,8 +85,7 @@ class RemainingRoundTripEnergyEfficiencyEntity(models.Model):
 
 class RemainingPowerCapabilityEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Power Capability: {self.value} kW (Last Updated: {self.last_update})"
@@ -107,8 +93,7 @@ class RemainingPowerCapabilityEntity(models.Model):
 
 class StateOfChargeEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"State of Charge: {self.value}% (Last Updated: {self.last_update})"
@@ -116,8 +101,7 @@ class StateOfChargeEntity(models.Model):
 
 class StateOfCertifiedEnergyEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Certified Energy State: {self.value} kWh (Last Updated: {self.last_update})"
@@ -125,8 +109,7 @@ class StateOfCertifiedEnergyEntity(models.Model):
 
 class CurrentSelfDischargingRateEntity(models.Model):
     value = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Self-Discharge Rate: {self.value}%/day (Last Updated: {self.last_update})"
@@ -137,8 +120,7 @@ class TemperatureConditionsEntity(models.Model):
     time_extreme_low_temp = models.FloatField()
     time_extreme_high_temp_charging = models.FloatField()
     time_extreme_low_temp_charging = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Temperature Extremes (Updated: {self.last_update})"
@@ -147,8 +129,6 @@ class TemperatureConditionsEntity(models.Model):
 class PowerCapabilityAtEntity(models.Model):
     at_soc = models.FloatField()
     power_capability_at = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"Power Capability at {self.at_soc}% SoC: {self.power_capability_at} kW"
@@ -167,11 +147,9 @@ class BatteryTechnicalPropertiesEntity(models.Model):
     minimum_voltage = models.FloatField()
     maximum_voltage = models.FloatField()
     capacity_threshold_for_exhaustion = models.FloatField()
-    lifetime_reference_test = models.TextField()
+    lifetime_reference_test = models.FileField()
     c_rate_life_cycle_test = models.FloatField()
     temperature_range_idle_state = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"Battery Technical Properties - Rated Power: {self.rated_maximum_power} kW"
@@ -195,27 +173,21 @@ class BatteryConditionEntity(models.Model):
         RemainingRoundTripEnergyEfficiencyEntity, on_delete=models.CASCADE
     )
     state_of_charge = models.ForeignKey(StateOfChargeEntity, on_delete=models.CASCADE)
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"Battery Condition - Energy Throughput: {self.energy_throughput} kWh"
 
 
 class PerformanceAndDurability(models.Model):
-    id = models.BigAutoField(primary_key=True)
     battery_technical_properties = models.ForeignKey(BatteryTechnicalPropertiesEntity, on_delete=models.CASCADE)
     battery_condition = models.ForeignKey(BatteryConditionEntity, on_delete=models.CASCADE)
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return f"Performance and Durability Data"
 
 class NegativeEventEntity(models.Model):
     negative_event = models.CharField(max_length=255)
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    last_update = models.DateTimeField()
 
     def __str__(self):
         return f"Negative Event: {self.negative_event} (Last Updated: {self.last_update})"

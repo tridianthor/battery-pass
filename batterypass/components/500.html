@@ -1,0 +1,18 @@
+{% extends 'base_navless.html' %}
+
+{% load bootstrap_icons %}
+
+{% block title %}Access Denied{% endblock title %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="d-flex flex-column align-items-center">
+        {% bs_icon 'emoji-frown-fill' size='5em' %}
+        <div class="mt-4">
+
+        </div>
+        <h1>Error Occurred</h1>
+        <p>You just experienced an error, sorry :(</p>
+    </div>
+</div>
+{% endblock content %}

@@ -1,1 +1,478 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battery Authentication</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .logo {
+            color: #8ED1A4;
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+        .authenticated-badge {
+            background-color: #f5faf7;
+            border-radius: 25px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .check-circle {
+            background-color: #8ED1A4;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        .back-link {
+            color: #8ED1A4;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        .back-link:hover {
+            color: #6cb989;
+        }
+        /* Custom tab styling */
+        .nav-tabs {
+            border-bottom: none;
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            padding-left: 0;
+            padding-right: 20px;
+            color: #aaa;
+            padding-bottom: 10px;
+        }
+        .nav-tabs .nav-link.active {
+            border-bottom: 3px solid #8ED1A4;
+            color: #000;
+            font-weight: 600;
+            background-color: transparent;
+        }
+        .nav-tabs .nav-link:hover {
+            border-color: transparent;
+        }
+        .tab-content {
+            padding-top: 20px;
+        }
+        .sidebar-menu {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .sidebar-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .sidebar-item.active {
+            background-color: #8ED1A4;
+            color: white;
+        }
+        .general-card {
+            border-radius: 8px;
+            border: 1px solid #eee;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .general-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .general-subtitle {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        .detail-row {
+            margin-bottom: 20px;
+        }
+        .detail-label {
+            font-weight: 500;
+            color: #333;
+        }
+        .detail-value {
+            color: #555;
+        }
+
+        .carbon-header {
+            background-color: #f0f0f0; /* Light gray background */
+            padding: 15px; /* Add padding around the text */
+            border-top-left-radius: 5px; /* Match card rounded corners */
+            border-top-right-radius: 5px;
+            display: flex;
+            justify-content: space-between; /* Align text and button */
+            align-items: center; /* Vertically align text and button */
+            border-bottom: 1px solid #ddd; /* Add a subtle bottom border */
+        }
+        
+        .expand-collapse-btn {
+            padding: 0; /* Remove button padding */
+            margin: 0; /* Remove button margin */
+            color: #007bff; /* Use a link color */
+            text-decoration: none; /* Remove underline */
+        }
+        
+        .expand-collapse-btn:hover {
+            text-decoration: underline; /* Add underline on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Header -->
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <div class="logo">Logo</div>
+            <div>
+                <span class="me-4">Login</span>
+                <span>EN</span>
+            </div>
+        </header>
+
+        <!-- Back Button -->
+        <a href="#" class="back-link">
+            <i class="fas fa-chevron-left"></i> Back
+        </a>
+
+        <!-- Authentication Badge -->
+        
+
+        <!-- Product Info -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="authenticated-badge">
+                    <div class="check-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold">Authenticated</div>
+                        <div class="small text-muted">This code is verified as original product</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <div class="text-muted">Battery Passport ID</div>
+                    <div class="fs-5">{{product.battery_passport_identifier}}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Image and Details -->
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <!-- <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/02-qEDCoul2IxJLwzDO5CRX649iE3Y9dy.png" alt="EV Battery Chassis" class="img-fluid rounded"> -->
+                <div style="width: 150px; height: 150px; background-color: gray;"></div>
+            </div>
+            <div class="col-md-8">
+                <div class="mb-4">
+                    <div class="text-muted">Model Number</div>
+                    <div class="fs-5">{{product.product_identifier}}</div>
+                </div>
+                <div class="mb-4">
+                    <div class="text-muted">Serial Number</div>
+                    <div class="fs-5">{{product.battery_id}}</div>
+                </div>
+                <div>
+                    <div class="text-muted">Economic Operator</div>
+                    <div class="mt-2">
+                        <div class="bg-light" style="width: 80px; height: 60px; border-radius: 4px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="specification-tab" data-bs-toggle="tab" data-bs-target="#specification" type="button" role="tab" aria-controls="specification" aria-selected="true">Specification</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab" aria-controls="summary" aria-selected="false">Summary Report</button>
+                    </li>
+                </ul>
+                <hr class="mt-0">
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="productTabsContent">
+            <!-- Specification Tab -->
+            <div class="tab-pane fade show active" id="specification" role="tabpanel" aria-labelledby="specification-tab">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <div class="col-md-3">
+                        <div class="sidebar-menu">
+                            <div class="sidebar-item active" data-section="general">General</div>
+                            <div class="sidebar-item" data-section="materials">Materials Composition</div>
+                            <div class="sidebar-item" data-section="performance">Performance</div>
+                            <div class="sidebar-item" data-section="compliance">Compliance</div>
+                            <div class="sidebar-item" data-section="supply">Supply Chain</div>
+                            <div class="sidebar-item" data-section="circularity">Circularity</div>
+                            <div class="sidebar-item" data-section="carbon">Carbon Footprint</div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="col-md-9">
+                        <!-- General Section (Default Active) -->
+                        <div class="section-content" id="general-section">
+                            <div class="general-card mb-4">
+                                <div class="general-title">General</div>
+                                <div class="general-subtitle">Generic information about the battery</div>
+                            </div>
+
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Name</div>
+                                    <div class="detail-value">{{product.product_identifier}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Status</div>
+                                    <div class="detail-value">Original</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Manufactured by</div>
+                                    <div class="detail-value">{{product.manufacturer_information.contact_name}}</div>
+                                </div>
+                            </div>
+
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Manufactured Date</div>
+                                    <div class="detail-value">{{product.manufacturing_date}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Facility ID</div>
+                                    <div class="detail-value">{{product.manufacturing_place.address_country}}</div>
+                                </div>
+                            </div>
+
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Category</div>
+                                    <div class="detail-value">{{product.battery_category|upper}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Weight</div>
+                                    <div class="detail-value">{{product.battery_mass}} Kg</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Materials Section (Hidden by Default) -->
+                        <div class="section-content d-none" id="materials-section">
+                            <div class="general-card mb-4">
+                                <div class="general-title">Materials Composition</div>
+                                <div class="general-subtitle">Information about the materials used in the battery</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Materials composition details would be displayed here.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance Section (Hidden by Default) -->
+                        <div class="section-content d-none" id="performance-section">
+                            <div class="general-card mb-4">
+                                <div class="general-title">Performance</div>
+                                <div class="general-subtitle">Battery performance metrics and specifications</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Performance details would be displayed here.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Compliance Section (Hidden by Default) -->
+                        <div class="section-content d-none" id="compliance-section">
+                            <div class="general-card mb-4">
+                                <div class="general-title">Compliance</div>
+                                <div class="general-subtitle">Regulatory compliance information</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Compliance details would be displayed here.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Supply Chain Section (Hidden by Default) -->
+                        <div class="section-content d-none" id="supply-section">
+                            <div class="general-card mb-4">
+                                <div class="general-title">Supply Chain</div>
+                                <div class="general-subtitle">Information about the supply chain</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Supply chain details would be displayed here.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Circularity Section (Hidden by Default) -->
+                        <div class="section-content d-none" id="circularity-section">
+                            <div class="general-card mb-4">
+                                <div class="general-title">Circularity</div>
+                                <div class="general-subtitle">Information about recycling and circular economy</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Circularity details would be displayed here.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carbon Footprint Section (Hidden by Default) -->
+                        <div class="section-content d-none" id="carbon-section">
+                            <div class="general-card mb-4">
+                                <div class="general-title">Carbon Footprint</div>
+                                <div class="general-subtitle">Environmental impact information</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Carbon footprint details would be displayed here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Report Tab -->
+            <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="general-card mb-4">
+                            <div class="general-title">Summary Report</div>
+                            <div class="general-subtitle">Overview of battery specifications and performance</div>
+                        </div>
+                        
+                        <div class="container mt-5">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    Original Power
+                                </div>
+                                <div class="card-body">
+                                    <select class="form-control">
+                                        <option>Select Power Type</option>
+                                        <option>Option 1</option>
+                                        <option>Option 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                    
+                            <div class="card mb-4">
+                                <label class="card-header" for="carbon-collapse">
+                                    Carbon Footprint
+                                    <button class="btn btn-link expand-collapse-btn" id="carbon-collapse" type="button" onclick="toggleContent('carbonFootprintContent')">
+                                    </button> 
+                                </label>
+                                <div class="card-body" id="carbonFootprintContent">
+                                    <div class="d-flex justify-content-center">
+                                        <div style="width: 200px; height: 200px; background-color: gray;"></div>
+                                    </div>
+                                    <p class="text-center mt-3">Carbon footprint data represented as a square.</p>
+                                </div>
+                            </div>
+                    
+                            <div class="card">
+                                <label class="card-header" for="recycled-content-collapse">
+                                    Recycled Content Share
+                                    <button class="btn btn-link expand-collapse-btn" id="recycled-content-collapse" type="button" onclick="toggleContent('recycledContent')">
+                                    </button> 
+                                </label>
+                                <div class="card-body" id="recycledContent">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div style="width: 150px; height: 150px; background-color: gray;"></div>
+                                            </div>
+                                            <p class="text-center mt-2">Nickel</p>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div style="width: 150px; height: 150px; background-color: gray;"></div>
+                                            </div>
+                                            <p class="text-center mt-2">Cobalt</p>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div style="width: 150px; height: 150px; background-color: gray;"></div>
+                                            </div>
+                                            <p class="text-center mt-2">Lithium</p>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div style="width: 150px; height: 150px; background-color: gray;"></div>
+                                            </div>
+                                            <p class="text-center mt-2">Lead</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function toggleContent(elementId) {
+            var content = document.getElementById(elementId);
+            if (content.style.display === "none" || content.style.display === "") {
+                content.style.display = "block";
+            } else {
+                content.style.display = "none";
+            }
+        }
+    </script>
+
+    <!-- Custom JavaScript for sidebar functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar item click handler
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all sidebar items
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Hide all section content
+                    const sectionContents = document.querySelectorAll('.section-content');
+                    sectionContents.forEach(section => section.classList.add('d-none'));
+                    
+                    // Show the selected section content
+                    const sectionId = this.getAttribute('data-section') + '-section';
+                    document.getElementById(sectionId).classList.remove('d-none');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

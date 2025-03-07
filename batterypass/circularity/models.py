@@ -1,7 +1,7 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+import uuid
 
-import uuid 
-# Create your models here.
 
 class DocumentType(models.TextChoices):
     BILL_OF_MATERIAL = "BillOfMaterial", "Bill of Material"
@@ -20,84 +20,119 @@ class RecycledMaterial(models.TextChoices):
 
 
 class PostalAddress(models.Model):
+    id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    semantic_id = models.URLField(blank=True, null=True)
+
     country = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=20)
     street_address = models.CharField(max_length=255)
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    version = models.IntegerField(default=1)
 
     def __str__(self):
         return f"{self.street_address}, {self.postal_code}, {self.country}"
 
 
 class ComponentEntity(models.Model):
+    id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    semantic_id = models.URLField(blank=True, null=True)
+
     part_name = models.CharField(max_length=255)
     part_number = models.CharField(max_length=100, unique=True)
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    version = models.IntegerField(default=1)
 
     def __str__(self):
         return f"{self.part_name} ({self.part_number})"
 
 
 class SparePartSupplierEntity(models.Model):
+    id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    semantic_id = models.URLField(blank=True, null=True)
+
     name_of_supplier = models.CharField(max_length=255)
     address_of_supplier = models.ForeignKey(PostalAddress, on_delete=models.CASCADE)
     email_address_of_supplier = models.EmailField()
-    supplier_web_address = models.TextField(null=False)
+    supplier_web_address = models.URLField()
     components = models.ManyToManyField(ComponentEntity, related_name="suppliers")
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    version = models.IntegerField(default=1)
 
     def __str__(self):
         return self.name_of_supplier
 
 
 class SafetyMeasuresEntity(models.Model):
-    safety_instructions = models.TextField(null=False) #this field stores filename
+    id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    semantic_id = models.URLField(blank=True, null=True)
+
+    safety_instructions = models.FileField(max_length=255)
     extinguishing_agent = models.JSONField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    version = models.IntegerField(default=1)
 
     def __str__(self):
         return f"Safety Instructions: {self.safety_instructions}"
 
 
 class RecycledContentEntity(models.Model):
-    pre_consumer_share = models.FloatField()
+    id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    semantic_id = models.URLField(blank=True, null=True)
+
+    pre_consumer_share = models.FloatField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )  # Ensuring % between 0-100
     recycled_material = models.CharField(max_length=50, choices=RecycledMaterial.choices)
-    post_consumer_share = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    post_consumer_share = models.FloatField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )  # Ensuring % between 0-100
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    version = models.IntegerField(default=1)
 
     def __str__(self):
         return f"{self.recycled_material}: Pre-{self.pre_consumer_share}% | Post-{self.post_consumer_share}%"
 
 
 class EndOfLifeInformationEntity(models.Model):
-    waste_prevention = models.TextField(null=False) #this field stores filename
-    separate_collection = models.TextField(null=False) #this field stores filename
-    information_on_collection = models.TextField(null=False) #this field stores filename
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    semantic_id = models.URLField(blank=True, null=True)
+
+    waste_prevention = models.FileField(max_length=255)
+    separate_collection = models.FileField(max_length=255)
+    information_on_collection = models.FileField(max_length=255)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    version = models.IntegerField(default=1)
 
     def __str__(self):
         return f"Waste Prevention: {self.waste_prevention}"
 
 
 class DismantlingAndRemovalDocumentation(models.Model):
+    id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    semantic_id = models.URLField(blank=True, null=True)
+
     document_type = models.CharField(max_length=50, choices=DocumentType.choices)
     mime_type = models.CharField(max_length=50)
-    document_url = models.TextField(null=False) #this field stores filename
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    document_url = models.URLField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    version = models.IntegerField(default=1)
 
     def __str__(self):
         return f"{self.document_type} - {self.document_url}"
 
 
 class Circularity(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)  # AAS-compatible ID
+    semantic_id = models.URLField(blank=True, null=True)  # Standardized reference
+
+    circularity_id = models.CharField(max_length=255, unique=True)  # Standardized identifier
     dismantling_and_removal_information = models.ManyToManyField(
         DismantlingAndRemovalDocumentation, related_name="circularities"
     )
@@ -105,9 +140,9 @@ class Circularity(models.Model):
     recycled_content = models.ManyToManyField(RecycledContentEntity, related_name="circularities")
     safety_measures = models.ForeignKey(SafetyMeasuresEntity, on_delete=models.CASCADE)
     end_of_life_information = models.ForeignKey(EndOfLifeInformationEntity, on_delete=models.CASCADE)
-    renewable_content = models.FloatField()
-    insert_date = models.DateTimeField(auto_now_add=True, editable=False)
-    update_date = models.DateTimeField(auto_now=True, editable=False)
+    renewable_content = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)])
 
-    def __str__(self):
-        return f"Circularity - Renewable Content: {self.renewable_content}%"
+    hash_signature = models.CharField(max_length=256, null=True, blank=True)  # Blockchain readiness
+
+    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp
+    version = models.IntegerField(default=1)  #

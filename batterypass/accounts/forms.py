@@ -54,7 +54,7 @@ class AccountInsertForm(forms.ModelForm):
         
     def clean_password(self):
         password = self.cleaned_data.get('password')
-        validators.validate_password_complexity(password)
+        #validators.validate_password_complexity(password)
         return password
         
     def save(self, commit=True):
