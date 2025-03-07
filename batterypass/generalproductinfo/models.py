@@ -2,6 +2,12 @@ from django.db import models
 from django.core.validators import MinValueValidator
 import uuid
 
+from duediligence.models import SupplyChainDueDiligence
+from labeling.models import Labeling
+from carbonfootprints.models import CarbonFootprintForBatteries
+from materials.models import MaterialComposition
+from circularity.models import Circularity
+from performance.models import PerformanceAndDurability
 
 class BatteryCategoryEnum(models.TextChoices):
     LMT = "lmt", "LMT"
@@ -76,6 +82,30 @@ class GeneralProductInformation(models.Model):
     )
     putting_into_service = models.DateField()
     warranty_period = models.DateField()
+    
+    due_diligence = models.OneToOneField(
+        SupplyChainDueDiligence, on_delete=models.CASCADE, related_name="due_diligence"
+    )
+    
+    label = models.OneToOneField(
+        Labeling, on_delete=models.CASCADE, related_name="label"
+    )
+    
+    carbon_footprint = models.OneToOneField(
+        CarbonFootprintForBatteries, on_delete=models.CASCADE, related_name="carbon_footprint"
+    )
+    
+    material_composition = models.OneToOneField(
+        MaterialComposition, on_delete=models.CASCADE, related_name="material_composition"
+    )
+    
+    circularity = models.OneToOneField(
+        Circularity, on_delete=models.CASCADE, related_name="circularity"
+    )
+    
+    performance = models.OneToOneField(
+        PerformanceAndDurability, on_delete=models.CASCADE, related_name="performance"
+    )
     
     hash_signature = models.CharField(max_length=256, null=True, blank=True)  # Blockchain readiness
 

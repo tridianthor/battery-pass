@@ -14,6 +14,8 @@ def dashboard(request, pk=None, code=None):
         product = get_object_or_404(GeneralProductInformation, pk=pk)
     else:
         product = get_object_or_404(GeneralProductInformation, battery_id=code)
+        
+    print('data : ', product.material_composition.battery_materials.all())
     
     context = {
         'product': product

@@ -281,7 +281,24 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <p>Materials composition details would be displayed here.</p>
+                                    <table class="data-table">
+                                        <tr><th>Name</th><th>Status</th><th>Manufactured by</th></tr>
+                                        <tr>
+                                            <td>{{ material_composition.material_composition_id }}</td>
+                                            <td>Original</td>
+                                            <td>Dani Aldiansyah</td>
+                                        </tr>
+                                        <tr><th>Manufactured Date</th><th>Facility ID</th></tr>
+                                        <tr>
+                                            <td>{{ material_composition.created_at|date:"F j, Y" }}</td>
+                                            <td>{{ battery_location.id_short }}</td>
+                                        </tr>
+                                        <tr><th>Category</th><th>Weight</th></tr>
+                                        <tr>
+                                            <td>{{ battery_chemistry.short_name }}</td>
+                                            <td>15.0 Kg</td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
