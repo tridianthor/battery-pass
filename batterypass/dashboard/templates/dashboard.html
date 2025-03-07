@@ -276,29 +276,28 @@
                         <!-- Materials Section (Hidden by Default) -->
                         <div class="section-content d-none" id="materials-section">
                             <div class="general-card mb-4">
-                                <div class="general-title">Materials Composition</div>
-                                <div class="general-subtitle">Information about the materials used in the battery</div>
+                                <div class="general-title">Materials</div>
+                                <div class="general-subtitle">Generic information about the battery materials</div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <table class="data-table">
-                                        <tr><th>Name</th><th>Status</th><th>Manufactured by</th></tr>
-                                        <tr>
-                                            <td>{{ material_composition.material_composition_id }}</td>
-                                            <td>Original</td>
-                                            <td>Dani Aldiansyah</td>
-                                        </tr>
-                                        <tr><th>Manufactured Date</th><th>Facility ID</th></tr>
-                                        <tr>
-                                            <td>{{ material_composition.created_at|date:"F j, Y" }}</td>
-                                            <td>{{ battery_location.id_short }}</td>
-                                        </tr>
-                                        <tr><th>Category</th><th>Weight</th></tr>
-                                        <tr>
-                                            <td>{{ battery_chemistry.short_name }}</td>
-                                            <td>15.0 Kg</td>
-                                        </tr>
-                                    </table>
+
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Battery chemistry</div>
+                                    <div class="detail-value">{{product.material_composition.battery_chemistry.clear_name}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Battery materials</div>
+                                    
+                                    {% for material in battery_materials %}
+                                        <div class="detail-value">{{material.battery_material_name}}</div>
+                                    {% endfor %}
+                                        
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Hazardous substances</div>
+                                    {% for hazardous_substance in hazardous_substances %}
+                                        <div class="detail-value">{{hazardous_substance.hazardous_substance_name}}</div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -309,9 +308,41 @@
                                 <div class="general-title">Performance</div>
                                 <div class="general-subtitle">Battery performance metrics and specifications</div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <p>Performance details would be displayed here.</p>
+                            
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Battery voltage</div>
+                                    <div class="detail-value mb-2">{{battery_technical_property.nominal_voltage}} V</div>
+                                    <div class="detail-label">Battery voltage high</div>
+                                    <div class="detail-value mb-2">{{battery_technical_property.maximum_voltage}} V</div>
+                                    <div class="detail-label">Battery voltage low</div>
+                                    <div class="detail-value">{{battery_technical_property.minimum_voltage}} V</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Battery temperature High</div>
+                                    <div class="detail-value mb-2">{{battery_temperature.time_extreme_high_temp}}</div>
+                                    <div class="detail-label">Battery temperature Low</div>
+                                    <div class="detail-value">{{battery_temperature.time_extreme_low_temp}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Battery temperature charging High</div>
+                                    <div class="detail-value mb-2">{{battery_temperature.time_extreme_high_temp_charging}}</div>
+                                    <div class="detail-label">Battery temperature charging Low</div>
+                                    <div class="detail-value">{{battery_temperature.time_extreme_low_temp_charging}}</div>
+                                </div>
+                            </div>
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Expected lifetime</div>
+                                    <div class="detail-value">{{battery_technical_property.expected_lifetime}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Energy throughput</div>
+                                    <div class="detail-value">{{battery_condition.energy_throughput}} kW</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Rated maximum power</div>
+                                    <div class="detail-value">{{battery_technical_property.rated_maximum_power}} kW</div>
                                 </div>
                             </div>
                         </div>
@@ -322,9 +353,14 @@
                                 <div class="general-title">Compliance</div>
                                 <div class="general-subtitle">Regulatory compliance information</div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <p>Compliance details would be displayed here.</p>
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Declaration of confirmity</div>
+                                    <div class="detail-value"><a href="/media/{{product.label.declaration_of_conformity}}">{{product.label.declaration_of_conformity}}</a></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Test report</div>
+                                    <div class="detail-value"><a href="/media/{{product.label.result_of_test_report}}">{{product.label.result_of_test_report}}</a></div>
                                 </div>
                             </div>
                         </div>
@@ -335,9 +371,14 @@
                                 <div class="general-title">Supply Chain</div>
                                 <div class="general-subtitle">Information about the supply chain</div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <p>Supply chain details would be displayed here.</p>
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Supply chain due diligence report</div>
+                                    <div class="detail-value"><a href="/media/{{product.due_diligence.supply_chain_due_diligence_report}}">{{product.due_diligence.supply_chain_due_diligence_report}}</a></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Third party assurances</div>
+                                    <div class="detail-value"><a href="/media/{{product.due_diligence.third_party_assurances}}">{{product.due_diligence.third_party_assurances}}</a></div>
                                 </div>
                             </div>
                         </div>
@@ -348,9 +389,43 @@
                                 <div class="general-title">Circularity</div>
                                 <div class="general-subtitle">Information about recycling and circular economy</div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <p>Circularity details would be displayed here.</p>
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Dismantling and Removal info</div>
+                                    {% for info in dismantling_info %}
+                                        <div class="detail-value">
+                                            <a href="{{info.document_url}}">
+                                                {{info.document_type}} - {{info.document_url}}
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Safety measures</div>
+                                    <div class="detail-value">
+                                        <a href="/media/{{product.circularity.safety_measures.safety_instructions}}">{{product.circularity.safety_measures.safety_instructions}}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">End of life waste prevention</div>
+                                    <div class="detail-value mb-2">
+                                        <a href="/media/{{end_of_life_info.waste_prevention}}">
+                                            {{end_of_life_info.waste_prevention}}
+                                        </a>
+                                    </div>
+                                    <div class="detail-label">End of life separate collection</div>
+                                    <div class="detail-value mb-2">
+                                        <a href="/media/{{end_of_life_info.separate_collection}}">
+                                            {{end_of_life_info.separate_collection}}
+                                        </a>
+                                    </div>
+                                    <div class="detail-label">End of life information on collection</div>
+                                    <div class="detail-value">
+                                        <a href="/media/{{end_of_life_info.information_on_collection}}">
+                                            {{end_of_life_info.information_on_collection}}
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -361,9 +436,18 @@
                                 <div class="general-title">Carbon Footprint</div>
                                 <div class="general-subtitle">Environmental impact information</div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <p>Carbon footprint details would be displayed here.</p>
+                            <div class="row detail-row">
+                                <div class="col-md-4">
+                                    <div class="detail-label">Carbon footprint</div>
+                                    <div class="detail-value">{{product.carbon_footprint.battery_carbon_footprint}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Carbon footprint performance class</div>
+                                    <div class="detail-value">{{product.carbon_footprint.carbon_footprint_performance_class}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-label">Carbon footprint study</div>
+                                    <div class="detail-value"><a href="/media/{{product.carbon_footprint.carbon_footprint_study}}">{{product.carbon_footprint.carbon_footprint_study}}</a></div>
                                 </div>
                             </div>
                         </div>
@@ -381,7 +465,7 @@
                         </div>
                         
                         <div class="container mt-5">
-                            <div class="card mb-4">
+                            {% comment %} <div class="card mb-4">
                                 <div class="card-header">
                                     Original Power
                                 </div>
@@ -392,7 +476,7 @@
                                         <option>Option 2</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> {% endcomment %}
                     
                             <div class="card mb-4">
                                 <label class="card-header" for="carbon-collapse">
@@ -402,7 +486,9 @@
                                 </label>
                                 <div class="card-body" id="carbonFootprintContent">
                                     <div class="d-flex justify-content-center">
-                                        <div style="width: 200px; height: 200px; background-color: gray;"></div>
+                                        {% if carbon_footprint_fig is not None %}
+                                            {{ carbon_footprint_fig|safe }}
+                                        {% endif %}
                                     </div>
                                     <p class="text-center mt-3">Carbon footprint data represented as a square.</p>
                                 </div>
@@ -417,26 +503,34 @@
                                 <div class="card-body" id="recycledContent">
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
-                                            <div class="d-flex justify-content-center">
-                                                <div style="width: 150px; height: 150px; background-color: gray;"></div>
+                                            <div class="p-2">
+                                                {% if recycled_content_nickel_fig is not None %}
+                                                    {{ recycled_content_nickel_fig|safe }}
+                                                {% endif %}
                                             </div>
                                             <p class="text-center mt-2">Nickel</p>
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <div class="d-flex justify-content-center">
-                                                <div style="width: 150px; height: 150px; background-color: gray;"></div>
+                                            <div class="p-2">
+                                                {% if recycled_content_cobalt_fig is not None %}
+                                                    {{ recycled_content_cobalt_fig|safe }}
+                                                {% endif %}
                                             </div>
                                             <p class="text-center mt-2">Cobalt</p>
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <div class="d-flex justify-content-center">
-                                                <div style="width: 150px; height: 150px; background-color: gray;"></div>
+                                            <div class="p-2">
+                                                {% if recycled_content_lithium_fig is not None %}
+                                                    {{ recycled_content_lithium_fig|safe }}
+                                                {% endif %}
                                             </div>
                                             <p class="text-center mt-2">Lithium</p>
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <div class="d-flex justify-content-center">
-                                                <div style="width: 150px; height: 150px; background-color: gray;"></div>
+                                            <div class="p-2">
+                                                {% if recycled_content_lead_fig is not None %}
+                                                    {{ recycled_content_lead_fig|safe }}
+                                                {% endif %}
                                             </div>
                                             <p class="text-center mt-2">Lead</p>
                                         </div>
