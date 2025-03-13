@@ -89,3 +89,9 @@ def dashboard(request, pk=None, code=None):
     }
     
     return render(request, 'battery-detail.html', context)
+
+def summary(request):
+    return render(request, "battery-summary.html")
+
+def detail(request):
+    return render(request, "battery-detail.html")

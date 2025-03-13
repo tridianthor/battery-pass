@@ -4,8 +4,11 @@ from django.views.generic.base import RedirectView
 from . import views
 
 urlpatterns = [
-    path('dashboard/', views.dashboard, name='dashboard'),
-    path('dashboard/<int:pk>/', views.dashboard, name='dashboard_pk'),
-    path('dashboard/<str:code>/', views.dashboard, name='dashboard_code'),
+    path('summary/', views.summary, name='summary'),
+    path('summary/<int:pk>/', views.summary, name='summary_pk'),
+    path('summary/<str:code>/', views.summary, name='summary_code'),
+    path('detail/', views.detail, name='detail'),
+    path('detail/<int:pk>/', views.detail, name='detail_pk'),
+    path('detail/<str:code>/', views.detail, name='detail_code'),
     path('', RedirectView.as_view(url='dashboard/'), name='root-redirect'),    
 ]

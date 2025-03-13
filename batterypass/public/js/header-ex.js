@@ -1,8 +1,13 @@
-function toggleContent(elementId) {
+function toggleContent(elementId, arrowId) {
     var content = document.getElementById(elementId);
-    if (content.style.display === "none" || content.style.display === "") {
-        content.style.display = "block";
+    var arrow = document.getElementById(arrowId);
+
+    if (content.classList.contains("hidden")) {
+        arrow.textContent = "▲";
+        content.classList.remove("hidden");
     } else {
-        content.style.display = "none";
+        arrow.textContent = "▼";
+        content.classList.add("hidden");
     }
 }
+
