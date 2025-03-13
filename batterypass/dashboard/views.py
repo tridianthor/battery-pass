@@ -88,4 +88,4 @@ def dashboard(request, pk=None, code=None):
         'recycled_content_lead_fig': recycled_content_lead_fig.to_html()
     }
     
-    return render(request, 'dashboard.html', context)
+    return render(request, 'battery-detail.html', context)

@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from dpp_admin.admin import dpp_admin
 from django.urls import path, include
 from django.shortcuts import render
 
@@ -23,14 +24,14 @@ def access_denied(request):
     
 
 urlpatterns = [
-    path('', include('accounts.urls')),
+    #path('', include('accounts.urls')),
     path('', include('dashboard.urls')),
-    path('', include('carbonfootprints.urls')),
-    path('', include('circularity.urls')),
-    path('', include('duediligence.urls')),
+    #path('', include('carbonfootprints.urls')),
+    #path('', include('circularity.urls')),
+    #path('', include('duediligence.urls')),
     #path('', include('generalproductinfo.urls')),
-    path('', include('labeling.urls')),
+    #path('', include('labeling.urls')),
     #path('', include('materials.urls')),
     #path('', include('performance.urls')),
-    path('admin/', admin.site.urls),
+    path('admin/', dpp_admin.urls),
 ]
