@@ -8,6 +8,8 @@ from carbonfootprints.models import CarbonFootprintForBatteries
 from materials.models import MaterialComposition
 from circularity.models import Circularity
 from performance.models import PerformanceAndDurability
+from common.models import ContactInformation
+from batterycell.models import BatteryCell
 
 class BatteryCategoryEnum(models.TextChoices):
     LMT = "lmt", "LMT"
@@ -39,21 +41,6 @@ class PostalAddressEntity(models.Model):
         return f"{self.street_address}, {self.postal_code}, {self.address_country}"
 
 
-class ContactInformationEntity(models.Model):
-    id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
-    semantic_id = models.URLField(blank=True, null=True)
-    
-    contact_name = models.CharField(max_length=255)
-    postal_address = models.ForeignKey(PostalAddressEntity, on_delete=models.CASCADE)
-    identifier = models.CharField(max_length=255, unique=True)
-    
-    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp
-    version = models.IntegerField(default=1)  # Versioning
-
-    def __str__(self):
-        return self.contact_name
-
-
 class GeneralProductInformation(models.Model):
     id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)  # AAS compatible identifier
     semantic_id = models.URLField(blank=True, null=True)  # Semantic reference for standardization
@@ -65,20 +52,27 @@ class GeneralProductInformation(models.Model):
     battery_category = models.CharField(
         max_length=50, choices=BatteryCategoryEnum.choices
     )
-    manufacturer_information = models.ForeignKey(
-        ContactInformationEntity, on_delete=models.CASCADE, related_name="manufacturers"
+    
+    battery_cell = models.ForeignKey(
+        BatteryCell,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="batterycell_infos"
     )
+
+    manufacturer_information = models.ForeignKey(
+        ContactInformation, on_delete=models.CASCADE, related_name="manufacturers_info"
+    )
+
     manufacturing_date = models.DateField()
     battery_status = models.CharField(
         max_length=50, choices=BatteryStatusEnumeration.choices
     )
     battery_mass = models.FloatField(validators=[MinValueValidator(0)])  # Ensuring no negative values
     
-    manufacturing_place = models.ForeignKey(
-        PostalAddressEntity, on_delete=models.CASCADE, related_name="manufacturing_places"
-    )
     operator_information = models.ForeignKey(
-        ContactInformationEntity, on_delete=models.CASCADE, related_name="operators"
+        ContactInformation, on_delete=models.CASCADE, related_name="operators"
     )
     putting_into_service = models.DateField()
     warranty_period = models.DateField()

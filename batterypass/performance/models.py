@@ -1,3 +1,4 @@
+from django.utils.timezone import now
 from django.db import models
 
 
@@ -19,6 +20,7 @@ class InternalResistanceEntity(models.Model):
 
 class EvolutionOfSelfDischargeEntity(models.Model):
     value = models.FloatField()
+    last_update = models.DateTimeField(default=now)  # Add default
 
     def __str__(self):
         return f"Self-Discharge Evolution: {self.value}%"
@@ -151,6 +153,8 @@ class BatteryTechnicalPropertiesEntity(models.Model):
     c_rate_life_cycle_test = models.FloatField()
     temperature_range_idle_state = models.FloatField()
 
+    last_update = models.DateTimeField(default=now)
+    
     def __str__(self):
         return f"Battery Technical Properties - Rated Power: {self.rated_maximum_power} kW"
 
@@ -173,7 +177,11 @@ class BatteryConditionEntity(models.Model):
         RemainingRoundTripEnergyEfficiencyEntity, on_delete=models.CASCADE
     )
     state_of_charge = models.ForeignKey(StateOfChargeEntity, on_delete=models.CASCADE)
-
+    
+    # Add missing fields
+    created_at = models.DateTimeField(auto_now_add=True)
+    version = models.IntegerField(default=1)
+    
     def __str__(self):
         return f"Battery Condition - Energy Throughput: {self.energy_throughput} kWh"
 

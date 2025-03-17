@@ -4,192 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battery Passport Details</title>
-    <!-- Bootstrap 5 CSS -->
     {% load static %}
     {% load bootstrap5 %}
 
     {% bootstrap_css %}
     {% bootstrap_javascript %}
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-        }
-        .logo {
-            color: #8ed1a8;
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        .back-link {
-            color: #8ed1a8;
-            text-decoration: none;
-        }
-        .verified-badge {
-            background-color: #e6f7ed;
-            color: #8ed1a8;
-            border-radius: 20px;
-            padding: 2px 10px;
-            font-size: 0.8rem;
-        }
-        .passport-info {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .nav-tabs {
-            border-bottom: none;
-        }
-        .nav-link {
-            color: #6c757d;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        .nav-link.active {
-            background-color: #8ed1a8 !important;
-            color: white !important;
-            border: none;
-        }
-        .main-content {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        .info-section {
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .info-label {
-            color: #666;
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-        }
-        .info-value {
-            font-weight: bold;
-            color: #444;
-            font-size: 1.1rem;
-        }
-        .bg-light-gray {
-            background-color: #f5f5f5;
-            border-radius: 5px;
-        }
-        .qr-code-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 150px;
-            text-align: center;
-        }
-        .qr-code {
-            width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
-        .qr-code img {
-            width: 100%;
-            height: auto;
-        }
-        .economic-operator {
-            background-color: #f5f5f5;
-            padding: 5px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            color: #666;
-            text-align: center;
-        }
-        .spec-section {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        .spec-row-strip-dark {
-            background-color: #f6f6f6;
-        }
-        .spec-row-strip-light {
-            background-color: #fbfbfb;
-        }
-        .spec-title {
-            color: #666;
-            font-size: 0.8rem;
-        }
-        .spec-value {
-            font-weight: bold;
-            color: #444;
-        }
-        .image-placeholder {
-            height: 100%;
-            background-color: #f0f0f0;
-            border: 1px dashed #ccc;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        .summary-card {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            padding: 20px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-        .summary-title {
-            font-weight: bold;
-            text-align: center;
-        }
-        .arrow-indicator {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            color: #ddd;
-            font-size: 1.2rem;
-        }
-        .chart-container {
-            width: 100%;
-            height: 250px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .donut-chart {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle at center, white 40%, transparent 40%);
-        }
-        .donut-segment {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-        }
-        .recycled-chart {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-        .recycled-item {
-            position: relative;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-        }
-        .recycled-donut {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto;
-            position: relative;
-            border-radius: 50%;
-            background: radial-gradient(circle at center, white 50%, transparent 50%);
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
     <div class="container py-4">
@@ -204,14 +24,14 @@
 
         <!-- Back Button -->
         <div class="mb-3">
-            <a href="#" class="back-link">< Back to summary</a>
+            <a href="/summary/{{product.id}}" class="back-link">< Back to summary</a>
         </div>
 
         <!-- Passport Information -->
         <div class="passport-info mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <span>Passport ID : Passport123</span>
+                    <span>Passport ID :  {{product.battery_passport_identifier}}</span>
                     <span class="verified-badge ms-2">✓ Verified</span>
                 </div>
             </div>
@@ -254,21 +74,22 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-3">
                                 <div class="spec-title">Status</div>
-                                <div class="spec-value">Original</div>
+                                <div class="spec-value">{{product.battery_status}}</div>
                             </div>
     
                             <div class="col-md-3">
                                 <div class="spec-title">Expected Lifetime</div>
-                                <div class="spec-value">1200 cycles</div>
+                                <div class="spec-value">{{product.performance.battery_technical_properties.expected_lifetime}}</div>
                             </div>
     
                             <div class="col-md-3">
                                 <div class="spec-title">Voltage (min-nominal-max)</div>
-                                <div class="spec-value">450-662-742 V DC</div>
+                                <div class="spec-value">{{product.performance.battery_technical_properties.minimum_voltage}}-{{product.performance.battery_technical_properties.nominal_voltage}}-{{product.performance.battery_technical_properties.maximum_voltage}} V DC
+                                </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="spec-title">Temperature Range</div>
-                                <div class="spec-value">-30C to +60C</div>
+                                <div class="spec-value">{{product.performance.battery_condition.temperature_information.time_extreme_low_temp}}C to {{product.performance.battery_condition.temperature_information.time_extreme_high_temp}}C</div>
                             </div>
                         </div>
                     </div>
@@ -479,17 +300,17 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-4">
                                 <div class="spec-title">Serial Number</div>
-                                <div class="spec-value">D0C9LC6220P3S095</div>
+                                <div class="spec-value">{{product.product_identifier}}</div>
                             </div>
     
                             <div class="col-md-4">
                                 <div class="spec-title">Model Number</div>
-                                <div class="spec-value">4P 100kWh</div>
+                                <div class="spec-value">{{product.battery_id}}</div>
                             </div>
     
                             <div class="col-md-4">
                                 <div class="spec-title">Category</div>
-                                <div class="spec-value">EV</div>
+                                <div class="spec-value">{{product.battery_category|upper}}</div>
                             </div>
                         </div>
                     </div>
@@ -497,12 +318,12 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-4">
                                 <div class="spec-title">Weight</div>
-                                <div class="spec-value">580 kg</div>
+                                <div class="spec-value">{{product.battery_mass}}</div>
                             </div>
     
                             <div class="col-md-4">
                                 <div class="spec-title">Status</div>
-                                <div class="spec-value">Original</div>
+                                <div class="spec-value">{{product.battery_status}}</div>
                             </div>
     
                             <div class="col-md-4">
@@ -515,17 +336,17 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-4">
                                 <div class="spec-title">Manufacture Date</div>
-                                <div class="spec-value">30/08/2022</div>
+                                <div class="spec-value">{{product.manufacturing_date}}</div>
                             </div>
     
                             <div class="col-md-4">
                                 <div class="spec-title">Manufactured By</div>
-                                <div class="spec-value">Audi</div>
+                                <div class="spec-value">{{product.manufacturer_information.company_name}}</div>
                             </div>
     
                             <div class="col-md-4">
                                 <div class="spec-title">Country of Battery Production</div>
-                                <div class="spec-value">Germany</div>
+                                <div class="spec-value">{{product.manufacturer_information.address.country}}</div>
                             </div>
                         </div>
                     </div>
@@ -533,17 +354,17 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-4">
                                 <div class="spec-title">Battery Cell Producer</div>
-                                <div class="spec-value">CATL</div>
+                                <div class="spec-value">{{product.battery_cell.manufacturer.company_name}}</div>
                             </div>
     
                             <div class="col-md-4">
                                 <div class="spec-title">Country of Cell Production</div>
-                                <div class="spec-value">China</div>
+                                <div class="spec-value">{{product.battery_cell.manufacturer.address.country}}</div>
                             </div>
     
                             <div class="col-md-4">
                                 <div class="spec-title">Battery Cell Type</div>
-                                <div class="spec-value">Prismatic</div>
+                                <div class="spec-value">{{product.battery_cell.cell_type}}</div>
                             </div>
                         </div>
                     </div>
@@ -551,7 +372,7 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-4">
                                 <div class="spec-title">Number of cells per battery</div>
-                                <div class="spec-value">CATL</div>
+                                <div class="spec-value">{{product.battery_cell.number_of_cells}}</div>
                             </div>
                         </div>
                     </div>
@@ -573,21 +394,27 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-3">
                                 <div class="spec-title">Traceability</div>
-                                <div class="spec-value">(2/3) med</div>
+                                
+                                {% if product.material_composition.traceability %}
+                                    <div class="spec-value">Yes</div>
+                                {% else %}
+                                    <div class="spec-value">No</div>
+                                {% endif %}
+                                    
                             </div>
     
                             <div class="col-md-3">
                                 <div class="spec-title">Tracing Period Start</div>
-                                <div class="spec-value">11/01/2021</div>
+                                <div class="spec-value">{{product.material_composition.tracing_period_start}}</div>
                             </div>
     
                             <div class="col-md-3">
                                 <div class="spec-title">Tracing Period End</div>
-                                <div class="spec-value">12/01/2022</div>
+                                <div class="spec-value">{{product.material_composition.tracing_period_end}}</div>
                             </div>
                             <div class="col-md-3">
                                 <div class="spec-title">Battery Chemistry</div>
-                                <div class="spec-value">NCM811</div>
+                                <div class="spec-value">{{product.material_composition.battery_chemistry}}</div>
                             </div>
                         </div>
                     </div>
@@ -596,38 +423,40 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-3">
                                 <div class="spec-title">First Traced Material</div>
-                                <div class="spec-value">Cobalt</div>
+                                <div class="spec-value">{{product.material_composition.first_traced_material}}</div>
                             </div>
     
                             <div class="col-md-3">
                                 <div class="spec-title">Second Traced Material</div>
-                                <div class="spec-value">Lithium</div>
+                                <div class="spec-value">{{product.material_composition.second_traced_material}}</div>
                             </div>
     
                             <div class="col-md-3">
                                 <div class="spec-title">Physical Amount</div>
-                                <div class="spec-value">11 kg</div>
+                                <div class="spec-value">{{product.material_composition.physical_amount}}</div>
                             </div>
                             <div class="col-md-3">
-                                <div class="spec-title">Traced Amount/div>
-                                <div class="spec-value">100kg</div>
+                                <div class="spec-title">Traced Amount</div>
+                                <div class="spec-value">{{product.material_composition.traced_amount}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row py-2 mb-2 spec-row-strip-dark rounded">
+                        <div class="d-flex flex-wrap">
+                            <div class="col-md-3">
+                                <div class="spec-title">Country</div>
+                                <div class="spec-value">{{product.material_composition.manufacturer.address.country}}</div>
+                            </div>
+        
+                            <div class="col-md-3">
+                                <div class="spec-title">ESG Performance</div>
+                                <div class="spec-value">{{product.material_composition.esg_performance_summary}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row py-2 mb-2 spec-row-strip-dark rounded">
-                    <div class="d-flex flex-wrap">
-                        <div class="col-md-3">
-                            <div class="spec-title">Country</div>
-                            <div class="spec-value">Australia</div>
-                        </div>
-    
-                        <div class="col-md-3">
-                            <div class="spec-title">ESG Performance</div>
-                            <div class="spec-value">Reported</div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
         

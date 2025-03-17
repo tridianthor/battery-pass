@@ -52,11 +52,16 @@ INSTALLED_APPS = [
     'carbonfootprints',
     'generalproductinfo',
     'circularity',
+    'common',
+    'batterycell',
     'bootstrap5',
     'django_bootstrap_icons',
     'dal',
     'dal_select2',
-    'bootstrap_datepicker_plus'
+    'bootstrap_datepicker_plus',
+    "django_tables2",
+    'fontawesomefree',
+    'django_countries',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 # Internationalization
