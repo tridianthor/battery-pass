@@ -165,7 +165,7 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-3">
                                 <div class="spec-title">Separate Collection</div>
-                                <div class="spec-value">Ensure that the waste battery is disposed of according to material composition</div>
+                                <button class="btn btn-outline-success">Open Link</button>
                             </div>
                         </div>
                     </div>
@@ -173,7 +173,7 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-3">
                                 <div class="spec-title">End of Life Information. Waste Prevention</div>
-                                <div class="spec-value">Don't dispose battery at normal waste</div>
+                                <button class="btn btn-outline-success">Open Link</button>
                             </div>
                         </div>
                     </div>
@@ -184,53 +184,21 @@
                 <div class="summary-card" id="recycled-collapse" onclick="toggleContent('recycledContent', 'arrow-recycled')">
                     <div class="summary-title">Recycled Content Share</div>
                     <div class="arrow-indicator" id="arrow-recycled">▲</div>
-                    <div class="recycled-chart mt-4" id="recycledContent">
-                        <div class="recycled-item">
-                            <div class="recycled-donut" style="background-color: rgba(142, 209, 168, 0.1);">
-                                <div class="text-center position-absolute top-50 start-50 translate-middle">
-                                    <div style="font-weight: bold;">NICKEL</div>
-                                </div>
+                    <div class="mt-4" id="recycledContent">
+                        <div class="row p-3">
+                            <div class="recycled-item col-md-6">
+                                {{recycled_content_nickel_fig|safe}}
                             </div>
-                            <div class="mt-2">
-                                <div class="small text-muted">30%</div>
-                                <div class="small text-muted">15%</div>
-                                <div class="small text-muted">55%</div>
+                            <div class="recycled-item col-md-6">
+                                {{recycled_content_cobalt_fig|safe}}
                             </div>
                         </div>
-                        <div class="recycled-item">
-                            <div class="recycled-donut" style="background-color: rgba(142, 209, 168, 0.1);">
-                                <div class="text-center position-absolute top-50 start-50 translate-middle">
-                                    <div style="font-weight: bold;">COBALT</div>
-                                </div>
+                        <div class="row">
+                            <div class="recycled-item col-md-6">
+                                {{recycled_content_lithium_fig|safe}}
                             </div>
-                            <div class="mt-2">
-                                <div class="small text-muted">30%</div>
-                                <div class="small text-muted">15%</div>
-                                <div class="small text-muted">55%</div>
-                            </div>
-                        </div>
-                        <div class="recycled-item">
-                            <div class="recycled-donut" style="background-color: rgba(142, 209, 168, 0.1);">
-                                <div class="text-center position-absolute top-50 start-50 translate-middle">
-                                    <div style="font-weight: bold;">LITHIUM</div>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <div class="small text-muted">30%</div>
-                                <div class="small text-muted">15%</div>
-                                <div class="small text-muted">55%</div>
-                            </div>
-                        </div>
-                        <div class="recycled-item">
-                            <div class="recycled-donut" style="background-color: rgba(142, 209, 168, 0.1);">
-                                <div class="text-center position-absolute top-50 start-50 translate-middle">
-                                    <div style="font-weight: bold;">LEAD</div>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <div class="small text-muted">30%</div>
-                                <div class="small text-muted">15%</div>
-                                <div class="small text-muted">55%</div>
+                            <div class="recycled-item col-md-6">
+                                {{recycled_content_lead_fig|safe}}
                             </div>
                         </div>
                     </div>
@@ -244,46 +212,22 @@
             <div class="row p-2">
                 <div class="col-md-12">
                     <div class="row py-2 mb-2 spec-row-strip-dark rounded">
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="spec-title">Amount</div>
-                            <div class="spec-value">137.00gCO2e/kWh</div>
+                            <div class="spec-value">{{product.carbon_footprint.battery_carbon_footprint}}</div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="d-flex flex-wrap">
                                 <div class="d-flex justify-content-center align-items-center">
                                     <div class="summary-title">Carbon Footprint</div>
-                                    <div class="arrow-indicator" id="arrow-carbon-footprint">▲</div>
                                 </div>
                                 <div class="chart-container" id="carbonFootprintContent">
-                                    <div class="donut-chart" style="background-color: rgba(142, 209, 168, 0.1);">
-                                        <div class="text-center position-absolute top-50 start-50 translate-middle">
-                                            <div style="font-size: 0.8rem; color: #666;">7%</div>
-                                            <div style="font-size: 0.8rem; color: #666;">15%</div>
-                                            <div style="font-size: 0.8rem; color: #666;">23%</div>
-                                            <div style="font-size: 0.8rem; color: #666;">55%</div>
-                                        </div>
-                                        <div class="position-absolute start-0 end-0 text-center" style="top: -20px;">
-                                            <div class="small text-muted">recycling</div>
-                                            <div class="small text-muted">8gCO2e/kWh</div>
-                                        </div>
-                                        <div class="position-absolute start-0 end-0 text-center" style="bottom: -20px;">
-                                            <div class="small text-muted">raw material extraction</div>
-                                            <div class="small text-muted">69gCO2e/kWh</div>
-                                        </div>
-                                        <div class="position-absolute" style="left: -90px; top: 50%; transform: translateY(-50%);">
-                                            <div class="small text-muted">main production</div>
-                                            <div class="small text-muted">30gCO2e/kWh</div>
-                                        </div>
-                                        <div class="position-absolute" style="right: -90px; top: 50%; transform: translateY(-50%);">
-                                            <div class="small text-muted">distribution</div>
-                                            <div class="small text-muted">19gCO2e/kWh</div>
-                                        </div>
-                                    </div>
+                                    {{carbon_footprint_fig|safe}}
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="spec-title">Sustainability Report</div>
+                            <div class="spec-title">Carbon Footprint Study</div>
                             <button class="btn btn-outline-success">Open Link</button>
                         </div>
                     </div>
