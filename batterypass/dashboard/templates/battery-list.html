@@ -28,18 +28,22 @@
         <!-- Search Section -->
         <div class="search-container">
             <h4 class="search-heading">Scan a battery pass QR code, or manually enter a battery ID to proceed</h4>
-            <div class="input-group">
-                <input type="text" placeholder="Search..." class="form-control">
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-outline-secondary">
-                        {% bs_icon 'search' size='1em' %}
-                    </button>
+            <form method="get">
+                <div class="input-group">
+                    <input type="text" id="searchInput" name="search" value="{{ search_query }}" class="form-control">
+                    <div class="input-group-append">
+                        <a class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-qrcode"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
+        <div id="searchResults"></div>
 
         {% render_table table %}
     </div>
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+    <script src="{% static 'js/battsearch.js' %}"></script>
 </body>
 </html>

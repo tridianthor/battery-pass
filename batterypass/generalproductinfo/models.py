@@ -1,6 +1,15 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.core.files.base import ContentFile
+from django.conf import settings
+
 import uuid
+import django_filters
+import qrcode
+import os
+
+from io import BytesIO
+from utils.upload_util import Upload
 
 from duediligence.models import SupplyChainDueDiligence
 from labeling.models import Labeling
@@ -108,3 +117,36 @@ class GeneralProductInformation(models.Model):
 
     def __str__(self):
         return self.product_identifier
+
+def generate_qr_code(data, filename):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Save the QR code image to a BytesIO buffer
+    buffer = BytesIO()
+    img.save(buffer, format='PNG')
+    buffer.seek(0)
+
+    file_path = os.path.join(settings.MEDIA_ROOT, f"{filename}.png")
+    with open(file_path, 'wb') as f:
+        f.write(buffer.getvalue())
+
+    return os.path.join(settings.MEDIA_URL, f"{filename}.png")
+
+class GeneralProductInfoFilter(django_filters.FilterSet):
+    search = django_filters.CharFilter(method='filter_search')
+    class Meta:
+        model = GeneralProductInformation
+        fields = ['battery_passport_identifier']
+    
+    def filter_search(self, queryset, name, value):
+        return queryset.filter(battery_passport_identifier__icontains=value)
+    

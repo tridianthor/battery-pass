@@ -4,7 +4,7 @@ from django.views.generic.base import RedirectView
 from . import views
 
 urlpatterns = [
-    path('batteries/', views.GeneralProductInfoListView.as_view(), name='batteries'),
+    path('batteries/', views.batteries, name='batteries'),
     path('summary/', views.summary, name='summary'),
     path('summary/<int:pk>/', views.summary, name='summary_pk'),
     path('summary/<str:code>/', views.summary, name='summary_code'),

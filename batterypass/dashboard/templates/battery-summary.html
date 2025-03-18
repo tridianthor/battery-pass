@@ -126,15 +126,17 @@
 
         <div class="row">
             <!-- Original Power -->
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
                 <div class="summary-card">
                     <div class="summary-title">Original Power</div>
                     <div class="arrow-indicator">▼</div>
                 </div>
             </div>
-
+        </div>
+        
+        <div class="row">
             <!-- Recycled Content Share -->
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
                 <div class="summary-card" id="recycled-collapse" onclick="toggleContent('recycledContent', 'arrow-recycled')">
                     <div class="summary-title">Recycled Content Share</div>
                     <div class="arrow-indicator" id="arrow-recycled">▲</div>
@@ -154,16 +156,19 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="row">
             <!-- Carbon Footprint -->
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
                 <div class="summary-card" id="carbon-collapse" onclick="toggleContent('carbonFootprintContent', 'arrow-carbon-footprint')">
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="summary-title">Carbon Footprint</div>
                         <div class="arrow-indicator" id="arrow-carbon-footprint">▲</div>
                     </div>
-                    <div class="recycled-item mt-4" id="carbonFootprintContent">
-                        {{carbon_footprint_fig|safe}}
+                    <div class="d-flex justify-content-center align-items-center mt-4">
+                        <div class="recycled-item"  id="carbonFootprintContent">
+                            {{carbon_footprint_fig|safe}}
+                        </div>
                     </div>
                 </div>
             </div>

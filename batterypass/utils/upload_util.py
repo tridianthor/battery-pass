@@ -1,5 +1,6 @@
 from utils.resp import Resp
 from django.core.files.storage import FileSystemStorage
+from django.core.files.base import ContentFile
 
 import os
 
@@ -11,9 +12,9 @@ class Upload:
                 for chunk in uploaded_file.chunks():
                     f.write(chunk) """
     @classmethod
-    def handle_single_upload(self, path, file, intended_filename):
+    def handle_single_upload(cls, path, file, intended_filename):
         private_storage = FileSystemStorage(location=path)
-        extension = self.get_file_extension(file.name)
+        extension = cls.get_file_extension(file.name if isinstance(file, ContentFile) else file.name)
         uploaded_file = private_storage.save(f'{intended_filename}{extension}', file)
         return uploaded_file
     
