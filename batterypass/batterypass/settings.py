@@ -32,7 +32,8 @@ ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'accounts.Account'
 
-SITE_URL = "http://192.168.1.125:8000" #dev
+#SITE_URL = "http://192.168.1.125:8000" #dev
+SITE_URL = "http://localhost:8000" #dev
 
 # Application definition
 
