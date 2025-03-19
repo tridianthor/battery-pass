@@ -25,23 +25,44 @@
             </div>
         </header>
 
-        <!-- Search Section -->
-        <div class="search-container">
-            <h4 class="search-heading">Scan a battery pass QR code, or manually enter a battery ID to proceed</h4>
-            <form method="get">
-                <div class="input-group">
-                    <input type="text" id="searchInput" name="search" value="{{ search_query }}" class="form-control">
-                    <div class="input-group-append">
-                        <a class="btn btn-outline-secondary">
-                            <i class="fa-solid fa-qrcode"></i>
-                        </a>
+        <div class="d-none d-md-block">
+            <div class="container">
+                <!-- Search Section -->
+                <div class="search-container">
+                    <h4 class="search-heading">Scan a battery pass QR code, or manually enter a battery ID to proceed</h4>
+                    <form method="get">
+                        <div class="input-group">
+                            <input type="text" id="searchInput" name="search" value="{{ search_query }}" class="form-control">
+                            <div class="input-group-append">
+                                <a class="btn btn-outline-secondary">
+                                    <i class="fa-solid fa-qrcode"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {% render_table table %}
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-        <div id="searchResults"></div>
-
-        {% render_table table %}
+        <div class="d-md-none">
+            <div class="container">
+                {% for row in table.rows %}
+                
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>{{ row.record.battery_passport_identifier }}</h5>
+                            <p>{{ row.record.battery_category }}</p>
+                            <p>{{ row.record.manufacturing_date }}</p>
+                            <a href="/summary/{{row.record.id}}" class="btn btn-sm" style="background-color: #8ed1a8; border-color: #8ed1a8; color: white;">Summary</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
     <script src="{% static 'js/battsearch.js' %}"></script>

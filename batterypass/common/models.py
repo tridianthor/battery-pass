@@ -18,7 +18,7 @@ class Address(models.Model):
     version = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"{self.country}"
+        return f"{self.street_address}, {self.postal_code}, {self.country.name}"
 
 class ContactType(models.TextChoices):
     """

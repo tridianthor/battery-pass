@@ -5,4 +5,8 @@ from .models import PostalAddressEntity, GeneralProductInformation
 # Register your models here.
 
 dpp_admin.register(PostalAddressEntity)
-dpp_admin.register(GeneralProductInformation)
+
+class GeneralProductInformationAdmin(admin.ModelAdmin):
+    exclude = ('qr_code',)
+
+dpp_admin.register(GeneralProductInformation, GeneralProductInformationAdmin)

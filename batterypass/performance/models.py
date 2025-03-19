@@ -190,8 +190,27 @@ class PerformanceAndDurability(models.Model):
     battery_technical_properties = models.ForeignKey(BatteryTechnicalPropertiesEntity, on_delete=models.CASCADE)
     battery_condition = models.ForeignKey(BatteryConditionEntity, on_delete=models.CASCADE)
 
+    material_flow_aggregation = models.CharField(
+        max_length=255, null=True, blank=True, help_text="E.g., 'Individual battery', 'Module level', etc."
+    )
+
+    interoperability = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text="Interoperability description, e.g., '(2/5)', '(0-100%)', '(Individual battery)', '(Module level)', etc."
+    )
+
+    interoperability_document = models.FileField(
+        upload_to='interoperability/',
+        null=True,
+        blank=True,
+        help_text="Upload the interoperability documentation file."
+    )
+    
     def __str__(self):
-        return f"Performance and Durability Data"
+        return "Performance and Durability Data"
+    
 
 class NegativeEventEntity(models.Model):
     negative_event = models.CharField(max_length=255)

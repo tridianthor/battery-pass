@@ -65,7 +65,7 @@
         <!-- Main Content -->
         {% comment %} Don't know why, when I put other section after materials section, the added section just disappeared {% endcomment %}
         <div class="main-content p-3 mb-4 d-none" id="performance-section">
-            <h4>Materials</h4>
+            <h4>Performance</h4>
             <p class="text-muted">Battery performance information</p>
 
             <div class="row p-2">
@@ -98,12 +98,12 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-3">
                                 <div class="spec-title">Material Flow Aggregation</div>
-                                <div class="spec-value">Individual Battery</div>
+                                <div class="spec-value">{{product.performance.material_flow_aggregation}}</div>
                             </div>
     
                             <div class="col-md-3">
                                 <div class="spec-title">Interoperability</div>
-                                <div class="spec-value">(0/3) low</div>
+                                <div class="spec-value">{{product.performance.interoperability}}</div>
                             </div>
                         </div>
                     </div>
@@ -249,7 +249,7 @@
     
                             <div class="col-md-4">
                                 <div class="spec-title">Model Number</div>
-                                <div class="spec-value">{{product.battery_id}}</div>
+                                <div class="spec-value">{{product.battery_model_number}}</div>
                             </div>
     
                             <div class="col-md-4">
@@ -272,7 +272,7 @@
     
                             <div class="col-md-4">
                                 <div class="spec-title">Total Energy</div>
-                                <div class="spec-value">100 kWh</div>
+                                <div class="spec-value">{{product.performance.battery_technical_properties.rated_energy}}</div>
                             </div>
                         </div>
                     </div>
@@ -321,10 +321,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 d-flex">
-                    <div class="image-placeholder" style="flex:1;">
-                        QR
-                    </div>
+                <div class="col-md-3 d-flex flex-column justify-content-center">
+                    <img src="{{product.qr_code}}" alt="QR Code">
                 </div>
             </div>
         </div>

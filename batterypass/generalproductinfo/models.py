@@ -56,7 +56,10 @@ class GeneralProductInformation(models.Model):
 
     battery_id = models.CharField(max_length=255, unique=True)  # Standardized identifier
     product_identifier = models.CharField(max_length=255, unique=True)
+    battery_model_number = models.CharField(max_length=255, null=True) # Model Number should not be part of 
     battery_passport_identifier = models.CharField(max_length=255, unique=True)
+    
+    qr_code = models.ImageField(upload_to='qrcodes/', blank=True, null=True)
     
     battery_category = models.CharField(
         max_length=50, choices=BatteryCategoryEnum.choices
@@ -117,6 +120,14 @@ class GeneralProductInformation(models.Model):
 
     def __str__(self):
         return self.product_identifier
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.qr_code:
+            filename = f"qr_{self.id_short}.png"
+            qr_code_url = generate_qr_code(f"{settings.SITE_URL}/summary/{self.battery_passport_identifier}", filename)
+            self.qr_code = qr_code_url
+            super().save(*args, **kwargs)
 
 def generate_qr_code(data, filename):
     qr = qrcode.QRCode(
@@ -135,11 +146,22 @@ def generate_qr_code(data, filename):
     img.save(buffer, format='PNG')
     buffer.seek(0)
 
-    file_path = os.path.join(settings.MEDIA_ROOT, f"{filename}.png")
+    file_path = os.path.join(settings.MEDIA_ROOT, f"{filename}")
     with open(file_path, 'wb') as f:
         f.write(buffer.getvalue())
 
-    return os.path.join(settings.MEDIA_URL, f"{filename}.png")
+    return os.path.join(settings.MEDIA_URL, f"{filename}")
+
+def regenerate_qr_code(pk=None, code=None):
+    if pk is not None:
+        product = GeneralProductInformation.objects.get(pk=pk)
+    else:
+        product = GeneralProductInformation.objects.get(battery_passport_identifier=code)
+    
+    filename = f"qr_{product.id_short}.png"
+    qr_code_url = generate_qr_code(f"{settings.SITE_URL}/summary/{product.battery_passport_identifier}", filename)
+    product.qr_code = qr_code_url
+    product.save()
 
 class GeneralProductInfoFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(method='filter_search')

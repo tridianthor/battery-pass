@@ -13,6 +13,13 @@ class SupplyChainDueDiligence(models.Model):
         null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )  # Percentage-based index (0-100%)
 
+    # New field for Sustainability Report
+    sustainability_report = models.FileField(
+        upload_to='supplychain/sustainability_reports/', null=True, blank=True,
+        help_text="Upload the sustainability report PDF file."
+    )
+
+
     hash_signature = models.CharField(max_length=256, null=True, blank=True)  # Blockchain readiness
 
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp

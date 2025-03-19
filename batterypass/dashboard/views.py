@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseServerError, HttpResponse
@@ -18,7 +19,7 @@ class GeneralProductInfoTable(tables.Table):
         template_name = 'battery-table.html'
         fields = ('battery_passport_identifier', 'battery_category', 'manufacturing_date', 'detail')
         attrs = {
-            'class': 'table table-borderless table-striped table-hover',
+            'class': 'table table-responsive table-borderless table-striped table-hover',
         }
     
     def __init__(self, *args, **kwargs):
@@ -60,7 +61,7 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
     if pk is not None:
         product = get_object_or_404(GeneralProductInformation, pk=pk)
     else:
-        product = get_object_or_404(GeneralProductInformation, battery_id=code)
+        product = get_object_or_404(GeneralProductInformation, battery_passport_identifier=code)
     
     carbon_footprint_df = product.carbon_footprint.carbon_footprint_per_lifecycle_stage.all()
     recycled_content_cobalt_df = product.circularity.recycled_content.filter(recycled_material='Cobalt')
@@ -125,6 +126,7 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
     )
     
     return {
+        'media_url': settings.MEDIA_URL,
         'product': product,
         'carbon_footprint_fig': carbon_footprint_fig.to_html(),
         'recycled_content_cobalt_fig': recycled_content_cobalt_fig.to_html(),
@@ -134,12 +136,12 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
     }
 
 def summary(request, pk=None, code=None):
-    context = get_battery(pk=pk, chart_height=300)
+    context = get_battery(pk=pk, code=code, chart_height=300)
     
     return render(request, "battery-summary.html", context)
 
 def detail(request, pk=None, code=None):
-    context = get_battery(pk, chart_width=400, chart_width_wide=350, chart_height=300)
+    context = get_battery(pk, code=code, chart_width=400, chart_width_wide=350, chart_height=300)
     
     return render(request, "battery-detail.html", context)
 

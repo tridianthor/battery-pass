@@ -146,3 +146,6 @@ class Circularity(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp
     version = models.IntegerField(default=1)  #
+    
+    def __str__(self):
+        return f"{self.circularity_id}"
