@@ -302,7 +302,8 @@ body {
     background-color: #fff; /* Match the input background */
     border: 1px solid #e6e6e6; /* Add border to button */
 }
-.btn-outline-primary:hover,
+
+/* .btn-outline-primary:hover,
 .btn-outline-secondary:hover,
 .btn-outline-success:hover,
 .btn-outline-warning:hover,
@@ -311,7 +312,7 @@ body {
 .btn-outline-light:hover,
 .btn-outline-dark:hover {
     pointer-events: none;
-}
+} */
 
 th.orderable a {
     display: inline-flex; /* Use flexbox for alignment */
@@ -344,4 +345,41 @@ th.orderable.desc a::after {
 /* Add hover effect */
 th.orderable:hover {
     background-color: #f0f0f0; /* Light hover background */
+}
+
+.modal-content {
+    background-color: #343a40; /* Dark background */
+    color: white;
+    border-radius: 10px;
+}
+.modal-header {
+    border-bottom: none;
+}
+.modal-title {
+    font-size: 1.25rem;
+}
+.modal-header .btn-close {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+}
+.modal-body {
+    padding: 20px;
+}
+.modal-footer {
+    border-top: none;
+    justify-content: center;
+}
+.btn-green {
+    background-color: #00b386; /* Green button */
+    border: none;
+}
+.btn-green:hover {
+    background-color: #00966e;
+}
+#cameraFeed div video {
+    width: 100%; /* Make the video fill the container */
+    height: 100%; /* Make the video fill the container */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
 }

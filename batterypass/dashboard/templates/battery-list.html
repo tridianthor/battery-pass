@@ -32,22 +32,39 @@
                     <div class="input-group">
                         <input type="text" id="searchInput" name="search" value="{{ search_query }}" class="form-control">
                         <div class="input-group-append">
-                            <a class="btn btn-outline-secondary" id="qr-scan-button">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#qrPopup">
                                 <i class="fa-solid fa-qrcode"></i>
-                            </a>
+                            </button>
                             
-                            <input type="file" id="file-upload" style="display: none;">
+                            {% comment %} <input type="file" id="file-upload" style="display: none;">
 
                             <input type="file" id="qr-image-upload" accept="image/*">
-                            <div id="qr-result"></div>
+                            <div id="qr-result"></div> {% endcomment %}
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div id="cameraFeed" style="width:200px;height=200px">
-
+        <div class="modal fade" id="qrPopup" tabindex="-1" aria-labelledby="qrPopupLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="qrPopupLabel">Scan a battery pass QR code</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id=cameraFeed class="modal-body">
+                        <div style="background-color: #495057; height: 200px; margin-bottom: 20px;">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="qr-scan-button" type="button" class="btn btn-green">Start scanning</button>
+                        <p><button id="qr-image-upload-button" type="button" class="btn btn-outline-success">Scan an image file</button></p>
+                        <input type="file" id="qr-image-upload" accept="image/*" style="display: none;">
+                        <div id="qr-result"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="d-none d-md-block">
@@ -79,98 +96,13 @@
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
     <script src="{% static 'js/battsearch.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js "></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const qrScanButton = document.getElementById('qr-scan-button');
-            const fileUpload = document.getElementById('qr-result');
-            const cameraFeed = document.getElementById('cameraFeed');
-
-        
-            qrScanButton.addEventListener('click', function() {
-                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    // Check for camera availability
-                    navigator.mediaDevices.getUserMedia({ video: true })
-                        .then(function(stream) {
-                            const video = document.createElement('video');
-                            video.srcObject = stream;
-                            video.play();
-
-                            video.addEventListener('loadedmetadata', function() {
-                                const canvas = document.createElement('canvas');
-                                const context = canvas.getContext('2d');
-                                canvas.width = video.videoWidth;
-                                canvas.height = video.videoHeight;
-
-                                function scanQRCode() {
-                                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                                    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                                    const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-                                    if (code) {
-                                        window.location.href = code.data;
-                                        console.log('QR code detected:', code.data);
-                                        stream.getTracks().forEach(track => track.stop());
-                                    } else {
-                                        requestAnimationFrame(scanQRCode);
-                                    }
-                                }
-
-                                requestAnimationFrame(scanQRCode);
-                            });
-                        })
-                        .catch(function(error) {
-                            // Camera is not available, open file explorer
-                            console.log(error);
-                            console.log('Camera not available, open file explorer.');
-                            fileUpload.click(); // Trigger the file input
-                        });
-                } else {
-                    // navigator.mediaDevices is not available, open file explorer
-                    console.log('navigator.mediaDevices is not available, open file explorer.');
-                    fileUpload.click(); // Trigger the file input
-                }
-            });
-        });
+    
+    {% comment %} qr scan {% endcomment %}
+    
+    <script src="{% static 'js/qrs.js' %}">
     </script>
 
     {% comment %} qr upload {% endcomment %}
     
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const fileInput = document.getElementById('qr-image-upload');
-            const qrResultDiv = document.getElementById('qr-result');
-
-            fileInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        const img = new Image();
-                        img.onload = function() {
-                            const canvas = document.createElement('canvas');
-                            canvas.width = img.width;
-                            canvas.height = img.height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0);
-
-                            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                            const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-                            if (code) {
-                                qrResultDiv.textContent = 'QR Code Result: ' + code.data;
-                                window.location.href = code.data;
-                            } else {
-                                qrResultDiv.textContent = 'QR code not found.';
-                            }
-                        };
-                        img.src = e.target.result;
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
-    </script>
 </body>
 </html>
