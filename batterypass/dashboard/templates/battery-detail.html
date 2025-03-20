@@ -10,6 +10,14 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <style>
+        @media (max-width: 767.98px) {
+            ul.nav.nav-tabs.flex-column .nav-item .nav-link {
+                width: 100%;
+                text-align: left;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container py-4">
@@ -38,7 +46,7 @@
         </div>
 
         <!-- Navigation Tabs -->
-        <ul class="nav nav-tabs mb-4">
+        <ul class="nav nav-tabs mb-4 flex-column flex-md-row w-100">
             <li class="nav-item">
                 <button class="nav-link active" data-section="general">General</button>
             </li>
@@ -69,39 +77,35 @@
             <p class="text-muted">Battery performance information</p>
 
             <div class="row p-2">
-                <div class="col-md-12">
+                <div class="col-12">
                     <div class="row py-2 mb-2 spec-row-strip-dark rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">Status</div>
                                 <div class="spec-value">{{product.battery_status}}</div>
                             </div>
-    
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">Expected Lifetime</div>
                                 <div class="spec-value">{{product.performance.battery_technical_properties.expected_lifetime}}</div>
                             </div>
-    
-                            <div class="col-md-3">
+                            <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">Voltage (min-nominal-max)</div>
-                                <div class="spec-value">{{product.performance.battery_technical_properties.minimum_voltage}}-{{product.performance.battery_technical_properties.nominal_voltage}}-{{product.performance.battery_technical_properties.maximum_voltage}} V DC
-                                </div>
+                                <div class="spec-value">{{product.performance.battery_technical_properties.minimum_voltage}}-{{product.performance.battery_technical_properties.nominal_voltage}}-{{product.performance.battery_technical_properties.maximum_voltage}} V DC</div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-12 col-md-3">
                                 <div class="spec-title">Temperature Range</div>
                                 <div class="spec-value">{{product.performance.battery_condition.temperature_information.time_extreme_low_temp}}C to {{product.performance.battery_condition.temperature_information.time_extreme_high_temp}}C</div>
                             </div>
                         </div>
                     </div>
-                    
+            
                     <div class="row py-2 mb-2 spec-row-strip-light rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">Material Flow Aggregation</div>
                                 <div class="spec-value">{{product.performance.material_flow_aggregation}}</div>
                             </div>
-    
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3">
                                 <div class="spec-title">Interoperability</div>
                                 <div class="spec-value">{{product.performance.interoperability}}</div>
                             </div>
@@ -115,14 +119,13 @@
             <p class="text-muted">Regulatory compliance of the battery</p>
 
             <div class="row p-2 py-2 mb-2">
-                <div class="col-md-12 p-2 spec-row-strip-dark rounded">
+                <div class="col-12 p-2 spec-row-strip-dark rounded">
                     <div class="d-flex flex-wrap">
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3 mb-2 mb-md-0">
                             <div class="spec-title">Conformity Assessment</div>
                             <button class="btn btn-outline-success">Open Link</button>
                         </div>
-    
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3">
                             <div class="spec-title">Interoperability</div>
                             <button class="btn btn-outline-success">Open Link</button>
                         </div>
@@ -137,17 +140,17 @@
             <div class="row p-2 py-2 mb-2">
                 <div class="col-md-12 p-2 spec-row-strip-dark rounded">
                     <div class="d-flex flex-wrap">
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3 mb-2 mb-md-0">
                             <div class="spec-title">Sustainability Report</div>
                             <button class="btn btn-outline-success">Open Link</button>
                         </div>
     
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3 mb-2 mb-md-0">
                             <div class="spec-title">Due Diligence Report</div>
                             <button class="btn btn-outline-success">Open Link</button>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="ccol-12 col-md-3">
                             <div class="spec-title">Third Party Audit</div>
                             <button class="btn btn-outline-success">Open Link</button>
                         </div>
@@ -239,20 +242,16 @@
             <p class="text-muted">Generic information about the battery</p>
 
             <div class="row p-2">
-                <div class="col-md-9">
-                    <div class="row py-2 mb-2 spec-row-strip-dark rounded">
+                <div class="col-12 col-md-9"> <div class="row py-2 mb-2 spec-row-strip-dark rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-4">
-                                <div class="spec-title">Serial Number</div>
+                            <div class="col-6 col-md-4 mb-2 mb-md-0"> <div class="spec-title">Serial Number</div>
                                 <div class="spec-value">{{product.product_identifier}}</div>
                             </div>
-    
-                            <div class="col-md-4">
+                            <div class="col-6 col-md-4 mb-2 mb-md-0">
                                 <div class="spec-title">Model Number</div>
                                 <div class="spec-value">{{product.battery_model_number}}</div>
                             </div>
-    
-                            <div class="col-md-4">
+                            <div class="col-12 col-md-4">
                                 <div class="spec-title">Category</div>
                                 <div class="spec-value">{{product.battery_category|upper}}</div>
                             </div>
@@ -260,17 +259,15 @@
                     </div>
                     <div class="row py-2 mb-2 spec-row-strip-light rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-4">
+                            <div class="col-6 col-md-4 mb-2 mb-md-0">
                                 <div class="spec-title">Weight</div>
                                 <div class="spec-value">{{product.battery_mass}}</div>
                             </div>
-    
-                            <div class="col-md-4">
+                            <div class="col-6 col-md-4 mb-2 mb-md-0">
                                 <div class="spec-title">Status</div>
                                 <div class="spec-value">{{product.battery_status}}</div>
                             </div>
-    
-                            <div class="col-md-4">
+                            <div class="col-12 col-md-4">
                                 <div class="spec-title">Total Energy</div>
                                 <div class="spec-value">{{product.performance.battery_technical_properties.rated_energy}}</div>
                             </div>
@@ -278,17 +275,15 @@
                     </div>
                     <div class="row py-2 mb-2 spec-row-strip-dark rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-4">
+                            <div class="col-6 col-md-4 mb-2 mb-md-0">
                                 <div class="spec-title">Manufacture Date</div>
                                 <div class="spec-value">{{product.manufacturing_date}}</div>
                             </div>
-    
-                            <div class="col-md-4">
+                            <div class="col-6 col-md-4 mb-2 mb-md-0">
                                 <div class="spec-title">Manufactured By</div>
                                 <div class="spec-value">{{product.manufacturer_information.company_name}}</div>
                             </div>
-    
-                            <div class="col-md-4">
+                            <div class="col-12 col-md-4">
                                 <div class="spec-title">Country of Battery Production</div>
                                 <div class="spec-value">{{product.manufacturer_information.address.country.name}}</div>
                             </div>
@@ -296,17 +291,15 @@
                     </div>
                     <div class="row py-2 mb-2 spec-row-strip-light rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-4">
+                            <div class="col-6 col-md-4 mb-2 mb-md-0">
                                 <div class="spec-title">Battery Cell Producer</div>
                                 <div class="spec-value">{{product.battery_cell.manufacturer.company_name}}</div>
                             </div>
-    
-                            <div class="col-md-4">
+                            <div class="col-6 col-md-4 mb-2 mb-md-0">
                                 <div class="spec-title">Country of Cell Production</div>
                                 <div class="spec-value">{{product.battery_cell.manufacturer.address.country.name}}</div>
                             </div>
-    
-                            <div class="col-md-4">
+                            <div class="col-12 col-md-4">
                                 <div class="spec-title">Battery Cell Type</div>
                                 <div class="spec-value">{{product.battery_cell.cell_type}}</div>
                             </div>
@@ -314,16 +307,14 @@
                     </div>
                     <div class="row py-2 mb-2 spec-row-strip-dark rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-4">
+                            <div class="col-12">
                                 <div class="spec-title">Number of cells per battery</div>
                                 <div class="spec-value">{{product.battery_cell.number_of_cells}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 d-flex flex-column justify-content-center">
-                    <img src="{{product.qr_code}}" alt="QR Code">
-                </div>
+                <div class="col-12 col-md-3 d-flex flex-column justify-content-center align-items-center"> <img src="{{product.qr_code}}" alt="QR Code" class="img-fluid"> </div>
             </div>
         </div>
         <div class="main-content p-3 mb-4 d-none" id="materials-section">
@@ -331,74 +322,64 @@
             <p class="text-muted">Material composition of the battery</p>
 
             <div class="row p-2">
-                <div class="col-md-12">
-                    <div class="row py-2 mb-2 spec-row-strip-dark rounded">
+                <div class="col-12"> <div class="row py-2 mb-2 spec-row-strip-dark rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-3">
-                                <div class="spec-title">Traceability</div>
-                                
+                            <div class="col-6 col-md-3 mb-2 mb-md-0"> <div class="spec-title">Traceability</div>
                                 {% if product.material_composition.traceability %}
                                     <div class="spec-value">Yes</div>
                                 {% else %}
                                     <div class="spec-value">No</div>
                                 {% endif %}
-                                    
                             </div>
-    
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">Tracing Period Start</div>
                                 <div class="spec-value">{{product.material_composition.tracing_period_start}}</div>
                             </div>
-    
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">Tracing Period End</div>
                                 <div class="spec-value">{{product.material_composition.tracing_period_end}}</div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3">
                                 <div class="spec-title">Battery Chemistry</div>
                                 <div class="spec-value">{{product.material_composition.battery_chemistry}}</div>
                             </div>
                         </div>
                     </div>
-                    
+            
                     <div class="row py-2 mb-2 spec-row-strip-light rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">First Traced Material</div>
                                 <div class="spec-value">{{product.material_composition.first_traced_material}}</div>
                             </div>
-    
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">Second Traced Material</div>
                                 <div class="spec-value">{{product.material_composition.second_traced_material}}</div>
                             </div>
-    
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">Physical Amount</div>
                                 <div class="spec-value">{{product.material_composition.physical_amount}}</div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3">
                                 <div class="spec-title">Traced Amount</div>
                                 <div class="spec-value">{{product.material_composition.traced_amount}}</div>
                             </div>
                         </div>
                     </div>
-
+            
                     <div class="row py-2 mb-2 spec-row-strip-dark rounded">
                         <div class="d-flex flex-wrap">
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <div class="spec-title">Country</div>
                                 <div class="spec-value">{{product.material_composition.manufacturer.address.country.name}}</div>
                             </div>
-        
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3">
                                 <div class="spec-title">ESG Performance</div>
                                 <div class="spec-value">{{product.material_composition.esg_performance_summary}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
         
