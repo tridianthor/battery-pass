@@ -1,3 +1,5 @@
 batterypass/.env
 batterypass/db.sqlite3
 batterypass/media/
+
+__pycache__/
