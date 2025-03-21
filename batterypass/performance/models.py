@@ -149,7 +149,9 @@ class BatteryTechnicalPropertiesEntity(models.Model):
     minimum_voltage = models.FloatField()
     maximum_voltage = models.FloatField()
     capacity_threshold_for_exhaustion = models.FloatField()
-    lifetime_reference_test = models.FileField()
+    lifetime_reference_test = models.FileField(
+        upload_to="performance/lifetime_reference_test"
+    )
     c_rate_life_cycle_test = models.FloatField()
     temperature_range_idle_state = models.FloatField()
 

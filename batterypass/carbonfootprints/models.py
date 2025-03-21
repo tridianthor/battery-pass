@@ -38,7 +38,9 @@ class CarbonFootprintForBatteries(models.Model):
         CarbonFootprintPerLifecycleStageEntity, related_name="batteries"
     )
     carbon_footprint_performance_class = models.CharField(max_length=255)
-    carbon_footprint_study = models.FileField()
+    carbon_footprint_study = models.FileField(
+        upload_to="carbon_footprints/carbonfoot_print_study"
+    )
 
     absolute_carbon_footprint = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
 

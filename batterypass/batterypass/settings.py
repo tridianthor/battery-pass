@@ -28,12 +28,15 @@ SECRET_KEY = 'django-insecure-#mxg7d0idb+%s)5)7t%!g8-sbtqry&e3g*#9*t982&$02gz3n_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://5585-125-164-15-85.ngrok-free.app', '*']
+
+CSRF_TRUSTED_ORIGINS = ['https://5585-125-164-15-85.ngrok-free.app'] 
 
 AUTH_USER_MODEL = 'accounts.Account'
 
 #SITE_URL = "http://192.168.1.125:8000" #dev
-SITE_URL = "http://localhost:8000" #dev
+#SITE_URL = "http://localhost:8000" #dev
+SITE_URL = "https://5585-125-164-15-85.ngrok-free.app" #dev
 
 # Application definition
 

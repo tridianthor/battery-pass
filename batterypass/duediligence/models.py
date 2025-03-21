@@ -7,8 +7,12 @@ class SupplyChainDueDiligence(models.Model):
     semantic_id = models.URLField(blank=True, null=True)  # Standardized reference
 
     supply_chain_id = models.CharField(max_length=255, unique=True)  # Standardized identifier
-    supply_chain_due_diligence_report = models.FileField(max_length=255)  # URL to due diligence report
-    third_party_assurances = models.FileField(null=True, blank=True)  # Optional third-party validation
+    supply_chain_due_diligence_report = models.FileField(
+        upload_to='supplychain/due_diligence_report',
+        max_length=255)  # URL to due diligence report
+    third_party_assurances = models.FileField(
+        upload_to='supplychain/third_party_assurances',
+        null=True, blank=True)  # Optional third-party validation
     supply_chain_indices = models.FloatField(
         null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(100)]
     )  # Percentage-based index (0-100%)

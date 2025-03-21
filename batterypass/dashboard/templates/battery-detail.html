@@ -1,25 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Battery Passport Details</title>
-    {% load static %}
-    {% load bootstrap5 %}
+{% extends "base.html" %}
+{% load static %}
 
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
+{% block title %}Battery Details{% endblock title %}
+
+
+{% block extra_styles %}
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    <style>
-        @media (max-width: 767.98px) {
-            ul.nav.nav-tabs.flex-column .nav-item .nav-link {
-                width: 100%;
-                text-align: left;
-            }
-        }
-    </style>
-</head>
-<body>
+{% endblock extra_styles %}
+
+{% block content %}
     <div class="container py-4">
         <!-- Header -->
         <header class="d-flex justify-content-between align-items-center mb-4">
@@ -123,11 +112,11 @@
                     <div class="d-flex flex-wrap">
                         <div class="col-12 col-md-3 mb-2 mb-md-0">
                             <div class="spec-title">Conformity Assessment</div>
-                            <button class="btn btn-outline-success">Open Link</button>
+                            <a href="{% url 'view_pdf' folder=declaration_of_conformity filename=product.label.declaration_of_conformity %}" class="btn btn-outline-success">Open Link</a>
                         </div>
                         <div class="col-12 col-md-3">
                             <div class="spec-title">Interoperability</div>
-                            <button class="btn btn-outline-success">Open Link</button>
+                            <a href="{% url 'view_pdf' folder=interoperability filename=product.performance.interoperability_document %}" class="btn btn-outline-success">Open Link</a>
                         </div>
                     </div>
                 </div>
@@ -142,17 +131,17 @@
                     <div class="d-flex flex-wrap">
                         <div class="col-12 col-md-3 mb-2 mb-md-0">
                             <div class="spec-title">Sustainability Report</div>
-                            <button class="btn btn-outline-success">Open Link</button>
+                            <a href="{% url 'view_pdf' folder=supply_chain_due_diligence_report filename=product.due_diligence.supply_chain_due_diligence_report %}" class="btn btn-outline-success">Open Link</a>
                         </div>
-    
+
                         <div class="col-12 col-md-3 mb-2 mb-md-0">
                             <div class="spec-title">Due Diligence Report</div>
-                            <button class="btn btn-outline-success">Open Link</button>
+                            <a href="{% url 'view_pdf' folder=third_party_assurances filename=product.due_diligence.third_party_assurances %}" class="btn btn-outline-success">Open Link</a>
                         </div>
 
                         <div class="ccol-12 col-md-3">
                             <div class="spec-title">Third Party Audit</div>
-                            <button class="btn btn-outline-success">Open Link</button>
+                            <a href="{% url 'view_pdf' folder=sustainability_report filename=product.due_diligence.sustainability_report %}" class="btn btn-outline-success">Open Link</a>
                         </div>
                     </div>
                 </div>
@@ -168,7 +157,7 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-3">
                                 <div class="spec-title">Separate Collection</div>
-                                <button class="btn btn-outline-success">Open Link</button>
+                                <a href="{% url 'view_pdf' folder=waste_prevention filename=product.circularity.end_of_life_information.waste_prevention %}" class="btn btn-outline-success">Open Link</a>
                             </div>
                         </div>
                     </div>
@@ -176,7 +165,7 @@
                         <div class="d-flex flex-wrap">
                             <div class="col-md-3">
                                 <div class="spec-title">End of Life Information. Waste Prevention</div>
-                                <button class="btn btn-outline-success">Open Link</button>
+                                <a href="{% url 'view_pdf' folder=separate_collection filename=product.circularity.end_of_life_information.separate_collection %}" class="btn btn-outline-success">Open Link</a>
                             </div>
                         </div>
                     </div>
@@ -231,7 +220,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="spec-title">Carbon Footprint Study</div>
-                            <button class="btn btn-outline-success">Open Link</button>
+                            <a href="{% url 'view_pdf' folder=carbon_footprint_study filename=product.carbon_footprint.carbon_footprint_study %}" class="btn btn-outline-success">Open Link</a>
                         </div>
                     </div>
                 </div>
@@ -383,9 +372,11 @@
             </div>
         </div>
         
-    </div>
+    </div>    
+{% endblock content %}
 
+
+{% block extra_scripts %}
     <script src="{% static 'js/menu.js' %}"></script>
     <script src="{% static 'js/header-ex.js' %}"></script>
-</body>
-</html>
+{% endblock extra_scripts %}

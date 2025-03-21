@@ -23,12 +23,14 @@ from dpp_admin.admin import dpp_admin
 from django.urls import path, include
 from django.shortcuts import render
 
+from utils.pdf import view_pdf
+
 def access_denied(request):
     return render(request, 'access_denied.html')
     
 
 urlpatterns = [
-    #path('', include('accounts.urls')),
+    path('', include('accounts.urls')),
     path('', include('dashboard.urls')),
     #path('', include('carbonfootprints.urls')),
     #path('', include('circularity.urls')),
@@ -38,7 +40,6 @@ urlpatterns = [
     #path('', include('materials.urls')),
     #path('', include('performance.urls')),
     path('admin/', dpp_admin.urls),
-    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

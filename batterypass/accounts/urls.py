@@ -16,4 +16,7 @@ urlpatterns = [
     path('accounts/change-password/<int:pk>', views.change_password,name='change_password'),
     path('accounts/login/', views.auth, name='login'),
     path('accounts/logout/', views.deauth, name='logout'),
+    
+    path('accounts/login/test', views.logintest, name='login-test'),
+    path('accounts/signup/test', views.signuptest, name='login-test'),
 ]

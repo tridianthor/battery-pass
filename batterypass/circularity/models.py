@@ -69,7 +69,9 @@ class SafetyMeasuresEntity(models.Model):
     id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
     semantic_id = models.URLField(blank=True, null=True)
 
-    safety_instructions = models.FileField(max_length=255)
+    safety_instructions = models.FileField(
+        upload_to='circularity/safety_instructions',
+        max_length=255)
     extinguishing_agent = models.JSONField()
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -102,9 +104,15 @@ class EndOfLifeInformationEntity(models.Model):
     id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
     semantic_id = models.URLField(blank=True, null=True)
 
-    waste_prevention = models.FileField(max_length=255)
-    separate_collection = models.FileField(max_length=255)
-    information_on_collection = models.FileField(max_length=255)
+    waste_prevention = models.FileField(
+        upload_to='circularity/waste_prevention',
+        max_length=255)
+    separate_collection = models.FileField(
+        upload_to='circularity/separate_collection',
+        max_length=255)
+    information_on_collection = models.FileField(
+        upload_to='circularity/information_on_collection',
+        max_length=255)
 
     created_at = models.DateTimeField(auto_now_add=True)
     version = models.IntegerField(default=1)

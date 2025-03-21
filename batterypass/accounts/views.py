@@ -198,3 +198,9 @@ def auth(request):
             context.update({'message':'Invalid username or password'})
             return render(request, 'login.html',context)
     return render(request, 'login.html',context)
+
+def logintest(request):
+    return render(request, 'login-proto.html')
+
+def signuptest(request):
+    return render(request, 'signup-proto.html')

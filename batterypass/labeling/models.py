@@ -12,7 +12,9 @@ class LabelingEntity(models.Model):
     semantic_id = models.URLField(blank=True, null=True)  # Standardized reference
 
     labeling_id = models.CharField(max_length=255, unique=True)  # Standardized identifier
-    labeling_symbol = models.FileField(max_length=255)  # URL to symbol image
+    labeling_symbol = models.FileField(
+        upload_to='labeling/labeling_symbol',
+        max_length=255)  # URL to symbol image
     labeling_meaning = models.TextField()  # Label description
     labeling_subject = models.CharField(max_length=50, choices=LabelingSubject.choices)
 
@@ -29,8 +31,12 @@ class Labeling(models.Model):
     semantic_id = models.URLField(blank=True, null=True)  # Standardized reference
 
     labeling_id = models.CharField(max_length=255, unique=True)  # Standardized identifier
-    declaration_of_conformity = models.FileField(max_length=255)  # URL to conformity declaration
-    result_of_test_report = models.FileField(max_length=255)  # URL to test report
+    declaration_of_conformity = models.FileField(
+        upload_to='labeling/declaration_of_conformity',
+        max_length=255)  # URL to conformity declaration
+    result_of_test_report = models.FileField(
+        upload_to='labeling/result_of_test_report',
+        max_length=255)  # URL to test report
     labels = models.ManyToManyField(LabelingEntity, related_name="labelings")
 
     hash_signature = models.CharField(max_length=256, null=True, blank=True)  # Blockchain readiness

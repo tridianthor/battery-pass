@@ -383,3 +383,9 @@ th.orderable:hover {
     height: 100%; /* Make the video fill the container */
     object-fit: cover; /* Maintain aspect ratio and cover the container */
 }
+@media (max-width: 767.98px) {
+    ul.nav.nav-tabs.flex-column .nav-item .nav-link {
+        width: 100%;
+        text-align: left;
+    }
+}

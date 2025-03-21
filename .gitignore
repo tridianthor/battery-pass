@@ -3,3 +3,4 @@ batterypass/db.sqlite3
 batterypass/media/
 
 __pycache__/
+.pyc
