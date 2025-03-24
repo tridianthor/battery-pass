@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign up{% endblock title %}
+
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
+{% endblock extra_styles %}
+
+
+{% block content %}
+<div class="login-container">
+    <h2>Signup</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% if forms.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in forms.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% for field in form %}
+            <div class="mb-3">
+                {{field.label}}
+                {{field}}
+                {{field.errors}}
+            </div>
+        {% endfor %}
+        <div class="button-forgot-container">
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </div>
+    </form>
+    
+    <div class="signup-link mt-4">
+        <p>Have an account? <a href="/accounts/login">Login</a></p>
+    </div>
+</div>
+{% endblock content %}
+    

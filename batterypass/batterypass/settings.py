@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['https://5585-125-164-15-85.ngrok-free.app', '*']
 
-CSRF_TRUSTED_ORIGINS = ['https://5585-125-164-15-85.ngrok-free.app'] 
+CSRF_TRUSTED_ORIGINS = ['https://5585-125-164-15-85.ngrok-free.app', 'http://localhost:8000'] 
 
 AUTH_USER_MODEL = 'accounts.Account'
 
@@ -96,6 +96,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.contrib.auth.context_processors.auth',  
             ],
         },
     },

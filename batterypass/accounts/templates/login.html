@@ -12,6 +12,13 @@
         <h2>Login</h2>
         <form method="post">
             {% csrf_token %}
+            {% if forms.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in forms.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% for form in forms %}
                 <div class="mb-3">
                     {{form.label}}
@@ -29,7 +36,7 @@
         </form>
         
         <div class="signup-link mt-4">
-            <p>Don't have an account? <a href="#">Sign up</a></p>
+            <p>Don't have an account? <a href="/accounts/signup">Sign up</a></p>
         </div>
     </div>
 {% endblock content %}

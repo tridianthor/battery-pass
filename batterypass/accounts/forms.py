@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import SetPasswordForm, AuthenticationForm
+from django.contrib.auth.forms import SetPasswordForm, AuthenticationForm, UserCreationForm
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group, Permission
 
@@ -112,7 +112,21 @@ class ChangePasswordForm(SetPasswordForm):
             raise forms.ValidationError("Passwords do not match. Please try again.")
 
         return cleaned_data
+
+class RegisterForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=True, help_text="First Name")
+    last_name = forms.CharField(max_length=30, required=True, help_text="Last Name")
+    email = forms.EmailField(required=True, help_text="Email")
     
+    class Meta:
+        model = Account
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
+
 class LoginForm(AuthenticationForm):
-    username = forms.EmailField(widget=forms.TextInput(attrs=form_style.input_style), help_text="Email")
+    username = forms.CharField(widget=forms.TextInput(attrs=form_style.input_style), help_text="Username")
     password = forms.CharField(widget=forms.PasswordInput(attrs=form_style.input_style), help_text="Password")

@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group, Permission
 from utils.form_style import split_form
 
 from .models import Account
-from .forms import AccountInsertForm, AccountUpdateForm, LoginForm, ChangePasswordForm, GroupForm
+from .forms import AccountInsertForm, AccountUpdateForm, LoginForm, RegisterForm, ChangePasswordForm, GroupForm
 
 from dal import autocomplete
 
@@ -178,29 +178,48 @@ def deauth(request):
     return redirect('/accounts/login/')
 
 def auth(request):
-    form = LoginForm(request, data=request.POST or None)
+    forms = LoginForm(request, data=request.POST or None)
     context = {
-        'form':form
+        'forms':forms
     }
     if request.method == 'POST':
-        if form.is_valid():
-            email = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, email=email, password=password)
+        if forms.is_valid():
+            username = forms.cleaned_data.get('username')
+            password = forms.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                # check role and redirect here
-                return redirect('/dashboard')
+                return redirect('/batteries')
             else:
-                context.update({'message':'Invalid username or password'})
-                return render(request, 'login.html',context)
+                context = {
+                    'forms': forms
+                }
+                print('form errors when user invalid: ', forms.errors)
+                return render(request, 'login.html', context)
         else:
-            context.update({'message':'Invalid username or password'})
-            return render(request, 'login.html',context)
-    return render(request, 'login.html',context)
+            context = {
+                'forms': forms
+            }
+            print('form errors when form invalid: ', forms.errors)
+            return render(request, 'login.html', context)
+    return render(request, 'login.html', context)
 
 def logintest(request):
     return render(request, 'login-proto.html')
 
-def signuptest(request):
-    return render(request, 'signup-proto.html')
+def signup(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.save()
+            login(request, user)
+            return redirect('/login')
+    else:
+        form = RegisterForm()
+    context = {
+        'form':form
+    }
+    return render(request, 'signup.html', context)

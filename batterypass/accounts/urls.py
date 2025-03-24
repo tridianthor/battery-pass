@@ -18,5 +18,5 @@ urlpatterns = [
     path('accounts/logout/', views.deauth, name='logout'),
     
     path('accounts/login/test', views.logintest, name='login-test'),
-    path('accounts/signup/test', views.signuptest, name='login-test'),
+    path('accounts/signup', views.signup, name='signup'),
 ]

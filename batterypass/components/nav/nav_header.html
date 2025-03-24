@@ -1,0 +1,11 @@
+<header class="d-flex justify-content-between align-items-center mb-5">
+    <div class="logo">Logo</div>
+    <div class="d-flex align-items-center">
+        {% if user.is_authenticated %}
+            <span class="me-3">Hi, {{user.username}}</span>
+        {% endif %}
+        
+        <span>EN</span>
+        <span class="ms-3"><a href="/accounts/logout" class="btn btn-sm btn-danger">Logout</a></span>
+    </div>
+</header>

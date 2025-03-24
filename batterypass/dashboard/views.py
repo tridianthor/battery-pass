@@ -1,9 +1,6 @@
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseServerError, HttpResponse
-from django.views.generic import ListView
-
 
 import django_tables2 as tables
 from django_tables2 import SingleTableView, RequestConfig
@@ -34,7 +31,8 @@ class GeneralProductInfoListView(SingleTableView):
     model = GeneralProductInformation
     table_class = GeneralProductInfoTable
     template_name = 'battery-list.html'
-    
+
+@login_required(login_url="/accounts/login/")
 def batteries(request):
     search_query = request.session.get('search_query', '')
     
@@ -135,11 +133,13 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
         'recycled_content_lead_fig': recycled_content_lead_fig.to_html()
     }
 
+@login_required(login_url="/accounts/login/")
 def summary(request, pk=None, code=None):
     context = get_battery(pk=pk, code=code, chart_height=300)
     
     return render(request, "battery-summary.html", context)
 
+@login_required(login_url="/accounts/login/")
 def detail(request, pk=None, code=None):
     context = get_battery(pk, code=code, chart_width=400, chart_width_wide=350, chart_height=300)
     
