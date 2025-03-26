@@ -2,11 +2,11 @@ from django import forms
 
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 
-import utils.form_style as form_style
+import utils.form as form
 
 class DateFilterForm(forms.Form):
-    start_date = forms.DateField(label="Start Date",widget=form_style.date_input,required=False,)
-    end_date = forms.DateField(label="End Date",widget=DatePickerInput(range_from='start_date', options={'locale': 'en', 'format': 'DD/MM/YYYY'}, attrs=form_style.date_input_style),required=False,)
+    start_date = forms.DateField(label="Start Date",widget=form.date_input,required=False,)
+    end_date = forms.DateField(label="End Date",widget=DatePickerInput(range_from='start_date', options={'locale': 'en', 'format': 'DD/MM/YYYY'}, attrs=form.date_input_style),required=False,)
     
     def clean(self):
         cleaned_data = super().clean()

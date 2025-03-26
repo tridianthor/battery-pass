@@ -3,16 +3,16 @@
 
 {% load bootstrap_icons %}
 
-{% block back_url %}{{'/due_diligence'}}{% endblock back_url %}
+{% block back_url %}{{'/products'}}{% endblock back_url %}
 
-{% block title %}Supply Chain Due Diligence Form{% endblock title %}
+{% block title %}General Product Information Form{% endblock title %}
 
 {% block app_name %}
-{% include 'nav/form_app_name.html' with form_type=form_type app_name="Supply Chain Due Diligence Form"%}
+{% include 'nav/form_app_name.html' with form_type=form_type app_name="General Product Info"%}
 {% endblock app_name %}
 
 {% block form_content %}
-    <form method="post" enctype="multipart/form-data">
+    <form method="post">
         {% csrf_token %}
         {%if message is not None %}
             <h1>{{ message }}</h1>

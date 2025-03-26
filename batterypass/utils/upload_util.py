@@ -16,7 +16,7 @@ class Upload:
         private_storage = FileSystemStorage(location=path)
         extension = cls.get_file_extension(file.name if isinstance(file, ContentFile) else file.name)
         uploaded_file = private_storage.save(f'{intended_filename}{extension}', file)
-        return uploaded_file
+        return f'{path}/{uploaded_file}'
     
     @classmethod
     def get_file_extension(self, filename):

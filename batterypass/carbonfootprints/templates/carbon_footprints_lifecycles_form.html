@@ -1,4 +1,5 @@
 {% extends 'form_base.html' %}
+{% load static %}
 
 {% load bootstrap_icons %}
 
@@ -15,28 +16,57 @@
         <h1>{{ message }}</h1>
     {% endif %}
     {% for row in field_rows %}
-        <div class="row">
-            <div class="col-md-6 col-sm-12 mb-2">
-                {% for field in row.left_fields %}
-                    <div class="form-group">
-                        {{ field.label }}
+    <div class="row">
+        <div class="col-md-6 col-sm-12 mb-2">
+            {% for field in row.left_fields %}
+                <div class="mb-3">
+                    {{ field.label }}
+                    {% comment %} TODO view document {% endcomment %}
+                    {% comment %} {% if form_type == 'update' %}
+                        <span><a href="{% url 'duediligence_pdf' folder=paths.labeling_symbol_path filename=form.labeling_symbol.value %}"
+                            class="btn btn-info btn-sm d-flex align-items-center">
+                            <i class="me-2">{% bs_icon 'file-earmark-text-fill' %}</i>View</a>
+                        </span>
+                    {% endif %} {% endcomment %}
+                    <div class="input-group">
                         {{ field }}
                         {{ field.errors }}
+                        {% if field.name in related %} 
+                            <a href="/{{field.name}}/form/" class="btn btn-outline-secondary">Create</a>
+                            <a class="btn btn-outline-secondary edit-btn">Edit</a>
+                        {% endif %}
+                        {% if field.name in related_multi %} 
+                            <a href="/{{field.name}}/form/" class="btn btn-outline-secondary d-flex align-items-center">Create</a>
+                        {% endif %}
                     </div>
-                {% endfor %}
-            </div>
-            <div class="col-md-6 col-sm-12 mb-2">
-                {% for field in row.right_fields %}
-                    <div class="form-group">
-                        {{ field.label }}
-                        {{ field }}
-                        {{ field.errors }}
-                    </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
+        <div class="col-md-6 col-sm-12 mb-2">
+            {% for field in row.right_fields %}
+                <div class="mb-3">
+                    {{ field.label }}
+                    <div class="input-group">
+                        {{ field }}
+                        {{ field.errors }}
+                        {% if field.name in related %} 
+                            <a href="/{{field.name}}/form/" class="btn btn-outline-secondary">Create</a>
+                            <a class="btn btn-outline-secondary edit-btn">Edit</a>
+                        {% endif %}
+                        {% if field.name in related_multi %} 
+                            <a href="/{{field.name}}/form/" class="btn btn-outline-secondary d-flex align-items-center">Create</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
     {% endfor %}
     <button type="submit" class="btn btn-primary d-flex align-items-center"><i class="me-2">{% bs_icon 'floppy-fill' size='1em' %}</i>Submit</button>
 </form>
+
+    {% block extra_scripts %}
+        <script src="{% static 'js/form_actions.js' %}"></script>
+    {% endblock extra_scripts %}
 {% endblock form_content %}
     

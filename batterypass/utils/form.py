@@ -1,6 +1,8 @@
 from django import forms
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 
+from dal import autocomplete
+
 input_style = {"class": "form-control"}
 date_input_style = {"class": "form-control"}
 
@@ -25,3 +27,18 @@ def split_form(form):
         })
     
     return field_rows
+
+def identify_related_fields(form):
+    related_choice = []
+    related_multiple_choice = []
+    for field_name, field in form.fields.items():
+        if isinstance(field.widget, autocomplete.ModelSelect2Multiple): # Check for custom widget
+            related_multiple_choice.append(field_name)
+        elif isinstance(field, forms.ModelChoiceField):
+            related_choice.append(field_name)
+        elif isinstance(field, forms.ModelMultipleChoiceField):
+            related_multiple_choice.append(field_name)
+    return related_choice, related_multiple_choice
+
+def identify_file_fields(form):
+    return [field_name for field_name, field in form.fields.items() if isinstance(field, forms.FileField)]

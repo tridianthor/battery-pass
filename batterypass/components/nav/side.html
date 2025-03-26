@@ -61,10 +61,20 @@
                 </li>
             {% endif %}
             
+            {% if perms.generalproductinfo.view_generalproductinformation %}
+                <li class="nav-item">
+                    <a href="/products" class="nav-link d-flex align-items-center">
+                        <div class="d-flex justify-content-center me-1"> 
+                            {% bs_icon 'box-seam-fill' size='1.25em' %}
+                        </div>
+                        <p>General Product Info</p>
+                    </a>
+                </li>
+            {% endif %}
             
             {% if perms.duediligence.view_supplychainduediligence %}
                 <li class="nav-item">
-                    <a href="/duediligence" class="nav-link d-flex align-items-center">
+                    <a href="/due_diligence" class="nav-link d-flex align-items-center">
                         <div class="d-flex justify-content-center me-1"> 
                             {% bs_icon 'folder-check' size='1.25em' %}
                         </div>
@@ -88,7 +98,7 @@
                         
                         {% if perms.carbonfootprints.view_carbonfootprintforbatteries %}
                             <li class="nav-item">
-                                <a href="/carbonfootprints" class="nav-link d-flex align-items-center">
+                                <a href="/carbon_footprint" class="nav-link d-flex align-items-center">
                                     <div class="d-flex justify-content-center me-1">
                                         {% bs_icon 'circle' size='1.25em' %}
                                     </div>
@@ -100,7 +110,7 @@
                         
                         {% if perms.carbonfootprints.view_carbonfootprintperlifecyclestageentity %}
                             <li class="nav-item">
-                                <a href="/carbonfootprints/lifecycles" class="nav-link d-flex align-items-center">
+                                <a href="/carbon_footprint_per_lifecycle_stage" class="nav-link d-flex align-items-center">
                                     <div class="d-flex justify-content-center me-1">
                                         {% bs_icon 'circle' size='1.25em' %}
                                     </div>
@@ -128,7 +138,7 @@
                         
                         {% if perms.labeling.view_labeling %}
                             <li class="nav-item">
-                                <a href="/labeling" class="nav-link d-flex align-items-center">
+                                <a href="/label" class="nav-link d-flex align-items-center">
                                     <div class="d-flex justify-content-center me-1">
                                         {% bs_icon 'circle' size='1.25em' %}
                                     </div>
@@ -140,7 +150,7 @@
                         
                         {% if perms.labeling.view_labelingentity %}
                             <li class="nav-item">
-                                <a href="/labeling/entity" class="nav-link d-flex align-items-center">
+                                <a href="/labels/" class="nav-link d-flex align-items-center">
                                     <div class="d-flex justify-content-center me-1">
                                         {% bs_icon 'circle' size='1.25em' %}
                                     </div>

@@ -5,15 +5,23 @@ from django.contrib.auth.decorators import login_required
 import django_tables2 as tables
 from django_tables2 import SingleTableView, RequestConfig
 
+from utils.const import is_summary, is_form
+
 import plotly.express as px
 
 from generalproductinfo.models import GeneralProductInformation, GeneralProductInfoFilter
 
 class GeneralProductInfoTable(tables.Table):
-    detail = tables.TemplateColumn(template_name='battery-list-actions.html', orderable=False) 
+    detail = tables.TemplateColumn(
+        template_name='table-action-template.html', 
+        orderable=False,
+        extra_context={
+            'is_summary': True,
+            'is_form': is_form,
+        }) 
     class Meta:
         model = GeneralProductInformation
-        template_name = 'battery-table.html'
+        template_name = 'table-template.html'
         fields = ('battery_passport_identifier', 'battery_category', 'manufacturing_date', 'detail')
         attrs = {
             'class': 'table table-responsive table-borderless table-striped table-hover',
@@ -60,6 +68,9 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
         product = get_object_or_404(GeneralProductInformation, pk=pk)
     else:
         product = get_object_or_404(GeneralProductInformation, battery_passport_identifier=code)
+        
+    colors = ['#449944', '#DD8855', '#EEDDCC', '#667788']
+    recycled_chart_colors = ['#7f9aa7','#59cf78']
     
     carbon_footprint_df = product.carbon_footprint.carbon_footprint_per_lifecycle_stage.all()
     recycled_content_cobalt_df = product.circularity.recycled_content.filter(recycled_material='Cobalt')
@@ -91,32 +102,57 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
         recycled_content_lead_values.append(item.pre_consumer_share)
         recycled_content_lead_values.append(item.post_consumer_share)
     
-    carbon_footprint_fig = px.pie(carbon_footprint_df, values=carbon_footprint_values, names=carbon_footprint_names, title='Carbon Footprint per Lifecycle Stage', hole=0.3)
+    carbon_footprint_fig = px.pie(carbon_footprint_df, 
+                                values=carbon_footprint_values, 
+                                names=carbon_footprint_names, 
+                                title='Carbon Footprint per Lifecycle Stage', 
+                                color_discrete_sequence=colors)
+    carbon_footprint_fig.update_traces(textposition='inside', textinfo='percent')
     carbon_footprint_fig.update_layout(width=chart_width_wide, height=chart_height)
     carbon_footprint_fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)'
     )
     
-    recycled_content_cobalt_fig = px.pie(values=recycled_content_cobalt_values, names=recycled_content_names, title='Recycled Content - Cobalt', hole=0.3)
+    recycled_content_cobalt_fig = px.pie(values=recycled_content_cobalt_values, 
+                                        names=recycled_content_names, 
+                                        title='Recycled Content - Cobalt', 
+                                        hole=0.5,
+                                        color_discrete_sequence=recycled_chart_colors)
+    recycled_content_cobalt_fig.update_traces(textposition='inside', textinfo='percent')
     recycled_content_cobalt_fig.update_layout(width=chart_width, height=chart_height)
     recycled_content_cobalt_fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)'
     )
-    recycled_content_lithium_fig = px.pie(values=recycled_content_lithium_values, names=recycled_content_names, title='Recycled Content - Lithium', hole=0.3)
+    recycled_content_lithium_fig = px.pie(values=recycled_content_lithium_values, 
+                                        names=recycled_content_names, 
+                                        title='Recycled Content - Lithium', 
+                                        hole=0.5,
+                                        color_discrete_sequence=recycled_chart_colors)
+    recycled_content_lithium_fig.update_traces(textposition='inside', textinfo='percent')
     recycled_content_lithium_fig.update_layout(width=chart_width, height=chart_height)
     recycled_content_lithium_fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)'
     )
-    recycled_content_nickel_fig = px.pie(values=recycled_content_nickel_values, names=recycled_content_names, title='Recycled Content - Nickel', hole=0.3)
+    recycled_content_nickel_fig = px.pie(values=recycled_content_nickel_values, 
+                                        names=recycled_content_names, 
+                                        title='Recycled Content - Nickel', 
+                                        hole=0.5,
+                                        color_discrete_sequence=recycled_chart_colors)
+    recycled_content_nickel_fig.update_traces(textposition='inside', textinfo='percent')
     recycled_content_nickel_fig.update_layout(width=chart_width, height=chart_height)
     recycled_content_nickel_fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)'
     )
-    recycled_content_lead_fig = px.pie(values=recycled_content_lead_values, names=recycled_content_names, title='Recycled Content - Lead', hole=0.3)
+    recycled_content_lead_fig = px.pie(values=recycled_content_lead_values, 
+                                    names=recycled_content_names, 
+                                    title='Recycled Content - Lead', 
+                                    hole=0.5,
+                                    color_discrete_sequence=recycled_chart_colors)
+    recycled_content_lead_fig.update_traces(textposition='inside', textinfo='percent')
     recycled_content_lead_fig.update_layout(width=chart_width, height=chart_height)
     recycled_content_lead_fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
@@ -126,6 +162,8 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
     return {
         'media_url': settings.MEDIA_URL,
         'product': product,
+        'carbon_footprint_df': carbon_footprint_values,
+        'carbon_footprint_names': carbon_footprint_names,
         'carbon_footprint_fig': carbon_footprint_fig.to_html(),
         'recycled_content_cobalt_fig': recycled_content_cobalt_fig.to_html(),
         'recycled_content_lithium_fig': recycled_content_lithium_fig.to_html(),

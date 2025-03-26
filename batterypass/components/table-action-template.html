@@ -1,0 +1,8 @@
+{% if is_summary %}
+    <a class="btn btn-sm" style="background-color: #8ed1a8; border-color: #8ed1a8; color: white;" href='/summary/{{ record.id }}'>Summary</a>
+{% endif %}
+
+{% if is_form %}
+    <a class="btn btn-sm" style="background-color: #8ed1a8; border-color: #8ed1a8; color: white;" href='form/{{ record.id }}'>Update</a>
+    <a class="btn btn-sm btn-danger" style="color: white;" href='delete/{{ record.id }}'>Delete</a>
+{% endif %}

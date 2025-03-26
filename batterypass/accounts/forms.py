@@ -7,7 +7,7 @@ from .models import Account
 
 from dal import autocomplete
 
-import utils.form_style as form_style
+import utils.form as form
 import utils.validators as validators
 
 class GroupForm(forms.ModelForm):
@@ -16,7 +16,7 @@ class GroupForm(forms.ModelForm):
         fields = ['name', 'permissions']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'permissions': autocomplete.ModelSelect2Multiple(url='permission-autocomplete', attrs=form_style.input_style),
+            'permissions': autocomplete.ModelSelect2Multiple(url='permission-autocomplete', attrs=form.input_style),
         }
         
     check_all = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False, initial=False)
@@ -34,7 +34,7 @@ class AccountInsertForm(forms.ModelForm):
         model = Account
         fields = ['first_name', 'last_name', 'email', 'password', 'groups']
         widgets = {
-            'password': forms.PasswordInput(attrs=form_style.input_style),
+            'password': forms.PasswordInput(attrs=form.input_style),
         }
     
     groups = forms.ModelChoiceField(
@@ -50,7 +50,7 @@ class AccountInsertForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['groups'].initial = self.instance.groups.all()
         for field_name, field in self.fields.items():
-            field.widget.attrs.update(form_style.input_style)
+            field.widget.attrs.update(form.input_style)
         
     def clean_password(self):
         password = self.cleaned_data.get('password')
@@ -83,7 +83,7 @@ class AccountUpdateForm(forms.ModelForm):
         if self.instance.pk and self.instance.groups.exists():
             self.fields['groups'].initial = self.instance.groups.first()
         for field_name, field in self.fields.items():
-            field.widget.attrs.update(form_style.input_style)
+            field.widget.attrs.update(form.input_style)
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -128,5 +128,5 @@ class RegisterForm(UserCreationForm):
             field.widget.attrs.update({'class': 'form-control'})
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs=form_style.input_style), help_text="Username")
-    password = forms.CharField(widget=forms.PasswordInput(attrs=form_style.input_style), help_text="Password")
+    username = forms.CharField(widget=forms.TextInput(attrs=form.input_style), help_text="Username")
+    password = forms.CharField(widget=forms.PasswordInput(attrs=form.input_style), help_text="Password")

@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator
 import uuid
 
-
+import django_filters
 
 class LifecycleStage(models.TextChoices):
     RAW_MATERIAL_EXTRACTION = "RawMaterialExtraction", "Raw Material Extraction"
@@ -51,3 +51,22 @@ class CarbonFootprintForBatteries(models.Model):
 
     def __str__(self):
         return f"Battery Carbon Footprint: {self.battery_carbon_footprint} kgCO2"
+
+#might not needed 
+class CarbonFootprintPerLifecycleStageEntityFilter(django_filters.FilterSet):
+    search = django_filters.CharFilter(method='filter_search')
+    class Meta:
+        model = CarbonFootprintPerLifecycleStageEntity
+        fields = ['lifecycle_stage']
+    
+    def filter_search(self, queryset, name, value):
+        return queryset.filter(lifecycle_stage__icontains=value)
+    
+class CarbonFootprintForBatteriesFilter(django_filters.FilterSet):
+    search = django_filters.CharFilter(method='filter_search')
+    class Meta:
+        model = CarbonFootprintForBatteries
+        fields = ['battery_id']
+    
+    def filter_search(self, queryset, name, value):
+        return queryset.filter(battery_id__icontains=value)

@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from django.conf import settings
+import django_filters
 class LabelingSubject(models.TextChoices):
     SEPARATE_COLLECTION = "SeparateCollection", "Separate Collection"
     HAZARDOUS_MATERIAL = "HazardousMaterial", "Hazardous Material"
@@ -46,3 +47,22 @@ class Labeling(models.Model):
 
     def __str__(self):
         return f"Labeling - Conformity: {self.declaration_of_conformity}"
+
+class LabelingEntityFilter(django_filters.FilterSet):
+    search = django_filters.CharFilter(method='filter_search')
+    class Meta:
+        model = LabelingEntity
+        fields = ['labeling_id']
+    
+    def filter_search(self, queryset, name, value):
+        return queryset.filter(labeling_id__icontains=value)
+    
+class LabelingFilter(django_filters.FilterSet):
+    search = django_filters.CharFilter(method='filter_search')
+    class Meta:
+        model = LabelingEntity
+        fields = ['labeling_id']
+    
+    def filter_search(self, queryset, name, value):
+        return queryset.filter(labeling_id__icontains=value)
+    

@@ -1,7 +1,7 @@
 {% extends "list_base.html" %}
 {% load static %}
 
-{% block title %}Carbon Footprints{% endblock title %}
+{% block title %}General Product Infos{% endblock title %}
 
 {% block extra_head %}
     {% load render_table from django_tables2 %}
@@ -13,10 +13,11 @@
 
 {% block form_url %}{{'form/'}}{% endblock %}
 
-{% block list_app_name %}{% include 'nav/list_app_name.html' with list_app_name='Carbon Footprints' %}{% endblock list_app_name %}
+{% block list_app_name %}{% include 'nav/list_app_name.html' with list_app_name='General Product Informations' %}{% endblock list_app_name %}
 
 {% block list_content %}
     <div class="d-none d-md-block">
+        <!-- Search Section -->
         <div class="row">
             <div class="col-12">
                 {% render_table table %}

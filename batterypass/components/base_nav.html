@@ -12,7 +12,10 @@
 
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
-</head>
+
+    {% block extra_styles %}
+    {% endblock extra_styles %}
+  </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <div class="app-wrapper">
         {% include "nav/nav.html" %}

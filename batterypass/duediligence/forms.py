@@ -4,28 +4,37 @@ from bootstrap_datepicker_plus.widgets import DatePickerInput
 
 from .models import SupplyChainDueDiligence
 
-import utils.form_style as form_style
+import utils.form as form
 class DueDiligenceInsertForm(forms.ModelForm):
     class Meta:
         model = SupplyChainDueDiligence
-        fields = ["supply_chain_due_diligence_report", "third_party_assurances", "supply_chain_indices"]
+        fields = '__all__'
     
-    supply_chain_due_diligence_report = forms.FileField(widget=form_style.file_input, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
-    third_party_assurances = forms.FileField(widget=form_style.file_input, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
-    supply_chain_indices = forms.FloatField(widget=form_style.number_input)
+    supply_chain_due_diligence_report = forms.FileField(widget=form.file_input, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+    third_party_assurances = forms.FileField(widget=form.file_input, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+    supply_chain_indices = forms.FloatField(widget=form.number_input)
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(form.input_style)
     
 class DueDiligenceUpdateForm(DueDiligenceInsertForm):
     class Meta:
         model = SupplyChainDueDiligence
-        fields = ["supply_chain_due_diligence_report", "third_party_assurances", "supply_chain_indices"]
+        fields = '__all__'
         
-    supply_chain_due_diligence_report = forms.FileField(required=False, widget=form_style.file_input, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
-    third_party_assurances = forms.FileField(required=False, widget=form_style.file_input, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
-    supply_chain_indices = forms.FloatField(widget=form_style.number_input)
+    supply_chain_due_diligence_report = forms.FileField(required=False, widget=form.file_input, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+    third_party_assurances = forms.FileField(required=False, widget=form.file_input, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+    supply_chain_indices = forms.FloatField(widget=form.number_input)
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(form.input_style)
 class DateFilterForm(forms.Form):
-    start_date = forms.DateField(label="Start Date",widget=form_style.date_input,required=False,)
-    end_date = forms.DateField(label="End Date",widget=DatePickerInput(range_from='start_date', options={'locale': 'en', 'format': 'DD/MM/YYYY'}, attrs=form_style.date_input_style),required=False,)
+    start_date = forms.DateField(label="Start Date",widget=form.date_input,required=False,)
+    end_date = forms.DateField(label="End Date",widget=DatePickerInput(range_from='start_date', options={'locale': 'en', 'format': 'DD/MM/YYYY'}, attrs=form.date_input_style),required=False,)
     
     def clean(self):
         cleaned_data = super().clean()

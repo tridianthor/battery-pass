@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 import uuid
+import django_filters
 class SupplyChainDueDiligence(models.Model):
     id_short = models.CharField(max_length=255, unique=True, default=uuid.uuid4)  # AAS-compatible ID
     semantic_id = models.URLField(blank=True, null=True)  # Standardized reference
@@ -31,3 +32,12 @@ class SupplyChainDueDiligence(models.Model):
 
     def __str__(self):
         return f"Supply Chain Due Diligence Report: {self.supply_chain_due_diligence_report}"
+    
+class SupplyChainDueDiligenceFilter(django_filters.FilterSet):
+    search = django_filters.CharFilter(method='filter_search')
+    class Meta:
+        model = SupplyChainDueDiligence
+        fields = ['supply_chain_indices']
+    
+    def filter_search(self, queryset, name, value):
+        return queryset.filter(supply_chain_due_diligence_report__icontains=value)

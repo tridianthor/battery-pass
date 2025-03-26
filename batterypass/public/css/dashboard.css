@@ -314,39 +314,6 @@ body {
     pointer-events: none;
 } */
 
-th.orderable a {
-    display: inline-flex; /* Use flexbox for alignment */
-    align-items: center; /* Vertically align items */
-    text-decoration: none; /* Remove default underline */
-    color: inherit; /* Inherit color from parent */
-    position: relative; /* For icon positioning */
-}
-
-/* Style sort indicators */
-th.orderable a::after {
-    font-family: "Font Awesome 5 Free"; /* Or your icon library */
-    font-weight: 900;
-    content: "\f0dc"; /* Default sort icon */
-    margin-left: 5px; /* Add some space */
-    color: #aaa; /* Light gray color */
-    font-size: 0.8em; /* Adjust size */
-}
-
-th.orderable.asc a::after {
-    content: "\f0de"; /* Ascending sort icon */
-    color: #007bff; /* Blue color for active sort */
-}
-
-th.orderable.desc a::after {
-    content: "\f0dd"; /* Descending sort icon */
-    color: #007bff;
-}
-
-/* Add hover effect */
-th.orderable:hover {
-    background-color: #f0f0f0; /* Light hover background */
-}
-
 .modal-content {
     background-color: #343a40; /* Dark background */
     color: white;
@@ -382,4 +349,10 @@ th.orderable:hover {
     width: 100%; /* Make the video fill the container */
     height: 100%; /* Make the video fill the container */
     object-fit: cover; /* Maintain aspect ratio and cover the container */
+}
+@media (max-width: 767.98px) {
+    ul.nav.nav-tabs.flex-column .nav-item .nav-link {
+        width: 100%;
+        text-align: left;
+    }
 }

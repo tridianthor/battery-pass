@@ -1,59 +1,70 @@
-from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 
-from utils.resp import Resp
 from utils.upload_util import Upload
+from utils.const import is_summary, is_form
+from utils.form import split_form, identify_related_fields
 
 from components.form.FilterForm import DateFilterForm
 
 from .forms import DueDiligenceInsertForm, DueDiligenceUpdateForm
-from .models import SupplyChainDueDiligence
+from .models import SupplyChainDueDiligence, SupplyChainDueDiligenceFilter
 from .const import diligence_report_path, third_party_assurances_path
 
-from datetime import datetime
-from django.utils import timezone
+import django_tables2 as tables
+from django_tables2 import RequestConfig
 
 import traceback
-import os
 
+path = {
+    diligence_report_path,
+    third_party_assurances_path,
+}
+
+class SupplyChainDueDiligenceTable(tables.Table):
+    detail = tables.TemplateColumn(
+        template_name='table-action-template.html', 
+        orderable=False,
+        extra_context={
+            'is_summary': is_summary,
+            'is_form': True,
+        }) 
+    class Meta:
+        model = SupplyChainDueDiligence
+        template_name = 'table-template.html'
+        fields = ('supply_chain_due_diligence_report', 'third_party_assurances', 'supply_chain_indices', 'detail')
+        attrs = {
+            'class': 'table table-responsive table-borderless table-striped table-hover',
+        }
+    
+    def __init__(self, *args, **kwargs):
+        self.search_query = kwargs.pop('search_query', '')
+        super().__init__(*args, **kwargs)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs
+    
 
 # Create your views here.
 @login_required(login_url="/accounts/login/")
 def duediligence(request):
-    start_date = request.GET.get("start_date")
-    end_date = request.GET.get("end_date")
+    search_query = request.session.get('search_query', '')
+    table = SupplyChainDueDiligenceTable(SupplyChainDueDiligence.objects.all())
     
-    if start_date and end_date:
-        duediligences = SupplyChainDueDiligence.objects.filter(insert_date__range=[start_date, end_date]).order_by('-id')
-    else:
-        duediligences = SupplyChainDueDiligence.objects.filter().order_by('-id')
-    date_filter_form = DateFilterForm(request.GET or None)
-    
-    paths = {
-        "diligence_report_path": diligence_report_path,
-        "third_party_assurances_path": third_party_assurances_path
-    }
-    
-    per_page = 5
-    paginator = Paginator(duediligences, per_page)
-    page_number = request.GET.get('page')
-    
-    try:
-        data = paginator.page(page_number)
-    except PageNotAnInteger:
-        data = paginator.page(1)
-    except EmptyPage:
-        data = paginator.page(1)
-    except Exception as exception:
-        tb = traceback.format_exc()
-        print(f"errors : {exception}\ntrace : {tb}")
-        return render(request, 'duediligence.html', {"exception" : exception})
-    return render(request, 'duediligence.html', {"data" : data, 
-                                                 "paginator" : paginator, 
-                                                 "date_filter_form" : date_filter_form, 
-                                                 "paths" : paths})
+    if request.method == 'GET' and 'search' in request.GET:
+        filter = SupplyChainDueDiligenceFilter(request.GET, queryset=SupplyChainDueDiligence.objects.all())
+        
+        search_query = request.GET.get('search', '')
+        request.session['search_query'] = search_query
+        
+        print("filter qs: ", filter.qs)
+        table = SupplyChainDueDiligenceTable(filter.qs)
+
+    RequestConfig(request, paginate={'per_page': 10}).configure(table)
+    context = {'table': table, 'search_query': search_query}
+    return render(request, "duediligence.html", context)
     
 @login_required(login_url="/accounts/login/")
 def delete(request, pk):
@@ -61,81 +72,45 @@ def delete(request, pk):
         supply_chain_due_diligence = get_object_or_404(SupplyChainDueDiligence, pk=pk)
         Upload.remove_files([f"{diligence_report_path}/{supply_chain_due_diligence.supply_chain_due_diligence_report}", f'{third_party_assurances_path}/{supply_chain_due_diligence.third_party_assurances}'])    
         supply_chain_due_diligence.delete()
-        return redirect('/duediligence')
+        return redirect('/due_diligence')
 
 @login_required(login_url="/accounts/login/")
 def insert_duediligence(request):
-    #create
-    if(request.method == 'POST'):
-        form = DueDiligenceInsertForm(request.POST or None, request.FILES or None)
+    form_type = 'insert'
+    form = DueDiligenceInsertForm(request.POST or None, request.FILES or None)
+
+    related, related_multi = identify_related_fields(form)
+    if request.method == 'POST':
+        print("FILES request : ", request.FILES);
         if form.is_valid():
-            try:
-                diligence_report_file = request.FILES['supply_chain_due_diligence_report']
-                third_party_assurances_file = request.FILES['third_party_assurances']
-                
-                diligence_report_filename = Upload.handle_single_upload(diligence_report_path, diligence_report_file, f"diligence_report_{datetime.now().timestamp()}")
-                third_party_assurances_filename = Upload.handle_single_upload(third_party_assurances_path, third_party_assurances_file, f"third_party_{datetime.now().timestamp()}")
-                
-                supply_chain_due_diligence = SupplyChainDueDiligence(supply_chain_due_diligence_report=diligence_report_filename,
-                                                                    third_party_assurances=third_party_assurances_filename,
-                                                                    supply_chain_indices=request.POST['supply_chain_indices'])
-                supply_chain_due_diligence.save()                
-                return redirect('/duediligence')
-            except Exception as exception:
-                tb = traceback.format_exc()
-                print(f"errors : {exception}\ntrace : {tb}")
-                return render(request, 'duediligence_form.html', {'form': form, "message":"Upload failed"})
+            form.save()
+            return redirect('/due_diligence')
         else:
-            return render(request, 'duediligence_form.html', {'form': form, "message":"Upload failed"})
-    else:
-        form = DueDiligenceInsertForm()
-        form_type = 'insert'
-        return render(request, 'duediligence_form.html', {'form': form, 'form_type': form_type})
+            print(form.errors)
+    field_rows = split_form(form)
+    return render(request, 'duediligence_form.html', {'form': form,
+        'form_type': form_type,
+        'field_rows': field_rows,
+        'related': related,
+        'related_multi': related_multi})
 
 @login_required(login_url="/accounts/login/")
 def update_duediligence(request, pk):
-    if(request.method == 'POST'):
-        form = DueDiligenceUpdateForm(request.POST or None, request.FILES or None)
+    form_type = 'update'
+    duediligence = get_object_or_404(SupplyChainDueDiligence, pk=pk)
+    form = DueDiligenceInsertForm(request.POST or None, request.FILES or None, instance=duediligence)
+
+    related, related_multi = identify_related_fields(form)
+    if request.method == 'POST':
         if form.is_valid():
-            try:
-                if request.FILES.keys() >= {"supply_chain_due_diligence_report"}:
-                    diligence_report_file = request.FILES['supply_chain_due_diligence_report']
-                    diligence_report_filename = Upload.handle_single_upload(diligence_report_path, diligence_report_file, f"diligence_report_{datetime.now().timestamp()}")
-                    Upload.remove_files([f"{diligence_report_path}/{supply_chain_due_diligence.supply_chain_due_diligence_report}"])    
-                else:
-                    diligence_report_filename = None
-                
-                if request.FILES.keys() >= {"third_party_assurances"}:
-                    third_party_assurances_file = request.FILES['third_party_assurances']
-                    third_party_assurances_filename = Upload.handle_single_upload(third_party_assurances_path, third_party_assurances_file, f"third_party_{datetime.now().timestamp()}")
-                    Upload.remove_files([f"{third_party_assurances_path}/{supply_chain_due_diligence.third_party_assurances}"])    
-                else:
-                    third_party_assurances_filename = None
-                    
-                supply_chain_due_diligence = get_object_or_404(SupplyChainDueDiligence, pk=pk)
-                #delete previous files when upload new files
-                
-                
-                if diligence_report_filename is not None:
-                    supply_chain_due_diligence.supply_chain_due_diligence_report=diligence_report_filename
-                if third_party_assurances_filename is not None:
-                    supply_chain_due_diligence.third_party_assurances=third_party_assurances_filename
-                supply_chain_due_diligence.supply_chain_indices=request.POST['supply_chain_indices']
-                supply_chain_due_diligence.save()                
-                return redirect('/duediligence')
-            except Exception as exception:
-                tb = traceback.format_exc()
-                print(f"errors : {exception}\ntrace : {tb}")
-                return render(request, 'duediligence_form.html', {'form': form, "message":"Upload failed"})
+            form.save()
+            return redirect('/due_diligence')
         else:
-            return render(request, 'duediligence_form.html', {'form': form, "message":"Upload failed"})
-    else:
-        #update
-        paths = {
-            "diligence_report_path": diligence_report_path,
-            "third_party_assurances_path": third_party_assurances_path
-        }
-        duediligence = get_object_or_404(SupplyChainDueDiligence, pk=pk)
-        form = DueDiligenceUpdateForm(request.POST or None, request.FILES or None, instance=duediligence)
-        form_type = 'update'
-        return render(request, 'duediligence_form.html', {'form': form, 'form_type': form_type, 'paths': paths})
+            print(form.errors)
+    field_rows = split_form(form)
+    return render(request, 'duediligence_form.html', {'form': form,
+        'form_type': form_type,
+        'field_rows': field_rows,
+        'related': related,
+        'related_multi': related_multi,
+        'path': path})

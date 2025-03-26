@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, Permission
 
-from utils.form_style import split_form
+from utils.form import split_form
 
 from .models import Account
 from .forms import AccountInsertForm, AccountUpdateForm, LoginForm, RegisterForm, ChangePasswordForm, GroupForm
