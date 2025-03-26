@@ -21,13 +21,4 @@ $(document).ready(function() {
             alert('Please select an item to edit.');
         }
     });
-
-    $(window).on('message', function(event) {
-        if (event.originalEvent.data === 'manufacturer_added') {
-            // Reload the manufacturer options
-            $.get('/get_manufacturer_options/', function(data) {
-                $('#id_manufacturer').html(data);
-            });
-        }
-    });
 });

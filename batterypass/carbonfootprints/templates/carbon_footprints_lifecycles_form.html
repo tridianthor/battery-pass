@@ -30,15 +30,15 @@
                     {% endif %} {% endcomment %}
                     <div class="input-group">
                         {{ field }}
-                        {{ field.errors }}
-                        {% if field.name in related %} 
+                        {% comment %} {% if field.name in related %} 
                             <a href="/{{field.name}}/form/" class="btn btn-outline-secondary">Create</a>
                             <a class="btn btn-outline-secondary edit-btn">Edit</a>
                         {% endif %}
                         {% if field.name in related_multi %} 
                             <a href="/{{field.name}}/form/" class="btn btn-outline-secondary d-flex align-items-center">Create</a>
-                        {% endif %}
+                        {% endif %} {% endcomment %}
                     </div>
+                    {{ field.errors }}
                 </div>
             {% endfor %}
         </div>
@@ -48,15 +48,15 @@
                     {{ field.label }}
                     <div class="input-group">
                         {{ field }}
-                        {{ field.errors }}
-                        {% if field.name in related %} 
+                        {% comment %} {% if field.name in related %} 
                             <a href="/{{field.name}}/form/" class="btn btn-outline-secondary">Create</a>
                             <a class="btn btn-outline-secondary edit-btn">Edit</a>
                         {% endif %}
                         {% if field.name in related_multi %} 
                             <a href="/{{field.name}}/form/" class="btn btn-outline-secondary d-flex align-items-center">Create</a>
-                        {% endif %}
+                        {% endif %} {% endcomment %}
                     </div>
+                    {{ field.errors }}
                 </div>
             {% endfor %}
         </div>

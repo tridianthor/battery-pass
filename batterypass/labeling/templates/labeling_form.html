@@ -22,24 +22,18 @@
                 {% for field in row.left_fields %}
                     <div class="mb-3">
                         {{ field.label }}
-                        {% comment %} TODO view document {% endcomment %}
-                        {% comment %} {% if form_type == 'update' %}
-                            <span><a href="{% url 'duediligence_pdf' folder=paths.labeling_symbol_path filename=form.labeling_symbol.value %}"
-                                class="btn btn-info btn-sm d-flex align-items-center">
-                                <i class="me-2">{% bs_icon 'file-earmark-text-fill' %}</i>View</a>
-                            </span>
-                        {% endif %} {% endcomment %}
                         <div class="input-group">
                             {{ field }}
-                            {{ field.errors }}
-                            {% if field.name in related %} 
+                            
+                            {% comment %} {% comment %} {% if field.name in related %} 
                                 <a href="/{{field.name}}/form/" class="btn btn-outline-secondary">Create</a>
                                 <a class="btn btn-outline-secondary edit-btn">Edit</a>
                             {% endif %}
                             {% if field.name in related_multi %} 
                                 <a href="/{{field.name}}/form/" class="btn btn-outline-secondary d-flex align-items-center">Create</a>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
                         </div>
+                        {{ field.errors }}
                     </div>
                 {% endfor %}
             </div>
@@ -49,15 +43,15 @@
                         {{ field.label }}
                         <div class="input-group">
                             {{ field }}
-                            {{ field.errors }}
-                            {% if field.name in related %} 
+                            {% comment %} {% if field.name in related %} 
                                 <a href="/{{field.name}}/form/" class="btn btn-outline-secondary">Create</a>
                                 <a class="btn btn-outline-secondary edit-btn">Edit</a>
                             {% endif %}
                             {% if field.name in related_multi %} 
                                 <a href="/{{field.name}}/form/" class="btn btn-outline-secondary d-flex align-items-center">Create</a>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
                         </div>
+                        {{ field.errors }}
                     </div>
                 {% endfor %}
             </div>
