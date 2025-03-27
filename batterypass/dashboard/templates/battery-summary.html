@@ -6,7 +6,7 @@
 {% block extra_styles %}
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 {% endblock extra_styles %}
 
 {% block content %}
@@ -120,29 +120,6 @@
         </div>
         
         <div class="row">
-            <!-- Recycled Content Share -->
-            <div class="col-md-12 mb-3">
-                <div class="summary-card" id="recycled-collapse" onclick="toggleContent('recycledContent', 'arrow-recycled')">
-                    <div class="summary-title">Recycled Content Share</div>
-                    <div class="arrow-indicator" id="arrow-recycled">▲</div>
-                    <div class="recycled-chart mt-4" id="recycledContent">
-                        <div class="recycled-item">
-                            {{recycled_content_nickel_fig|safe}}
-                        </div>
-                        <div class="recycled-item">
-                            {{recycled_content_cobalt_fig|safe}}
-                        </div>
-                        <div class="recycled-item">
-                            {{recycled_content_lithium_fig|safe}}
-                        </div>
-                        <div class="recycled-item">
-                            {{recycled_content_lead_fig|safe}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <!-- Carbon Footprint -->
             <div class="col-md-12 mb-3">
                 <div class="summary-card" id="carbon-collapse" onclick="toggleContent('carbonFootprintContent', 'arrow-carbon-footprint')">
@@ -150,64 +127,112 @@
                         <div class="summary-title">Carbon Footprint</div>
                         <div class="arrow-indicator" id="arrow-carbon-footprint">▲</div>
                     </div>
-                    <div class="d-flex justify-content-center align-items-center mt-4">
-                        <div class="recycled-item"  id="carbonFootprintContent">
-                            {% comment %} {{carbon_footprint_fig|safe}} {% endcomment %}
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="mt-4" id="carbonFootprintContent">
                             <canvas id="carbon_footprint_fig"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <!-- Recycled Content Share -->
+            <div class="col-md-12 mb-3">
+                <div class="summary-card" id="recycled-collapse" onclick="toggleContent('recycledContent', 'arrow-recycled')">
+                    <div class="summary-title">Recycled Content Share</div>
+                    <div class="arrow-indicator" id="arrow-recycled">▲</div>
+                    <div id="recycledContent">
+                        {% comment %} <div class="d-md-flex mt-4">
+                            <div class="d-flex flex-wrap justify-content-center" >
+                                <div class="p-3 px-2 mx-5">
+                                    <canvas id="recycled_content_nickel_fig"></canvas>
+                                </div>
+                                <div class="p-3 px-2 mx-5">
+                                    <canvas id="recycled_content_cobalt_fig"></canvas>
+                                </div>
+                                <div class="p-3 px-2 mx-5">
+                                    <canvas id="recycled_content_lithium_fig"></canvas>
+                                </div>
+                                <div class="p-3 px-2 mx-5">
+                                    <canvas id="recycled_content_lead_fig"></canvas>
+                                </div>
+                            </div>
+                        </div> {% endcomment %}
+                        <div class="mt-4 p-4">
+                            <div class="row justify-content-center mb-4">
+                                <div class="col-md-5 mx-2">
+                                    <p>Recycled Content Nickel</p>
+                                    <div class="h-75">
+                                        <canvas id="recycled_content_nickel_fig"></canvas>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 mx-2">
+                                    <p>Recycled Content Cobalt</p>
+                                    <div class="h-75">
+                                        <canvas id="recycled_content_cobalt_fig"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="height:20px"></div>
+                            <div class="row justify-content-center mt-4">
+                                <div class="col-md-5 mx-2">
+                                    <p>Recycled Content Lithium</p>
+                                    <div class="h-75">
+                                        <canvas id="recycled_content_lithium_fig"></canvas>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 mx-2">
+                                    <p>Recycled Content Lead</p>
+                                    <div class="h-75">
+                                        <canvas id="recycled_content_lead_fig"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>    
 {% endblock content %}
 
 {% block extra_scripts %}
     <script src="{% static 'js/header-ex.js' %}"></script>
+    <script src="{% static 'js/chart.js' %}"></script>
     <script>
-        Chart.register(ChartDataLabels);
-        const ctx = document.getElementById('carbon_footprint_fig').getContext('2d');
-        const carbon_footprint_fig = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: {{carbon_footprint_names|safe}},
-                datasets: [{
-                    data: {{carbon_footprint_df|safe}},
-                    backgroundColor: ['#449944', '#DD8855', '#EEDDCC', '#667788'],
-                    borderWidth: 0,
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const index = context.dataIndex;
-                                const label = context.label; 
-                                const dataValue = context.dataset.data[index]; 
+        const recycled_content_nickel_ctx = document.getElementById('recycled_content_nickel_fig').getContext('2d');
+        const recycled_content_cobalt_ctx = document.getElementById('recycled_content_cobalt_fig').getContext('2d');
+        const recycled_content_lithium_ctx = document.getElementById('recycled_content_lithium_fig').getContext('2d');
+        const recycled_content_lead_ctx = document.getElementById('recycled_content_lead_fig').getContext('2d');
+        const carbon_footprint_ctx = document.getElementById('carbon_footprint_fig').getContext('2d');
 
-                                return `${label}: ${dataValue}`;
-                            }
-                        }
-                    },
-                    datalabels: {
-                        color: '#fff', // White text color
-                        font: {
-                            weight: 'bold',
-                            size: 16 // Adjust font size as needed
-                        },
-                        formatter: (value, context) => {
-                            return value + '%';
-                        },
-                        anchor: 'center', // Position labels in the center of slices
-                        align: 'center',
-                        offset: 0, // Adjust offset if needed
-                    }
-                }
-            },
-        });
+        const color = ['#a5dfc1', '#dbdbdb', '#7dada6', '#b5b5b5'];
+        
+        const recycled_content_nickel_fig = createPieChart(recycled_content_nickel_ctx, 
+        {{recycled_content_names|safe}}, 
+        {{cobalt_values|safe}}, 
+        color)
+
+        const recycled_content_cobalt_fig = createPieChart(recycled_content_cobalt_ctx, 
+        {{recycled_content_names|safe}}, 
+        {{lithium_values|safe}}, 
+        color)
+
+        const recycled_content_lithium_fig = createPieChart(recycled_content_lithium_ctx, 
+        {{recycled_content_names|safe}}, 
+        {{nickel_values|safe}}, 
+        color)
+
+        const recycled_content_lead_fig = createPieChart(recycled_content_lead_ctx, 
+        {{recycled_content_names|safe}}, 
+        {{lead_values|safe}}, 
+        color)
+
+        const carbon_footprint_fig = createPieChart(carbon_footprint_ctx, 
+        {{carbon_footprint_names|safe}}, 
+        {{carbon_footprint_values|safe}}, 
+        color)
     </script>
 {% endblock extra_scripts %}

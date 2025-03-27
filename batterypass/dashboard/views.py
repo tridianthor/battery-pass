@@ -162,13 +162,13 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
     return {
         'media_url': settings.MEDIA_URL,
         'product': product,
-        'carbon_footprint_df': carbon_footprint_values,
         'carbon_footprint_names': carbon_footprint_names,
-        'carbon_footprint_fig': carbon_footprint_fig.to_html(),
-        'recycled_content_cobalt_fig': recycled_content_cobalt_fig.to_html(),
-        'recycled_content_lithium_fig': recycled_content_lithium_fig.to_html(),
-        'recycled_content_nickel_fig': recycled_content_nickel_fig.to_html(),
-        'recycled_content_lead_fig': recycled_content_lead_fig.to_html()
+        'carbon_footprint_values': carbon_footprint_values,
+        'recycled_content_names': recycled_content_names,
+        'cobalt_values': recycled_content_cobalt_values,
+        'lithium_values': recycled_content_lithium_values,
+        'nickel_values': recycled_content_nickel_values,
+        'lead_values': recycled_content_lead_values
     }
 
 @login_required(login_url="/accounts/login/")
