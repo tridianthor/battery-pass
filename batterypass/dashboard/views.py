@@ -69,7 +69,7 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
     else:
         product = get_object_or_404(GeneralProductInformation, battery_passport_identifier=code)
         
-    colors = ['#449944', '#DD8855', '#EEDDCC', '#667788']
+    colors = ['#a5dfc1', '#dbdbdb', '#7dada6', '#b5b5b5']
     recycled_chart_colors = ['#7f9aa7','#59cf78']
     
     carbon_footprint_df = product.carbon_footprint.carbon_footprint_per_lifecycle_stage.all()
@@ -108,7 +108,7 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
                                 title='Carbon Footprint per Lifecycle Stage', 
                                 color_discrete_sequence=colors)
     carbon_footprint_fig.update_traces(textposition='inside', textinfo='percent')
-    carbon_footprint_fig.update_layout(width=chart_width_wide, height=chart_height)
+    carbon_footprint_fig.update_layout(width=400, height=300)
     carbon_footprint_fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)'
@@ -168,7 +168,12 @@ def get_battery(pk=None, code=None, chart_width = None, chart_width_wide=None, c
         'cobalt_values': recycled_content_cobalt_values,
         'lithium_values': recycled_content_lithium_values,
         'nickel_values': recycled_content_nickel_values,
-        'lead_values': recycled_content_lead_values
+        'lead_values': recycled_content_lead_values,
+        'carbon_footprint_fig': carbon_footprint_fig.to_html(),
+        'recycled_content_cobalt_fig': recycled_content_cobalt_fig.to_html(),
+        'recycled_content_lithium_fig': recycled_content_lithium_fig.to_html(),
+        'recycled_content_nickel_fig': recycled_content_nickel_fig.to_html(),
+        'recycled_content_lead_fig': recycled_content_lead_fig.to_html()
     }
 
 @login_required(login_url="/accounts/login/")
